@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-The code on this site is covered by the [MIT License][mit] and the written content is covered by a [Creative Commons CC BY 4.0][cc] license.
+The code on this site is covered by the [MIT][mit] license and the written content is covered by a [Creative Commons CC BY 4.0][cc] license.
 
 [mit]: https://choosealicense.com/licenses/mit/
 [cc]: https://creativecommons.org/licenses/by/4.0/
