@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+
+<title>Marker detection</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.15/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP-EHF Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Quality control</li>
+    <li>
+      <a href="01-quality-control.html"></a>
+    </li>
+    <li class="dropdown-header">Normalization</li>
+    <li>
+      <a href="02-normalization.html"></a>
+    </li>
+    <li class="dropdown-header">Feature selection</li>
+    <li>
+      <a href="03-feature-selection.html"></a>
+    </li>
+    <li class="dropdown-header">Reduced dimensions</li>
+    <li>
+      <a href="04-reduced-dimensions.html"></a>
+    </li>
+    <li class="dropdown-header">Clustering</li>
+    <li>
+      <a href="05-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Doublet detection</li>
+    <li>
+      <a href="06-doublet-detection"></a>
+    </li>
+    <li class="dropdown-header">Cell cycle</li>
+    <li>
+      <a href="07-cell-cycle.html"></a>
+    </li>
+    <li class="dropdown-header">Marker detection</li>
+    <li>
+      <a href="08-marker-detection.html"></a>
+    </li>
+    <li class="dropdown-header">Cell annotation</li>
+    <li>
+      <a href="09-cell-annotation.html"></a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">License</li>
+<li>
+  <a href="license.html"></a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Marker detection</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">22 September, 2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-09-22
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong79b6e35"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 79b6e35 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong79b6e35" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 79b6e35. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  LICENSE
+    Untracked:  analysis/01-quality-control.Rmd
+    Untracked:  analysis/02-normalization.Rmd
+    Untracked:  analysis/03-feature-selection.Rmd
+    Untracked:  analysis/04-reduced-dimensions.Rmd
+    Untracked:  analysis/05-atlas-mapping.Rmd
+    Untracked:  analysis/05-clustering.Rmd
+    Untracked:  analysis/06-doublet-detection.Rmd
+    Untracked:  analysis/07-cell-cycle.Rmd
+    Untracked:  analysis/08-marker-detection.Rmd
+    Untracked:  analysis/09-cell-annotation.Rmd
+    Untracked:  analysis/10-data-integration.Rmd
+    Untracked:  analysis/11-scenic-analysis.Rmd
+    Untracked:  analysis/cache/
+    Untracked:  backup/
+    Untracked:  data/01-quality-control.rds
+    Untracked:  data/02-normalization.rds
+    Untracked:  data/03-feature-selection.rds
+    Untracked:  data/04-reduced-dimensions.rds
+    Untracked:  data/05-clustering.rds
+    Untracked:  data/06-doublet-detection.rds
+    Untracked:  data/07-cell-cycle.rds
+    Untracked:  data/08-marker-detection.rds
+    Untracked:  data/09-cell-annotation.rds
+    Untracked:  data/10-data-integration.rds
+    Untracked:  data/cell-lineage.csv
+    Untracked:  data/cell-markers.csv
+    Untracked:  data/pyscenic-activity.csv
+    Untracked:  data/pyscenic-modules.csv
+    Untracked:  data/pyscenic-regulons.csv
+    Untracked:  data/salmon-quant.rds
+
+Unstaged changes:
+    Modified:   _workflowr.yml
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
+<p>In this analysis we will identify differentially expressed genes between clusters in order to create a set of marker genes.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/08-marker-detection.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  echo       = TRUE,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+<p>Load required packages:</p>
+<pre class="r"><code>library(scater)
+library(scran)</code></pre>
+<p>Read experiment data:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;data/07-cell-cycle.rds&quot;)</code></pre>
+</div>
+<div id="welch-t-test" class="section level2">
+<h2>Welch <em>t</em>-test</h2>
+<div id="non-specific" class="section level3">
+<h3>Non-specific</h3>
+<p>Find non-specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;t&quot;, pval.type = &quot;any&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+<div id="cluster-1" class="section level5">
+<h5>Cluster 1</h5>
+<div id="htmlwidget-2f9a8996a76a89a638d9" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2f9a8996a76a89a638d9">{"x":{"filter":"none","data":[["Slc16a3","Epcam","Dars2","Slc2a3","Chmp1b"],[1,1,2,3,4],[2.89714697172068e-06,1.31118178184648e-08,5.20228168733279e-07,3.27319944589482e-06,4.41981313306815e-06],[0.0453919116158079,0.00072732564620806,0.0144287883739019,0.0453919116158079,0.0490342908608847],[2.16999487847584,4.88533192914636,4.06059310048574,2.5888298166637,3.71428742253421],[1.75135515499202,4.88533192914636,4.06059310048574,2.5888298166637,3.71428742253421],[0.919277563768591,0.858967435643599,1.26744048999103,0.187551567548343,2.92733419055897],[2.16999487847584,3.62348780880574,1.84901875858496,3.31599229269483,2.13390594387603]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.2<\/th>\n      <th>logFC.3<\/th>\n      <th>logFC.4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="cluster-2" class="section level5">
+<h5>Cluster 2</h5>
+<div id="htmlwidget-e143d48cbb8bbc389ef7" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e143d48cbb8bbc389ef7">{"x":{"filter":"none","data":[["Edf1","Aldh1a2","Pcdh19","Gm1821","Gal","Inka1","Sla2","Ifitm1","Sh3gl3","Cited1","Plxna2","Phlda2","Fn1","Msgn1","Dact1","Gse1","Pdgfra","Actb","Tmsb10","P4ha2","Gm9844","Mccc1","Rnf213","Rab12","Tank","Crabp1","Ccdc93","Ftl1-ps1","Pdzrn3","Kifap3","Gpc3","Sh3pxd2a","Gnas","Pde4d","H19","Gm7860","Gm26793","Wdfy3","Slit3","S1pr5","Pdcd7","Wdfy2","Dll1","Gm50362","Herc3","Nudt15","Adnp2","Dll3"],[1,1,1,2,2,2,3,3,4,4,5,5,6,6,7,7,8,9,9,10,10,11,12,12,13,13,14,14,15,16,16,17,17,18,18,19,20,21,22,23,24,25,25,26,28,29,30,31],[7.76900440194568e-06,7.76590868303924e-10,3.1600293437868e-12,1.58824145837145e-05,5.34375321048434e-10,2.14306327937844e-08,4.41051173738101e-08,5.1006739513282e-08,6.44147858644898e-08,5.95249634093932e-08,4.03105774948898e-07,2.55654676764344e-07,4.1748212751778e-07,1.23714292925432e-06,1.8712372280005e-06,2.09612401147409e-06,1.35803313563517e-06,2.71690751929772e-06,2.95903782233112e-06,2.79493198821804e-06,4.10318990012999e-06,2.93768252726029e-06,6.51204000489477e-06,3.51250053721893e-06,3.701320114767e-06,6.67917036395695e-06,4.35309885636985e-06,1.70640828476072e-05,5.81256576435997e-06,5.82524850951539e-06,2.29700067632989e-05,6.60783911271688e-06,2.70676426298563e-05,6.79156636873965e-06,3.1775955223083e-05,8.87680403259031e-06,1.10875786382077e-05,1.11137512865774e-05,1.25605080778352e-05,1.54555078888402e-05,1.74627942255966e-05,1.89376130010297e-05,2.38482568057666e-05,1.9395730066183e-05,2.80652611993664e-05,3.23479707857535e-05,3.90982079463253e-05,4.09511892627765e-05],[0.0143651481060109,1.43594240185623e-05,1.75289987729197e-07,0.0244725949825896,1.43594240185623e-05,0.000297194657926003,0.000446644073336139,0.000446644073336139,0.000446644073336139,0.000446644073336139,0.0021052864632308,0.00157571339719944,0.0021052864632308,0.00571879628572222,0.00741424287674399,0.00775160633603196,0.00579472738975526,0.00863898879171209,0.00863898879171209,0.00863898879171209,0.0103458203159141,0.00863898879171209,0.0129908613117364,0.00974209586500357,0.00977694895648763,0.0129908613117364,0.0104987281157257,0.0254915436444229,0.0129252944028531,0.0129252944028531,0.0310772986626086,0.0129908613117364,0.0349178884725758,0.0129908613117364,0.0390081366838377,0.0158840385965102,0.0186815423520526,0.0186815423520526,0.0204924689289881,0.0244725949825896,0.0254915436444229,0.026897513562531,0.0314973012683971,0.026897513562531,0.0353820023634103,0.0390081366838377,0.0461450360210768,0.0473250712415724],[0.983871626498887,6.16348206196133,7.27170848405797,0.718350347400612,6.46059125314417,4.11756662660568,3.29230704728613,1.67166993605847,3.35007173789418,4.39958223664157,3.90401162233432,3.2546849631985,1.74201585536685,5.97931544184021,3.92331812777491,2.18953978106484,5.98083441044116,1.07511069315185,0.586127127859427,3.06178575540831,0.776056258010715,3.25746477542945,4.45655722701224,2.70218002815045,3.82833018445741,3.51436246427202,3.20691191722366,0.705666075979601,3.11937656507596,4.14788335679209,0.825549598445971,2.49776171046837,0.661661359334062,3.07924082770698,3.39682923090371,1.00544726130066,1.90516417249052,3.32146705049411,2.72413317201406,2.63786833799649,2.86547389921598,2.68367464157793,5.61836667293404,1.52229476153993,2.59500913772091,2.66777198397521,2.55882191315891,5.75947091738363],[-0.287538651718402,5.24286133561809,7.27170848405797,-0.0286185537947485,6.46059125314417,3.97556202420594,3.29230704728613,0.815764106591752,3.35007173789418,5.37220954941167,3.90401162233432,2.4577430728873,2.08748976916543,5.97931544184021,3.51189204995709,2.18953978106484,5.98083441044116,1.07511069315185,0.271255454931048,3.06178575540831,0.304676822866258,3.25746477542945,4.8152745511194,2.70218002815045,3.82833018445741,3.71843110291962,3.20691191722366,0.218805524812954,3.11937656507596,4.14788335679209,0.996285512705182,2.49776171046837,0.529649085442896,3.07924082770698,3.24424863678975,1.00544726130066,1.90516417249052,3.32146705049411,2.72413317201406,2.63786833799649,2.86547389921598,2.68367464157793,5.61836667293404,1.52229476153993,2.59500913772091,2.66777198397521,2.55882191315891,5.75947091738363],[0.506920879052974,6.16348206196133,5.39507284144163,0.441555068339053,3.23506582638902,4.11756662660568,0.324048492219124,1.67166993605847,1.10494376822729,4.39958223664157,3.24337836974252,3.2546849631985,1.74201585536685,3.8951478780224,3.92331812777491,0.667794403449575,4.80159726239627,0.0487168594590859,0.586127127859427,0.520536594622893,0.776056258010715,-1.04066233391869,4.45655722701224,-0.0880123380683058,0.190536472006937,3.51436246427202,1.57668920943555,0.705666075979601,1.64803514002507,0.673128584327125,0.825549598445971,0.775832998294952,0.661661359334062,-0.740871637518902,3.39682923090371,0.30473881734815,1.0823950732532,0.0667748353157789,0.322522245361209,1.49392892909488,0.445767361732939,0.742370815529064,3.67531682810902,1.22369966571304,1.37427218314855,0.158467189943921,-0.205429875311606,3.00459798797666],[0.983871626498887,-0.954890771767844,-0.37358993897164,0.718350347400612,-0.63908802363317,0.593262612006733,0.456700750463549,0.126310574587096,-1.6692646688138,0.168621852079087,-0.680685223965162,0.78883593667412,0.0820727622574893,-0.488825582046681,-1.74102623514218,-1.8117139827946,-1.32651772569327,0.186047807889912,0.559868638008651,-0.931032285047543,0.478260330951448,-0.774273810296451,-0.124307544273348,-1.17748329359247,-0.0402352686922898,0.010803342752121,0.848803689021732,0.139675996209909,-1.04236360538789,0.331303788991528,-0.314369408788616,0.789172898585896,0.409919367447051,-2.07210635792145,0.665082377396695,0.493093290516681,0.539069452368679,0.890961493963388,-1.34013302456322,-1.42600059250831,0.147359709147843,-0.718896236787946,0.459195010884284,0.758183911043749,-0.920745322700665,-1.03215202049606,0.153335285866596,-1.08748717648401]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.1<\/th>\n      <th>logFC.3<\/th>\n      <th>logFC.4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="cluster-3" class="section level5">
+<h5>Cluster 3</h5>
+<div id="htmlwidget-c8148ccbda697df86a6d" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c8148ccbda697df86a6d">{"x":{"filter":"none","data":[["Cldn6","Tpd52","Mccc1","Sla2","Slc2a3","Camsap3","Pde4d","Hspb1","Pdgfa","Cdc42bpa","Grb7","Nubpl","Thap2","Pmaip1","Zswim8","Epcam","Slc2a1","Rerg","Kitl","Nkx1-2","Cct4","Apln","Map1b","M1ap","Ate1","Tspan13","Dcaf13"],[1,1,1,2,2,2,3,3,3,4,4,4,5,5,6,6,6,7,8,9,10,12,14,15,16,17,18],[1.13482527507789e-07,1.0208111498036e-07,7.61450163051143e-07,3.09527592078726e-06,1.51679244688629e-07,4.95627353347406e-06,9.21526812340792e-06,1.38881308835025e-05,1.76097381734445e-07,1.07257562401225e-05,2.27444590959565e-05,6.22090583748746e-07,1.53213936439291e-05,6.73845058543969e-07,1.59446200957152e-05,1.10550587433107e-06,7.03196049908348e-06,1.39171274298464e-06,1.5389300448277e-06,1.93050136531551e-06,3.53384760267707e-06,6.00229227930234e-06,7.47170207770751e-06,1.44705958103744e-05,1.53557767395217e-05,2.15624729711032e-05,2.41782970445312e-05],[0.00244207446554785,0.00244207446554785,0.00603405742780142,0.0143081708834992,0.00244207446554785,0.0196378177982385,0.0283988965596422,0.0368526675553924,0.00244207446554785,0.0313141275997808,0.0485253034812231,0.00603405742780142,0.0368526675553924,0.00603405742780142,0.0368526675553924,0.00766543954437733,0.0243793675527912,0.00853659885166374,0.00853659885166374,0.0097351673850379,0.0150789277206231,0.0221968770016787,0.0243801638795596,0.0368526675553924,0.0368526675553924,0.0478436775272027,0.0496738635317477],[4.8658351251209,4.54028339490697,4.29812710934814,2.968258555067,2.40127824911536,2.96062390634008,3.82011246522588,2.65489564170102,3.85429569213898,4.06415144771168,3.37236337200017,3.92645375128338,3.11135073068058,5.0045780887196,3.10692947266094,4.02636449350276,1.47962205209689,4.14882099515858,4.87591073832618,4.56817094729328,0.675406708879088,3.84315297557396,3.43706113456374,3.56729737710689,3.49458229873236,2.35290966518427,1.43834336414199],[-0.559948171197237,0.664949793976267,4.29812710934814,2.968258555067,-0.187551567548343,1.26118948903059,3.82011246522588,1.13953406904195,-0.951037564175748,4.06415144771168,-0.627350314129984,3.20885158513771,3.11135073068058,2.22144885568814,3.10692947266094,-0.858967435643599,-0.0985631137696323,1.67020982621993,5.50461442352319,1.87440814949008,0.841048134542957,1.73825579650007,0.952462029243728,0.969691809523634,2.4828134100425,0.149202704553154,0.41266030188642],[3.6040090559188,4.54028339490697,1.04066233391869,-0.324048492219124,2.40127824911536,2.96062390634008,0.740871637518902,0.907876164875564,3.85429569213898,2.90582323529795,2.67281739297349,3.92645375128338,1.04389697446792,5.0045780887196,0.699856123961715,4.02636449350276,1.47962205209689,4.14882099515858,4.87591073832618,4.56817094729328,0.675406708879088,3.84315297557396,3.43706113456374,3.56729737710689,3.49458229873236,2.35290966518427,1.43834336414199],[4.8658351251209,4.36362279668528,0.266388523622239,0.132652258244425,3.12844072514649,2.98410088358237,-1.33123472040255,2.65489564170102,3.62439491863394,2.7962949856264,3.37236337200017,1.00377676126614,-1.86105181426661,2.21088611721242,0.920539716730909,2.76452037316214,2.22688780844505,2.07514103544589,1.31380129190765,3.70826827201427,0.290247650379074,3.58373143542011,4.80813111782452,2.99081651686368,0.776642257241391,2.43780106481448,0.630814107537908]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.1<\/th>\n      <th>logFC.2<\/th>\n      <th>logFC.4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="cluster-4" class="section level5">
+<h5>Cluster 4</h5>
+<div id="htmlwidget-c8c09897d8f483d3639c" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c8c09897d8f483d3639c">{"x":{"filter":"none","data":[["Cdc25c","Pdgfra","Gse1","Msgn1","Zfyve19","Gpc3","Dhdds","Aldh1a2","Thap2","Vcpkmt","Cited1","Gal","Naaa","Nedd4","Cnrip1","Ube2l3","G2e3","Crabp1","Pcdh19","Rnf213","Phc2","Lin28a","Fn1","Dll3","Jam3","Paxbp1","Itpr1","Uba6","Dynll1","Lztfl1","Dact1","Dym","Sh3gl3","Klhl12","Pbx2"],[1,1,1,2,2,2,3,3,4,4,4,5,5,5,6,6,7,7,7,8,8,8,9,9,9,10,10,11,11,11,12,12,12,13,14],[4.99968497987565e-06,9.94600112697698e-09,6.00600895760482e-07,7.96367528466356e-07,6.62197848757536e-06,5.67672593930947e-08,6.80654425124652e-06,1.70664858780731e-07,1.29702023893251e-06,7.87176632211192e-06,2.01748341845608e-07,8.20290930585276e-06,4.20526943482322e-06,7.99723121609002e-06,1.03655229213564e-05,1.11866184594077e-05,1.2245572583402e-05,6.49619347656982e-06,1.09282668934531e-05,1.06393620331414e-05,1.12018216334107e-05,1.61570162625069e-05,1.17884272442588e-05,1.13379406445239e-05,1.81707176244716e-05,2.29462112370806e-05,1.15003398281197e-05,2.55897677260195e-05,2.35942963612573e-05,2.30411525885711e-05,1.75504066140879e-05,2.98277498569904e-05,2.58003611033136e-05,3.13738807537212e-05,2.32824594075208e-05],[0.0283030898655788,0.00055171462851454,0.00666318645774595,0.00736255052859288,0.0283030898655788,0.00157446832289718,0.0283030898655788,0.00279779556762943,0.0102781442391179,0.0283030898655788,0.00279779556762943,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0283030898655788,0.0358498339639009,0.0283030898655788,0.0283030898655788,0.0373314028647062,0.0422193294663,0.0283030898655788,0.0433688433564215,0.0422193294663,0.0422193294663,0.0373314028647062,0.0486639738916799,0.0433688433564215,0.0497240154082763,0.0422193294663],[3.50826735205489,6.12811498808954,4.00125376385943,6.46814102388689,2.99599563828027,1.13991900723459,2.99249240576034,7.11837283372917,4.97240254494719,3.95973345337487,4.23096038456248,7.09967927677734,4.09927515654347,0.527787716313536,5.40557886618434,1.22109915882772,4.51610259587922,3.50355912151989,7.64529842302962,4.58086477128559,4.42205196184421,1.15518417037761,1.65994309310936,6.84695809386764,3.21428863338031,5.17915286246246,5.44240322143476,6.52007096370606,0.523805427975184,3.8073775034249,5.6643443629171,3.94007931057664,5.01933640670798,3.21880737829492,2.41931903816307],[3.05429351317402,7.30735213613443,4.00125376385943,6.46814102388689,2.03652942164535,1.3106549214938,3.29440631211343,6.19775210738594,4.97240254494719,2.8420867962312,5.20358769733258,7.09967927677734,3.88322838097452,0.795788298779026,5.40557886618434,1.34583791040021,4.6693483138732,3.7076277601675,7.64529842302962,4.93958209539275,4.42205196184421,1.47508928721575,2.00541700690794,6.84695809386764,3.10060613950553,5.26802397703604,5.44240322143476,6.52007096370606,0.741165104487562,2.94804645558578,5.25291828509927,4.88295328585549,5.01933640670798,2.61841682005086,1.72515401789497],[3.50826735205489,1.32651772569327,1.8117139827946,0.488825582046681,2.99599563828027,0.314369408788616,2.99249240576034,0.954890771767844,2.90494878873453,3.95973345337487,-0.168621852079087,0.63908802363317,1.94439590240052,0.527787716313536,3.74671419737581,1.22109915882772,4.51610259587922,-0.010803342752121,0.37358993897164,0.124307544273348,1.21498533705347,1.15518417037761,-0.0820727622574893,1.08748717648401,3.21428863338031,5.17915286246246,1.99049940824666,1.27330717878944,0.432584388511733,3.8073775034249,1.74102623514218,3.94007931057664,1.6692646688138,3.21880737829492,2.41931903816307],[2.63027027437363,6.12811498808954,2.47950838624417,4.38397346006908,1.22948302955738,1.13991900723459,2.20749228582582,7.11837283372917,1.86105181426661,4.67733721219131,4.23096038456248,3.87415385002219,4.09927515654347,0.263610574400376,4.09801153924696,0.793132265693252,1.2582118349927,3.50355912151989,5.76866278041327,4.58086477128559,1.63681527061054,0.261817926526238,1.65994309310936,4.09208516446067,3.53714263577735,2.06415752606589,2.29635658043836,2.04843769278683,0.523805427975184,2.47369728869783,5.6643443629171,2.17050147368041,2.77420843704109,1.66997071958373,2.54563067354491]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.1<\/th>\n      <th>logFC.2<\/th>\n      <th>logFC.3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="heatmap" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="cluster-1-1" class="section level5">
+<h5>Cluster 1</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-2-1" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-7-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-1" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-7-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-1" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-7-4.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="dimension" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+<div id="cluster-1-2" class="section level5">
+<h5>Cluster 1</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-2-2" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-8-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-2" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-8-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-2" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-8-4.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="expression" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+<div id="cluster-1-3" class="section level5">
+<h5>Cluster 1</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-2-3" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-9-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-3" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-9-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-3" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-9-4.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="specific" class="section level3">
+<h3>Specific</h3>
+<p>Find specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;t&quot;, pval.type = &quot;all&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table-1" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+</div>
+<div id="heatmap-1" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+</div>
+<div id="dimension-1" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+<div id="expression-1" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="wilcoxon-rank-sum-test" class="section level2">
+<h2>Wilcoxon rank sum test</h2>
+<div id="non-specific-1" class="section level3">
+<h3>Non-specific</h3>
+<p>Find non-specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;wilcox&quot;, pval.type = &quot;any&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table-2" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+<div id="cluster-2-4" class="section level5">
+<h5>Cluster 2</h5>
+<div id="htmlwidget-13208518ed41fcc4fe8a" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-13208518ed41fcc4fe8a">{"x":{"filter":"none","data":[["Cited1","Phlda2","Msgn1","Ifitm1","Fn1","Aldh1a2","Crabp1","Inka1","Fgf3"],[1,2,3,3,4,5,6,7,9],[1.7273451673198e-08,7.36004544824029e-08,4.09695879954775e-06,1.76792327044125e-07,8.05481255612185e-07,1.07048577297667e-06,1.08211076692267e-06,1.11820450919505e-06,7.00788713048823e-06],[0.000958175637763969,0.00204134540529669,0.0284078001962142,0.00326894905782155,0.00886113176136552,0.00886113176136552,0.00886113176136552,0.00886113176136552,0.0431927230017014],[0.943014705882353,0.924019607843137,0.861519607843137,0.911764705882353,0.889705882352941,0.857843137254902,0.883578431372549,0.876838235294118,0.855392156862745],[0.963235294117647,0.8,0.926470588235294,0.702941176470588,0.926470588235294,0.817647058823529,0.835294117647059,0.883823529411765,0.879411764705882],[0.943014705882353,0.924019607843137,0.861519607843137,0.911764705882353,0.889705882352941,0.857843137254902,0.883578431372549,0.876838235294118,0.855392156862745],[0.590497737556561,0.680995475113122,0.486425339366516,0.504524886877828,0.504524886877828,0.481900452488688,0.572398190045249,0.556561085972851,0.590497737556561]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.AUC<\/th>\n      <th>AUC.1<\/th>\n      <th>AUC.3<\/th>\n      <th>AUC.4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="cluster-3-4" class="section level5">
+<h5>Cluster 3</h5>
+<div id="htmlwidget-f773f1e608415f426441" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f773f1e608415f426441">{"x":{"filter":"none","data":[["Tspan13","Nkx1-2","Pmaip1","Slc2a3","Tpd52","Kitl"],[1,1,3,3,5,6],[2.95517693892705e-07,8.99939027178974e-09,1.40359585160204e-06,1.54122337748722e-06,1.55264536463563e-06,2.57144571061816e-06],[0.00819633099896113,0.000499205177766448,0.0172253582043407,0.0172253582043407,0.0172253582043407,0.02377344416895],[0.904411764705882,0.950980392156863,0.875612745098039,0.879901960784314,0.875,0.866421568627451],[0.5125,0.65,0.629166666666667,0.441666666666667,0.575,0.85],[0.904411764705882,0.950980392156863,0.875612745098039,0.879901960784314,0.875,0.866421568627451],[0.942307692307692,0.939102564102564,0.849358974358974,0.935897435897436,0.852564102564103,0.641025641025641]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.AUC<\/th>\n      <th>AUC.1<\/th>\n      <th>AUC.2<\/th>\n      <th>AUC.4<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="cluster-4-4" class="section level5">
+<h5>Cluster 4</h5>
+<div id="htmlwidget-586f18b00e58e2126e8a" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-586f18b00e58e2126e8a">{"x":{"filter":"none","data":[["Dact1","Aldh1a2"],[1,2],[6.06720831574246e-08,9.48332709909326e-07],[0.0033655411248255,0.0263024818756901],[0.961538461538462,0.939102564102564],[0.934615384615385,0.892307692307692],[0.618778280542986,0.518099547511312],[0.961538461538462,0.939102564102564]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Top<\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.AUC<\/th>\n      <th>AUC.1<\/th>\n      <th>AUC.2<\/th>\n      <th>AUC.3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="heatmap-2" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="cluster-2-5" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-5" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-17-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-5" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-17-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="dimension-2" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+<div id="cluster-2-6" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-6" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-18-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-6" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-18-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="expression-2" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+<div id="cluster-2-7" class="section level5">
+<h5>Cluster 2</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-3-7" class="section level5">
+<h5>Cluster 3</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-19-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cluster-4-7" class="section level5">
+<h5>Cluster 4</h5>
+<p><img src="figure/08-marker-detection.Rmd/unnamed-chunk-19-3.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="specific-1" class="section level3">
+<h3>Specific</h3>
+<p>Find specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;wilcox&quot;, pval.type = &quot;all&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table-3" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+</div>
+<div id="heatmap-3" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+</div>
+<div id="dimension-3" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+<div id="expression-3" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="binomial-test" class="section level2">
+<h2>Binomial test</h2>
+<div id="non-specific-2" class="section level3">
+<h3>Non-specific</h3>
+<p>Find non-specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;binom&quot;, pval.type = &quot;any&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table-4" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+</div>
+<div id="heatmap-4" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+</div>
+<div id="dimension-4" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+<div id="expression-4" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+</div>
+<div id="specific-2" class="section level3">
+<h3>Specific</h3>
+<p>Find specific candidate marker genes between clusters:</p>
+<pre class="r"><code>res &lt;- findMarkers(sce, sce$cluster, test.type = &quot;binom&quot;, pval.type = &quot;all&quot;, direction = &quot;up&quot;)
+
+sig &lt;- lapply(res, subset, FDR &lt; 0.05)
+
+sig &lt;- Filter(nrow, sig)</code></pre>
+<div id="table-5" class="section level4 tabset">
+<h4>Table</h4>
+<p>Create a table of all significant marker genes for each cluster:</p>
+</div>
+<div id="heatmap-5" class="section level4 tabset">
+<h4>Heatmap</h4>
+<p>Plot heatmap of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+  
+  dat &lt;- sig[[n]]
+  
+  top &lt;- head(dat, n = 10)
+  
+  ids &lt;- rownames(top)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+  
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+</div>
+<div id="dimension-5" class="section level4 tabset">
+<h4>Dimension</h4>
+<p>Plot reduced dimension coloured by gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x))
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(patchwork::wrap_plots(plt))
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+<div id="expression-5" class="section level4 tabset">
+<h4>Expression</h4>
+<p>Plot distribution of gene expression values for the Top 10 marker genes:</p>
+<pre class="r"><code>for (n in names(sig)) {
+
+  dat &lt;- sig[[n]]
+
+  top &lt;- head(dat, n = 10)
+
+  ids &lt;- rownames(top)
+
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;)
+
+  cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
+
+  print(plt)
+
+  cat(&quot;\n\n&quot;)
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<p>Save experiment object to disk:</p>
+<pre class="r"><code>saveRDS(sce, file = &quot;data/08-marker-detection.rds&quot;)</code></pre>
+</div>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] scran_1.16.0                scater_1.16.2              
+ [3] ggplot2_3.3.2               SingleCellExperiment_1.10.1
+ [5] SummarizedExperiment_1.18.2 DelayedArray_0.14.1        
+ [7] matrixStats_0.56.0          Biobase_2.48.0             
+ [9] GenomicRanges_1.40.0        GenomeInfoDb_1.24.2        
+[11] IRanges_2.22.2              S4Vectors_0.26.1           
+[13] BiocGenerics_0.34.0         workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+ [1] viridis_0.5.1             edgeR_3.30.3             
+ [3] BiocSingular_1.4.0        jsonlite_1.7.0           
+ [5] viridisLite_0.3.0         DelayedMatrixStats_1.10.1
+ [7] statmod_1.4.34            dqrng_0.2.1              
+ [9] GenomeInfoDbData_1.2.3    vipor_0.4.5              
+[11] yaml_2.2.1                pillar_1.4.6             
+[13] backports_1.1.8           lattice_0.20-41          
+[15] glue_1.4.1                limma_3.44.3             
+[17] digest_0.6.25             RColorBrewer_1.1-2       
+[19] promises_1.1.1            XVector_0.28.0           
+[21] colorspace_1.4-1          cowplot_1.0.0            
+[23] htmltools_0.5.0           httpuv_1.5.4             
+[25] Matrix_1.2-18             pkgconfig_2.0.3          
+[27] pheatmap_1.0.12           zlibbioc_1.34.0          
+[29] purrr_0.3.4               patchwork_1.0.1          
+[31] scales_1.1.1              later_1.1.0.1            
+[33] BiocParallel_1.22.0       git2r_0.27.1             
+[35] tibble_3.0.3              farver_2.0.3             
+[37] generics_0.0.2            DT_0.15                  
+[39] ellipsis_0.3.1            withr_2.2.0              
+[41] magrittr_1.5              crayon_1.3.4             
+[43] evaluate_0.14             fs_1.5.0                 
+[45] beeswarm_0.2.3            tools_4.0.2              
+[47] lifecycle_0.2.0           stringr_1.4.0            
+[49] munsell_0.5.0             locfit_1.5-9.4           
+[51] irlba_2.3.3               compiler_4.0.2           
+[53] rsvd_1.0.3                rlang_0.4.7              
+[55] grid_4.0.2                RCurl_1.98-1.2           
+[57] BiocNeighbors_1.6.0       rstudioapi_0.11          
+[59] htmlwidgets_1.5.1         crosstalk_1.1.0.1        
+[61] igraph_1.2.5              labeling_0.3             
+[63] bitops_1.0-6              rmarkdown_2.3            
+[65] gtable_0.3.0              codetools_0.2-16         
+[67] R6_2.4.1                  gridExtra_2.3            
+[69] knitr_1.29                dplyr_1.0.2              
+[71] rprojroot_1.3-2           stringi_1.4.6            
+[73] ggbeeswarm_0.6.0          Rcpp_1.0.5               
+[75] vctrs_0.3.2               tidyselect_1.1.0         
+[77] xfun_0.16                </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

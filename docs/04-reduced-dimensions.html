@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+
+<title>Dimensionality reduction</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP-EHF Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Quality control</li>
+    <li>
+      <a href="01-quality-control.html"></a>
+    </li>
+    <li class="dropdown-header">Normalization</li>
+    <li>
+      <a href="02-normalization.html"></a>
+    </li>
+    <li class="dropdown-header">Feature selection</li>
+    <li>
+      <a href="03-feature-selection.html"></a>
+    </li>
+    <li class="dropdown-header">Reduced dimensions</li>
+    <li>
+      <a href="04-reduced-dimensions.html"></a>
+    </li>
+    <li class="dropdown-header">Clustering</li>
+    <li>
+      <a href="05-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Doublet detection</li>
+    <li>
+      <a href="06-doublet-detection"></a>
+    </li>
+    <li class="dropdown-header">Cell cycle</li>
+    <li>
+      <a href="07-cell-cycle.html"></a>
+    </li>
+    <li class="dropdown-header">Marker detection</li>
+    <li>
+      <a href="08-marker-detection.html"></a>
+    </li>
+    <li class="dropdown-header">Cell annotation</li>
+    <li>
+      <a href="09-cell-annotation.html"></a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">License</li>
+<li>
+  <a href="license.html"></a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Dimensionality reduction</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">22 September, 2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-09-22
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong79b6e35"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 79b6e35 </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrong79b6e35" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version 79b6e35. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  LICENSE
+    Untracked:  analysis/01-quality-control.Rmd
+    Untracked:  analysis/02-normalization.Rmd
+    Untracked:  analysis/03-feature-selection.Rmd
+    Untracked:  analysis/04-reduced-dimensions.Rmd
+    Untracked:  analysis/05-atlas-mapping.Rmd
+    Untracked:  analysis/05-clustering.Rmd
+    Untracked:  analysis/06-doublet-detection.Rmd
+    Untracked:  analysis/07-cell-cycle.Rmd
+    Untracked:  analysis/08-marker-detection.Rmd
+    Untracked:  analysis/09-cell-annotation.Rmd
+    Untracked:  analysis/10-data-integration.Rmd
+    Untracked:  analysis/11-scenic-analysis.Rmd
+    Untracked:  analysis/cache/
+    Untracked:  backup/
+    Untracked:  data/01-quality-control.rds
+    Untracked:  data/02-normalization.rds
+    Untracked:  data/03-feature-selection.rds
+    Untracked:  data/04-reduced-dimensions.rds
+    Untracked:  data/05-clustering.rds
+    Untracked:  data/06-doublet-detection.rds
+    Untracked:  data/07-cell-cycle.rds
+    Untracked:  data/08-marker-detection.rds
+    Untracked:  data/09-cell-annotation.rds
+    Untracked:  data/10-data-integration.rds
+    Untracked:  data/cell-lineage.csv
+    Untracked:  data/cell-markers.csv
+    Untracked:  data/pyscenic-activity.csv
+    Untracked:  data/pyscenic-modules.csv
+    Untracked:  data/pyscenic-regulons.csv
+    Untracked:  data/salmon-quant.rds
+
+Unstaged changes:
+    Modified:   _workflowr.yml
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
+<p>In this document we aim to reduce the number of separate dimensions in the data by performing dimenstionality reduction.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/04-reduced-dimensions.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+<p>Load required packages:</p>
+<pre class="r"><code>library(BiocSingular)
+library(patchwork)
+library(pheatmap)
+library(scater)
+library(scran)</code></pre>
+<p>Read experiment data:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;data/03-feature-selection.rds&quot;)</code></pre>
+</div>
+<div id="pca" class="section level2">
+<h2>PCA</h2>
+<div id="calculate-pca" class="section level3">
+<h3>Calculate PCA</h3>
+<p>Perform a principal components analysis (PCA) on the expression data:</p>
+<pre class="r"><code>set.seed(350941161)
+
+sce &lt;- runPCA(sce, subset_row = rowData(sce)$selected, BSPARAM = ExactParam())</code></pre>
+<p>Cluster cells to help examine seperation of clusters by principal components:</p>
+<pre class="r"><code>snn &lt;- buildSNNGraph(sce, use.dimred = &quot;PCA&quot;)
+
+com &lt;- igraph::cluster_walktrap(snn)
+
+sce$cluster &lt;- factor(com$membership)</code></pre>
+</div>
+<div id="find-elbow" class="section level3">
+<h3>Find elbow</h3>
+<p>Find the elbow point in the percentage of variance explained by successive PCs:</p>
+<pre class="r"><code>dim &lt;- reducedDim(sce, &quot;PCA&quot;)
+
+var &lt;- attr(dim, &quot;percentVar&quot;)
+
+num &lt;- RclusTool::ElbowFinder(seq_along(var), var)</code></pre>
+<p>Plot the percentage of variance explained by successive PCs:</p>
+<pre class="r"><code>dat &lt;- data.frame(index = seq_along(var), total = var)
+
+ggplot(dat, aes(index, total)) +
+  geom_point() +
+  geom_vline(xintercept = num, colour = &quot;red&quot;) +
+  labs(x = &quot;PC&quot;, y = &quot;Variance (%)&quot;) + 
+  scale_x_continuous(n.breaks = 10, limits = c(0, NA)) +
+  scale_y_continuous(n.breaks = 10, limits = c(0, NA)) +
+  theme_minimal()</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="technical" class="section level3">
+<h3>Technical</h3>
+<p>Retain all PCs until the percentage of total variation explained reaches a given threshold based on the technical noise:</p>
+<pre class="r"><code>set.seed(204373918)
+
+dec &lt;- metadata(sce)$modelGeneVarWithSpikes
+
+hvg &lt;- rowData(sce)$selected
+
+dim &lt;- reducedDim(denoisePCA(sce, technical = dec, subset.row = hvg, BSPARAM = ExactParam()))
+
+var &lt;- attr(dim, &quot;percentVar&quot;)
+
+num &lt;- ncol(dim)</code></pre>
+<p>Plot the cumulative percentage of variance explained by successive PCs:</p>
+<pre class="r"><code>dat &lt;- data.frame(index = seq_along(var), total = cumsum(var))
+
+ggplot(dat, aes(index, total)) +
+  geom_point() +
+  geom_vline(xintercept = num, colour = &quot;red&quot;) +
+  labs(x = &quot;PC&quot;, y = &quot;Cumulative variance (%)&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="structure" class="section level3">
+<h3>Structure</h3>
+<p>Find the number of subpopulations in the data using clustering:</p>
+<pre class="r"><code>dim &lt;- reducedDim(sce, &quot;PCA&quot;)
+
+fit &lt;- getClusteredPCs(dim, min.rank = 1, max.rank = 50)
+
+num &lt;- metadata(fit)$chosen</code></pre>
+<p>Plot the percentage of variance explained by successive PCs:</p>
+<pre class="r"><code>dat &lt;- as.data.frame(fit)
+
+ggplot(dat, aes(n.pcs, n.clusters)) +
+  geom_point() + 
+  geom_abline(slope = 1, intercept = 1, colour = &quot;red&quot;) + 
+  geom_vline(xintercept = num, colour = &quot;grey&quot;, linetype = &quot;dashed&quot;) +
+  labs(x = &quot;PC&quot;, y = &quot;Number of clusters&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="selection" class="section level3">
+<h3>Selection</h3>
+<p>Choose number of PCs to retain from the above analyses:</p>
+<pre class="r"><code>num &lt;- 5
+
+len &lt;- seq_len(num)
+
+dim &lt;- reducedDim(sce, &quot;PCA&quot;)
+
+reducedDim(sce, &quot;PCA&quot;) &lt;- dim[, len]</code></pre>
+<p>Plot scatterplot matrix of retained PCs:</p>
+<pre class="r"><code>plotPCA(sce, colour_by = &quot;cluster&quot;, ncomponents = num) + theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Cluster cells to help examine effect of TSNE and UMAP hyper-parameters:</p>
+<pre class="r"><code>snn &lt;- buildSNNGraph(sce, use.dimred = &quot;PCA&quot;)
+
+com &lt;- igraph::cluster_walktrap(snn)
+
+sce$cluster &lt;- factor(com$membership)</code></pre>
+</div>
+</div>
+<div id="tsne" class="section level2">
+<h2>TSNE</h2>
+<p>Perform t-stochastic neighbour embedding (t-SNE) on the PCA data.</p>
+<div id="parameter-exploration" class="section level3">
+<h3>Parameter exploration</h3>
+<p>Inspect TSNE plots generated by different perplexity and iteration parameters:</p>
+<pre class="r"><code>lim &lt;- (ncol(sce) - 1) / 3
+
+max &lt;- ifelse(lim &lt; 50, lim, 50)
+
+per &lt;- seq(5, max, length.out = 6)
+
+itr &lt;- seq(500, 1500, length.out = 6)
+
+arg &lt;- expand.grid(
+  perplexity = floor(per),
+  max_iter = floor(itr)
+)
+
+plt &lt;- apply(arg, 1, function(x) {
+
+  set.seed(658412747)
+
+  run &lt;- runTSNE(sce, dimred = &quot;PCA&quot;, perplexity = x[1], max_iter = x[2])
+
+  txt &lt;- paste(x[1], x[2], sep = &quot;/&quot;)
+
+  plotTSNE(run, colour_by = &quot;cluster&quot;) + ggtitle(txt) + 
+    theme(axis.title = element_blank(), legend.position = &quot;none&quot;)
+
+})
+
+wrap_plots(plt, nrow = 6, ncol = 6, byrow = FALSE)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-tsne" class="section level3">
+<h3>Calculate TSNE</h3>
+<p>Select optimal perplexity value and number of iterations:</p>
+<pre class="r"><code>set.seed(658412747)
+
+sce &lt;- runTSNE(sce, dimred = &quot;PCA&quot;, perplexity = 22, max_iter = 700)</code></pre>
+</div>
+</div>
+<div id="umap" class="section level2">
+<h2>UMAP</h2>
+<p>Perform uniform manifold approximation and projection (UMAP) on the PCA data.</p>
+<div id="parameter-exploration-1" class="section level3">
+<h3>Parameter exploration</h3>
+<p>Inspect UMAP plots generated by different neighbors and distance parameters:</p>
+<pre class="r"><code>max &lt;- ifelse(ncol(sce) &lt; 100, ncol(sce), 100)
+
+num &lt;- seq(2, max, length.out = 6)
+
+dst &lt;- seq(0, 01, length.out = 6)
+
+arg &lt;- expand.grid(
+  n_neighbors = floor(num),
+  min_dist = signif(dst, digits = 2)
+)
+
+plt &lt;- apply(arg, 1, function(x) {
+
+  set.seed(161831143)
+
+  run &lt;- runUMAP(sce, dimred = &quot;PCA&quot;, n_neighbors = x[1], min_dist = x[2])
+
+  txt &lt;- paste(x[1], x[2], sep = &quot;/&quot;)
+
+  plotUMAP(run, colour_by = &quot;cluster&quot;) + ggtitle(txt) + 
+    theme(axis.title = element_blank(), legend.position = &quot;none&quot;)
+
+})
+
+wrap_plots(plt, nrow = 6, ncol = 6, byrow = FALSE)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-umap" class="section level3">
+<h3>Calculate UMAP</h3>
+<p>Select optimal number of nearest neighbors:</p>
+<pre class="r"><code>set.seed(161831143)
+
+sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;, n_neighbors = 17, min_dist = 0.2)</code></pre>
+</div>
+</div>
+<div id="variables" class="section level2 tabset">
+<h2>Variables</h2>
+<div id="pca-1" class="section level3">
+<h3>PCA</h3>
+<pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_ERCC_percent&quot;)
+
+plt &lt;- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tsne-1" class="section level3">
+<h3>TSNE</h3>
+<pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_ERCC_percent&quot;)
+
+plt &lt;- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="umap-1" class="section level3">
+<h3>UMAP</h3>
+<pre class="r"><code>var &lt;- c(&quot;sum&quot;, &quot;detected&quot;, &quot;subsets_MT_percent&quot;, &quot;altexps_ERCC_percent&quot;)
+
+plt &lt;- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)</code></pre>
+<p><img src="figure/04-reduced-dimensions.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<p>Save experiment object to disk:</p>
+<pre class="r"><code>saveRDS(sce, file = &quot;data/04-reduced-dimensions.rds&quot;)</code></pre>
+</div>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] scran_1.16.0                scater_1.16.2              
+ [3] ggplot2_3.3.2               SingleCellExperiment_1.10.1
+ [5] SummarizedExperiment_1.18.2 DelayedArray_0.14.1        
+ [7] matrixStats_0.56.0          Biobase_2.48.0             
+ [9] GenomicRanges_1.40.0        GenomeInfoDb_1.24.2        
+[11] IRanges_2.22.2              S4Vectors_0.26.1           
+[13] BiocGenerics_0.34.0         pheatmap_1.0.12            
+[15] patchwork_1.0.1             BiocSingular_1.4.0         
+[17] workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+  [1] Rtsne_0.15                ggbeeswarm_0.6.0         
+  [3] colorspace_1.4-1          ellipsis_0.3.1           
+  [5] class_7.3-17              mclust_5.4.6             
+  [7] rprojroot_1.3-2           XVector_0.28.0           
+  [9] BiocNeighbors_1.6.0       fs_1.5.0                 
+ [11] rstudioapi_0.11           farver_2.0.3             
+ [13] ggrepel_0.8.2             RSpectra_0.16-0          
+ [15] codetools_0.2-16          leaps_3.1                
+ [17] knitr_1.29                mmand_1.6.1              
+ [19] mda_0.5-2                 cluster_2.1.0            
+ [21] png_0.1-7                 uwot_0.1.8               
+ [23] compiler_4.0.2            dqrng_0.2.1              
+ [25] backports_1.1.8           Matrix_1.2-18            
+ [27] limma_3.44.3              later_1.1.0.1            
+ [29] tcltk2_1.2-11             htmltools_0.5.0          
+ [31] tools_4.0.2               rsvd_1.0.3               
+ [33] igraph_1.2.5              gtable_0.3.0             
+ [35] glue_1.4.1                GenomeInfoDbData_1.2.3   
+ [37] dplyr_1.0.2               FactoMineR_2.3           
+ [39] Rcpp_1.0.5                vctrs_0.3.2              
+ [41] DelayedMatrixStats_1.10.1 xfun_0.16                
+ [43] stringr_1.4.0             tkrplot_0.0-24           
+ [45] lifecycle_0.2.0           irlba_2.3.3              
+ [47] statmod_1.4.34            factoextra_1.0.7         
+ [49] edgeR_3.30.3              zlibbioc_1.34.0          
+ [51] MASS_7.3-51.6             scales_1.1.1             
+ [53] conclust_1.1              promises_1.1.1           
+ [55] RColorBrewer_1.1-2        yaml_2.2.1               
+ [57] gridExtra_2.3             reshape_0.8.8            
+ [59] stringi_1.4.6             corrplot_0.84            
+ [61] RclusTool_0.91.3          randomForest_4.6-14      
+ [63] e1071_1.7-3               BiocParallel_1.22.0      
+ [65] rlang_0.4.7               pkgconfig_2.0.3          
+ [67] bitops_1.0-6              evaluate_0.14            
+ [69] lattice_0.20-41           purrr_0.3.4              
+ [71] labeling_0.3              cowplot_1.0.0            
+ [73] tidyselect_1.1.0          plyr_1.8.6               
+ [75] magrittr_1.5              R6_2.4.1                 
+ [77] generics_0.0.2            pillar_1.4.6             
+ [79] withr_2.2.0               scatterplot3d_0.3-41     
+ [81] RCurl_1.98-1.2            sp_1.4-2                 
+ [83] nnet_7.3-14               tibble_3.0.3             
+ [85] crayon_1.3.4              rmarkdown_2.3            
+ [87] viridis_0.5.1             jpeg_0.1-8.1             
+ [89] locfit_1.5-9.4            grid_4.0.2               
+ [91] FNN_1.1.3                 git2r_0.27.1             
+ [93] digest_0.6.25             flashClust_1.01-2        
+ [95] httpuv_1.5.4              munsell_0.5.0            
+ [97] beeswarm_0.2.3            viridisLite_0.3.0        
+ [99] vipor_0.4.5               tcltk_4.0.2              </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
