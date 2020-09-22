@@ -1,0 +1,442 @@
+---
+title: "Quality Control"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this document we are going to perform quality control on the cells.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/01-quality-control.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load required packages:
+
+```{r}
+library(BiocSingular)
+library(SingleCellExperiment)
+library(eulerr)
+library(patchwork)
+library(robustbase)
+library(scater)
+library(scran)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("data/salmon-quant.rds")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Make sample names unique:
+
+```{r}
+colnames(sce) <- colData(sce)$sample
+```
+
+## Exploration
+
+We begin by exploring the dataset which contains `r ncol(sce)` cells and `r nrow(sce)` genes.
+
+## Metrics
+
+Identify mitochondrial and reporter genes:
+
+```{r}
+mit <- which(seqnames(sce) == "MT")
+```
+
+Compute QC metrics for each cell:
+
+```{r}
+sce <- addPerCellQC(sce, subsets = list(MT = mit))
+
+dat <- as.data.frame(colData(sce))
+```
+
+Inspect the distributions of QC metrics:
+
+```{r, fig.height = 9, fig.width = 10}
+wrap_plots(
+  plotColData(sce, "sum") + scale_y_log10() + ggtitle("Total count"),
+  plotColData(sce, "detected") + scale_y_log10() + ggtitle("Detected features"),
+  plotColData(sce, "subsets_MT_percent") + ggtitle("MT percent"),
+  plotColData(sce, "altexps_ERCC_percent") + ggtitle("ERCC percent")
+)
+```
+
+### Dimensionality reduction {.tabset}
+
+Calculate dimenionality reduction data:
+
+```{r}
+set.seed(804329113)
+sce <- computeLibraryFactors(sce)
+sce <- logNormCounts(sce)
+sce <- runPCA(sce, BSPARAM = ExactParam())
+sce <- runTSNE(sce, dimred = "PCA")
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect dimensionality reduction plots:
+
+#### PCA
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotPCA(sce, colour_by = "sum") + ggtitle("Total count"),
+  plotPCA(sce, colour_by = "detected") + ggtitle("Detected features"),
+  plotPCA(sce, colour_by = "subsets_MT_percent") + ggtitle("MT percent"),
+  plotPCA(sce, colour_by = "altexps_ERCC_percent") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### TSNE
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotTSNE(sce, colour_by = "sum") + ggtitle("Total count"),
+  plotTSNE(sce, colour_by = "detected") + ggtitle("Detected features"),
+  plotTSNE(sce, colour_by = "subsets_MT_percent") + ggtitle("MT percent"),
+  plotTSNE(sce, colour_by = "altexps_ERCC_percent") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### UMAP
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotUMAP(sce, colour_by = "sum") + ggtitle("Total count"),
+  plotUMAP(sce, colour_by = "detected") + ggtitle("Detected features"),
+  plotUMAP(sce, colour_by = "subsets_MT_percent") + ggtitle("MT percent"),
+  plotUMAP(sce, colour_by = "altexps_ERCC_percent") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+## Cell Filtering
+
+We will now perform filtering to remove low-quality cells:
+
+### Manual threshold {.tabset}
+
+The first approach to identifying low-quality cells is to apply manual thresholds on the QC metrics:
+
+```{r}
+dat <- DataFrame(
+  low_lib_size = sce$sum < 1e+05,
+  low_n_features = sce$detected < 1000,
+  high_subsets_MT_percent = sce$subsets_MT_percent > 20,
+  high_altexps_ERCC_percent = sce$altexps_ERCC_percent > 25
+)
+
+sce$manual_discard <- dat$low_lib_size | dat$low_n_features | dat$high_subsets_MT_percent | dat$high_altexps_ERCC_percent
+```
+
+Inspect distribution of QC metrics:
+
+```{r}
+wrap_plots(
+  plotColData(sce, "sum", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Total count"),
+  plotColData(sce, "detected", colour_by = "manual_discard") + scale_y_log10() + ggtitle("Detected features"),
+  plotColData(sce, "subsets_MT_percent", colour_by = "manual_discard") + ggtitle("MT percent"),
+  plotColData(sce, "altexps_ERCC_percent", colour_by = "manual_discard") + ggtitle("ERCC percent")
+)
+```
+
+Inspect dimensionality reduction plots:
+
+#### PCA
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotPCA(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
+  plotPCA(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
+  plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
+  plotPCA(sce, colour_by = "altexps_ERCC_percent", shape_by = "manual_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### TSNE
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotTSNE(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
+  plotTSNE(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
+  plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
+  plotTSNE(sce, colour_by = "altexps_ERCC_percent", shape_by = "manual_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### UMAP
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotUMAP(sce, colour_by = "sum", shape_by = "manual_discard") + ggtitle("Total count"),
+  plotUMAP(sce, colour_by = "detected", shape_by = "manual_discard") + ggtitle("Detected features"),
+  plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "manual_discard") + ggtitle("MT percent"),
+  plotUMAP(sce, colour_by = "altexps_ERCC_percent", shape_by = "manual_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+### Adaptive threshold {.tabset}
+
+The next approach is to identify cells that are outliers based on the median absolute deviation for the QC metrics:
+
+```{r}
+dat <- quickPerCellQC(sce, percent_subsets = c("subsets_MT_percent", "altexps_ERCC_percent"))
+
+sce$adaptive_discard <- dat$discard
+```
+
+Inspect distribution of QC metrics:
+
+```{r}
+wrap_plots(
+  plotColData(sce, "sum", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Total count"),
+  plotColData(sce, "detected", colour_by = "adaptive_discard") + scale_y_log10() + ggtitle("Detected features"),
+  plotColData(sce, "subsets_MT_percent", colour_by = "adaptive_discard") + ggtitle("MT percent"),
+  plotColData(sce, "altexps_ERCC_percent", colour_by = "adaptive_discard") + ggtitle("ERCC percent")
+)
+```
+
+Inspect dimensionality reduction plots:
+
+#### PCA
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotPCA(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
+  plotPCA(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
+  plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
+  plotPCA(sce, colour_by = "altexps_ERCC_percent", shape_by = "adaptive_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### TSNE
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotTSNE(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
+  plotTSNE(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
+  plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
+  plotTSNE(sce, colour_by = "altexps_ERCC_percent", shape_by = "adaptive_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### UMAP
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotUMAP(sce, colour_by = "sum", shape_by = "adaptive_discard") + ggtitle("Total count"),
+  plotUMAP(sce, colour_by = "detected", shape_by = "adaptive_discard") + ggtitle("Detected features"),
+  plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "adaptive_discard") + ggtitle("MT percent"),
+  plotUMAP(sce, colour_by = "altexps_ERCC_percent", shape_by = "adaptive_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+### Outlier threshold {.tabset}
+
+The last approach is to identify outliers in high-dimensional space based on the QC metrics for each cell:
+
+```{r}
+mat <- cbind(log10(sce$sum), log10(sce$detected), sce$subsets_MT_percent, sce$altexps_ERCC_percent)
+adj <- adjOutlyingness(mat, only.outlyingness = TRUE)
+out <- isOutlier(adj, type = "higher")
+sce$outlier_discard <- out
+```
+
+Inspect distribution of QC metrics:
+
+```{r}
+wrap_plots(
+  plotColData(sce, "sum", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Total count"),
+  plotColData(sce, "detected", colour_by = "outlier_discard") + scale_y_log10() + ggtitle("Detected features"),
+  plotColData(sce, "subsets_MT_percent", colour_by = "outlier_discard") + ggtitle("MT percent"),
+  plotColData(sce, "altexps_ERCC_percent", colour_by = "outlier_discard") + ggtitle("ERCC percent")
+)
+```
+
+Inspect dimensionality reduction plots:
+
+#### PCA
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotPCA(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
+  plotPCA(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
+  plotPCA(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
+  plotPCA(sce, colour_by = "altexps_ERCC_percent", shape_by = "outlier_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### TSNE
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotTSNE(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
+  plotTSNE(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
+  plotTSNE(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
+  plotTSNE(sce, colour_by = "altexps_ERCC_percent", shape_by = "outlier_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+#### UMAP
+
+```{r, fig.height = 9, fig.width = 10}
+patchwork::wrap_plots(
+  plotUMAP(sce, colour_by = "sum", shape_by = "outlier_discard") + ggtitle("Total count"),
+  plotUMAP(sce, colour_by = "detected", shape_by = "outlier_discard") + ggtitle("Detected features"),
+  plotUMAP(sce, colour_by = "subsets_MT_percent", shape_by = "outlier_discard") + ggtitle("MT percent"),
+  plotUMAP(sce, colour_by = "altexps_ERCC_percent", shape_by = "outlier_discard") + ggtitle("ERCC percent"),
+  ncol = 2
+)
+```
+
+### Comparison
+
+Compare the number of cells selected between methods using an Euler diagram:
+
+```{r}
+mat <- cbind(Keep = TRUE, Manual = sce$manual_discard, Adaptive = sce$adaptive_discard, Outlier = sce$outlier_discard)
+fit <- euler(mat, shape = "circle")
+col <- RColorBrewer::brewer.pal(n = 4, name = "Pastel2")
+plot(fit, fill = col, quantities = TRUE)
+```
+
+### Selection
+
+We are going to use the adaptive filtering to remove low quality cells:
+
+```{r}
+sce <- sce[, !sce$adaptive_discard]
+```
+
+## Gene filtering
+
+Compute QC metrics for each gene:
+
+```{r}
+sce <- addPerFeatureQC(sce)
+
+dat <- as.data.frame(rowData(sce))
+```
+
+### Expression rate
+
+Plot the distribution of log-means across all genes:
+
+```{r}
+ggplot(dat, aes(mean)) + 
+  geom_histogram(bins = 100, colour = "black", fill = "grey") + 
+  scale_x_log10(n.breaks = 10) +
+  theme_bw()
+```
+
+Define lowly expressed genes using a mean threshold:
+
+```{r}
+dat$low_mean <- dat$mean < 1
+```
+
+Tabulate the number of lowly expressed genes:
+
+```{r}
+knitr::kable(table(dat$low_mean), col.names = c("Lowly expressed", "Count"))
+```
+
+### Detection rate
+
+Plot the percentage of expressing cells against the log-mean expression for each gene:
+
+```{r}
+ggplot(dat, aes(mean, detected)) +
+  geom_point(alpha = 0.1, colour = "grey") +
+  geom_smooth(colour = "black", se = FALSE) +
+  scale_x_log10(n.breaks = 10) +
+  theme_bw()
+```
+
+Define lowly detected genes as having a minimum of 1 read in at least 1 percent of cells:
+
+```{r}
+dat$low_detected <- !rowSums(counts(sce) >= 1) >= (ncol(sce) * 0.01)
+```
+
+Tabulate the number of lowly detected genes:
+
+```{r}
+knitr::kable(table(dat$low_detected), col.names = c("Lowly detected", "Count"))
+```
+
+### Comparison
+
+Compare the number of genes selected between methods using an Euler diagram:
+
+```{r}
+mat <- cbind(Keep = TRUE, Mean = dat$low_mean, Freq = dat$low_detected)
+fit <- euler(mat, shape = "circle")
+col <- RColorBrewer::brewer.pal(n = 3, name = "Pastel2")
+plot(fit, fill = col, quantities = TRUE)
+```
+
+### Selection
+
+Bookmark low abundance and frequency genes (no filtering is performed because of data integration):
+
+```{r}
+rowData(sce) <- cbind(rowData(sce), dat[, c("low_mean", "low_detected")])
+```
+
+## Summary
+
+After quality control we have a dataset with `r ncol(sce)` cells and `r nrow(sce)` genes.
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, "data/01-quality-control.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

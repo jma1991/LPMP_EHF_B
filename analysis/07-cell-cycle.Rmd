@@ -1,0 +1,138 @@
+---
+title: "Cell cycle assignment"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/07-cell-cycle.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Attach required packages:
+
+```{r}
+library(SingleR)
+library(scran)
+library(scRNAseq)
+library(scater)
+library(org.Mm.eg.db)
+```
+
+Import experiment data:
+
+```{r}
+sce <- readRDS("data/06-doublet-detection.rds")
+```
+
+## Expression
+
+Inspect the relative expression of cyclins across the clusters:
+
+```{r}
+idx <- grep("^Ccn[abde][0-9]$", rowData(sce)$gene_name)
+
+ids <- rownames(sce)[idx]
+
+plotHeatmap(sce, features = sort(ids), order_columns_by = "cluster", cluster_rows = FALSE)
+```
+
+Inspect the relative expession of cell-cycle related genes across the clusters:
+
+```{r}
+org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
+
+idx <- which(rowData(sce)$gene_id %in% org$ENSEMBL)
+
+ids <- rownames(sce)[idx]
+
+plotHeatmap(sce, features = ids, order_columns_by = "cluster", center = TRUE, symmetric = TRUE, show_rownames = FALSE)
+```
+
+## Reference {.tabset}
+
+Obtain and normalize the Buettner ESC data:
+
+```{r}
+ref <- BuettnerESCData()
+
+ref <- logNormCounts(ref)
+```
+
+Identify top markers between cell cycle phases:
+
+```{r}
+org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
+
+ids <- Reduce(intersect, list(rownames(ref), rowData(sce)$gene_id, org$ENSEMBL))
+
+res <- pairwiseWilcox(logcounts(ref), ref$phase, direction = "up", subset.row = ids)
+
+top <- getTopMarkers(res$statistics, res$pairs)
+```
+
+Use reference data to assign phase to test data:
+
+```{r}
+ids <- rownames(sce) # save original feature names
+
+rownames(sce) <- rowData(sce)$gene_id # make feature names compatible
+
+fit <- SingleR(test = sce, ref = ref, label = ref$phase, genes = top)
+
+rownames(sce) <- ids # return original feature names
+
+sce$phase <- factor(fit$labels, levels = c("G1", "G2M", "S"))
+```
+
+Inspect the distribution of cell-cycle phases on reduced dimensions:
+
+### PCA
+
+```{r}
+plotPCA(sce, colour_by = "phase", text_by = "cluster")
+```
+
+### TSNE
+
+```{r}
+plotTSNE(sce, colour_by = "phase", text_by = "cluster")
+```
+
+### UMAP
+
+```{r}
+plotUMAP(sce, colour_by = "phase", text_by = "cluster")
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "data/07-cell-cycle.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

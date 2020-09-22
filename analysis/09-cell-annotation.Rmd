@@ -1,0 +1,244 @@
+---
+title: "Cell type annotation"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this analysis we are going to annotate previously defined clusters with a cell type label. This process can be done manually using a domain expert's knowledge or automatically based on known markers and reference data.
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/09-cell-annotation.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Attach required packages:
+
+```{r}
+library(AUCell)
+library(SingleR)
+library(GSEABase)
+library(scran)
+library(scater)
+library(patchwork)
+library(pheatmap)
+```
+
+Import experiment data:
+
+```{r}
+sce <- readRDS("data/08-marker-detection.rds")
+```
+
+## Annotation
+
+### Manually curated
+
+Manually annotate cells based on prior investigation:
+
+```{r}
+ann <- read.csv("data/cell-lineage.csv", stringsAsFactors = FALSE)
+
+sce$lineage <- ann$lineage[match(sce$position, ann$cell)]
+```
+
+### Known markers
+
+Read marker sets from disk and check they are present in the data:
+
+```{r}
+all <- read.csv("data/cell-markers.csv", stringsAsFactors = FALSE)
+
+all <- all[all$gene_id %in% rowData(sce)$gene_id, ]
+```
+
+Format marker sets for entry into the AUCell package:
+
+```{r}
+all <- split(all, all$gene_set)
+
+all <- lapply(all, function(x) GeneSet(x$gene_id, setName = unique(x$gene_set)))
+
+all <- GeneSetCollection(all)
+```
+
+Use the AUCell package to identify markers sets that are highly expressed in each cell:
+
+```{r}
+mat <- counts(sce)
+
+rownames(mat) <- rowData(sce)$gene_id
+
+fit <- AUCell_buildRankings(mat, plotStats = FALSE, verbose = FALSE)
+
+auc <- AUCell_calcAUC(all, fit)
+```
+
+Get assignments from AUCell scores:
+
+```{r}
+res <- t(assay(auc))
+
+lab <- colnames(res)[max.col(res)]
+```
+
+Store AUCell assignments in experiment data:
+
+```{r}
+sce$celltype_aucell <- lab
+```
+
+Create results table for use with SingleR functions:
+
+```{r}
+dat <- DataFrame(scores = I(res), labels = lab, pruned.labels = lab, row.names = rownames(res))
+```
+
+Create a heatmap of the AUCell assignment scores:
+
+```{r}
+plotScoreHeatmap(dat, clusters = sce$cluster,  fontsize = 8)
+```
+
+Plot score distributions of labels:
+
+```{r fig.height = 10}
+plotScoreDistribution(dat, show = "delta.med", ncol = 3, show.nmads = 3)
+```
+
+### Gastrulation data
+
+Load the gastrulation data package:
+
+```{r cache = FALSE}
+library(MouseGastrulationData)
+```
+
+Process EHF samples from gastrulation data:
+
+```{r cache = FALSE}
+sel <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
+
+ref <- EmbryoAtlasData(type = "processed", samples = sel$sample)
+
+ref <- logNormCounts(ref)
+```
+
+Remove cells with NA values for the given celltype label:
+
+```{r cache = FALSE}
+sel <- !is.na(ref$celltype)
+
+ref <- ref[, sel]
+```
+
+Remove cells marked as stripped nuclei:
+
+```{r cache = FALSE}
+sel <- !is.na(ref$stripped)
+
+ref <- ref[, sel]
+```
+
+Remove cells marked as doublets:
+
+```{r cache = FALSE}
+sel <- !is.na(ref$doublet)
+
+ref <- ref[, sel]
+```
+
+Identify marker genes for each cell type whilst blocking on sample:
+
+```{r cache = FALSE}
+res <- pairwiseWilcox(logcounts(ref), groups = ref$celltype, block = ref$sample)
+
+sig <- getTopMarkers(res$statistics, res$pairs)
+```
+
+Aggregate references within each celltype and sample combination:
+
+```{r cache = FALSE}
+lab <- paste(ref$celltype, ref$sample, sep = "-")
+
+ref <- aggregateReference(ref, labels = lab)
+```
+
+Remove sample label from aggregated reference names:
+
+```{r cache = FALSE}
+lab <- sapply(strsplit(colnames(ref), "-"), '[', 1)
+```
+
+Return the best annotation for each cell in the test dataset:
+
+```{r cache = FALSE}
+ids <- rownames(sce) # save original feature names
+
+rownames(sce) <- rowData(sce)$gene_id # make feature names compatible
+
+fit <- SingleR(sce, ref, labels = lab, genes = sig)
+
+rownames(sce) <- ids # return original feature names
+```
+
+Store SingleR assignments in experiment data:
+
+```{r}
+sce$celltype_singler <- fit$labels
+```
+
+Create a heatmap of the average SingleR assignment scores:
+
+```{r}
+plotScoreHeatmap(fit, clusters = sce$cluster, fontsize = 8)
+```
+
+Plot score distributions of labels:
+
+```{r fig.height = 20}
+plotScoreDistribution(fit, show = "delta.med", ncol = 3, show.nmads = 3)
+```
+
+## Selection
+
+Choose cell type annotation method for downstream analysis:
+
+```{r}
+sce$celltype <- sce$celltype_singler
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "data/09-cell-annotation.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

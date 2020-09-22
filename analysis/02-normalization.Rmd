@@ -1,0 +1,379 @@
+---
+title: "Normalization"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this document we are going to compute normalized expression values.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/02-normalization.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load required packages:
+
+```{r}
+library(BiocSingular)
+library(SingleCellExperiment)
+library(patchwork)
+library(robustbase)
+library(scater)
+library(scran)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("data/01-quality-control.rds")
+```
+
+Filter lowly detected and expressed genes:
+
+```{r}
+nan <- rowData(sce)$low_mean | rowData(sce)$low_detected
+```
+
+## Methods
+
+Evaluate different normalization methods
+
+### Raw {.tabset}
+
+Compute expression values from raw counts without any normalization:
+
+```{r}
+set.seed(131026757)
+
+sizeFactors(sce) <- 1
+
+sce <- logNormCounts(sce)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect relative log expression plots coloured by column data:
+
+```{r, fig.height = 5, fig.width = 10}
+plotRLE(sce[!nan, ])
+```
+
+Inspect dimensionality reduction plots coloured by QC metrics:
+
+#### PCA
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+### Library {.tabset}
+
+Compute expression values from raw counts by scaling with library size factors:
+
+```{r}
+set.seed(131026757)
+
+sizeFactors(sce) <- librarySizeFactors(sce)
+
+sce <- logNormCounts(sce)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect relative log expression plots coloured by column data:
+
+```{r fig.height = 5, fig.width = 10}
+plotRLE(sce[!nan, ])
+```
+
+Inspect dimensionality reduction plots coloured by QC metrics:
+
+#### PCA
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+### Deconvolution {.tabset}
+
+Compute expression values from raw counts by scaling with "deconvolved" size factors:
+
+```{r}
+set.seed(131026757)
+
+num <- ifelse(ncol(sce) < 100, ncol(sce), 100)
+
+mem <- quickCluster(sce, min.size = num, BSPARAM = ExactParam())
+
+sizeFactors(sce) <- calculateSumFactors(sce, cluster = mem)
+
+sce <- logNormCounts(sce)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect relative log expression plots coloured by column data:
+
+```{r fig.height = 5, fig.width = 10}
+plotRLE(sce[!nan, ])
+```
+
+Inspect dimensionality reduction plots coloured by QC metrics:
+
+#### PCA
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+### Spike-in {.tabset}
+
+Compute expression values from raw counts by scaling with spike-in size factors:
+
+```{r}
+set.seed(131026757)
+
+sce <- computeSpikeFactors(sce, "ERCC")
+
+sce <- logNormCounts(sce)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect relative log expression plots coloured by column data:
+
+```{r fig.height = 5, fig.width = 10}
+plotRLE(sce[!nan, ])
+```
+
+Inspect dimensionality reduction plots coloured by QC metrics:
+
+#### PCA
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+### Downsample {.tabset}
+
+Compute expression values from raw counts by downsampling:
+
+```{r}
+set.seed(131026757)
+
+sizeFactors(sce) <- librarySizeFactors(sce)
+
+sce <- logNormCounts(sce, downsample = TRUE)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Inspect relative log expression plots coloured by column data:
+
+```{r fig.height = 5, fig.width = 10}
+plotRLE(sce[!nan, ])
+```
+
+Inspect dimensionality reduction plots coloured by QC metrics:
+
+#### PCA
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r fig.height = 8, fig.width = 10}
+var <- c("sum", "detected", "subsets_MT_percent", "altexps_ERCC_percent")
+
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+wrap_plots(plt, ncol = 2)
+```
+
+## Selection
+
+Apply the chosen normalization to the experiment data:
+
+```{r}
+set.seed(131026757)
+
+num <- ifelse(ncol(sce) < 100, ncol(sce), 100)
+
+mem <- quickCluster(sce, min.size = num, BSPARAM = ExactParam())
+
+sizeFactors(sce) <- calculateSumFactors(sce, cluster = mem)
+
+sce <- logNormCounts(sce)
+
+sce <- runPCA(sce, BSPARAM = ExactParam())
+
+sce <- runTSNE(sce, dimred = "PCA")
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, "data/02-normalization.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

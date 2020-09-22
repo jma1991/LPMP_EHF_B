@@ -1,0 +1,340 @@
+---
+title: "Clustering"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+Clustering is an unsupervised learning procedure that is used in scRNA-seq data analysis to empirically define groups of cells with similar expression profiles. Here, we demonstrate the application of several commonly used clustering methods with our experiment data.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/05-clustering.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load required packages:
+
+```{r}
+library(cluster)
+library(igraph)
+library(pheatmap)
+library(scater)
+library(scran)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("data/04-reduced-dimensions.rds")
+```
+
+## Graph
+
+### Walktrap {.tabset}
+
+Perform clustering using rank-based weights followed by Walktrap clustering:
+
+```{r}
+snn <- buildSNNGraph(sce, type = "rank", use.dimred = "PCA")
+
+cls <- cluster_walktrap(snn)$membership
+
+sce$cluster_walktrap <- factor(cls)
+```
+
+Calculate the modularity of each cluster:
+
+```{r}
+mod <- clusterModularity(snn, sce$cluster_walktrap, as.ratio = TRUE)
+
+mod <- Matrix::forceSymmetric(mod)
+
+mod <- log2(mod + 1)
+
+pal <- RColorBrewer::brewer.pal(5, "Greens")
+
+col <- colorRampPalette(pal)(10)
+
+brk <- seq(0, max(mod), length.out = 11)
+
+pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)
+```
+
+Inspect dimensionality reduction plots coloured by explanatory variables:
+
+```{r}
+var <- c("cluster_walktrap", "sum", "detected", "altexps_ERCC_percent")
+```
+
+#### PCA
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### TSNE
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### UMAP
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+### Louvain {.tabset}
+
+Perform clustering using Jaccard-based weights followed by Louvain clustering:
+
+```{r}
+snn <- buildSNNGraph(sce, type = "jaccard", use.dimred = "PCA")
+
+cls <- cluster_louvain(snn)$membership
+
+sce$cluster_louvain <- factor(cls)
+```
+
+Calculate the modularity of each cluster:
+
+```{r}
+mod <- clusterModularity(snn, sce$cluster_louvain, as.ratio = TRUE)
+
+mod <- Matrix::forceSymmetric(mod)
+
+mod <- log2(mod + 1)
+
+pal <- RColorBrewer::brewer.pal(5, "Greens")
+
+col <- colorRampPalette(pal)(10)
+
+brk <- seq(0, max(mod), length.out = 11)
+
+pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FALSE)
+```
+
+Inspect dimensionality reduction plots coloured by explanatory variables:
+
+```{r}
+var <- c("cluster_louvain", "sum", "detected", "altexps_ERCC_percent")
+```
+
+#### PCA
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### TSNE
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### UMAP
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+## Supervised
+
+### K-means {.tabset}
+
+Perform k-means clustering on the PCA matrix:
+
+```{r}
+set.seed(124183532)
+
+dim <- reducedDim(sce, "PCA")
+
+gap <- clusGap(dim, kmeans, K.max = 20)
+
+num <- maxSE(gap$Tab[, "gap"], gap$Tab[, "SE.sim"])
+```
+
+Inspect gap statistic rate:
+
+```{r}
+dat <- data.frame(var = seq_len(gap$call$K.max), val = gap$Tab[, "gap"])
+
+ggplot(dat, aes(var, val)) +
+  geom_point() +
+  geom_vline(xintercept = num, colour = "red") +
+  labs(x = "Number of clusters", y = "Gap statistic") +
+  theme_bw()
+```
+
+Select optimal number of clusters:
+
+```{r}
+set.seed(124183532)
+
+cls <- kmeans(dim, centers = num)
+
+sce$cluster_kmeans <- factor(cls$cluster)
+```
+
+Check the number of clusters before plotting:
+
+```{r}
+run <- ifelse(num > 1, TRUE, FALSE)
+```
+
+Plot the distances between clusters using their centroids:
+
+```{r eval = run}
+tab <- tabulate(cls$cluster)
+
+dat <- data.frame(wcss = cls$withinss, ncells = tab)
+
+dat$rms <- sqrt(dat$wcss / dat$ncells)
+
+hcl <- hclust(stats::dist(cls$centers), method = "ward.D2")
+
+plot(hcl)
+```
+
+Inspect dimensionality reduction plots coloured by explanatory variables:
+
+```{r}
+var <- c("cluster_kmeans", "sum", "detected", "altexps_ERCC_percent")
+```
+
+#### PCA
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### TSNE
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### UMAP
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+## Unsupervised
+
+### Hierarchical {.tabset}
+
+Perform hierarchical cluster analysis on the PCA data:
+
+```{r}
+dim <- reducedDim(sce, "PCA")
+
+dst <- dist(dim)
+
+cls <- hclust(dst, "ward.D2")
+
+mat <- as.matrix(dst)
+
+cut <- dynamicTreeCut::cutreeDynamic(cls, distM = mat)
+
+sce$cluster_hclust <- factor(cut)
+```
+
+Calculate the modularity of each cluster:
+
+```{r}
+sil <- silhouette(cut, dist = dst)
+
+col <- seq_len(nlevels(sce$cluster_hclust))
+
+plot(sil, col = col, border = NA)
+```
+
+Inspect dimensionality reduction plots coloured by explanatory variables:
+
+```{r}
+var <- c("cluster_hclust", "sum", "detected", "altexps_ERCC_percent")
+```
+
+#### PCA
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotPCA(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### TSNE
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+#### UMAP
+
+```{r, fig.height = 8, fig.width = 10}
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x))
+
+patchwork::wrap_plots(plt)
+```
+
+## Selection
+
+Choose clustering method for downstream analysis:
+
+```{r}
+sce$cluster <- sce$cluster_louvain
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "data/05-clustering.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

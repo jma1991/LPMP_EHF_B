@@ -1,0 +1,478 @@
+---
+title: "Feature selection"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this document we are going to select features for downstream processing.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/03-feature-selection.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load required packages:
+
+```{r}
+library(BiocSingular)
+library(org.Mm.eg.db)
+library(eulerr)
+library(pheatmap)
+library(scales)
+library(scater)
+library(scran)
+library(msigdbr)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("data/02-normalization.rds")
+```
+
+## Blacklist
+
+Create a blacklist of genes to ignore for feature selection:
+
+```{r}
+rowData(sce)$blacklist <- FALSE
+```
+
+Append Xist gene to blacklist:
+
+```{r}
+idx <- which(rowData(sce)$gene_id == "ENSMUSG00000086503")
+
+rowData(sce)$blacklist[idx] <- TRUE
+```
+
+Append Y chromosome genes to blacklist:
+
+```{r}
+idx <- which(seqnames(sce) == "Y")
+
+rowData(sce)$blacklist[idx] <- TRUE
+```
+
+Append MT chromosome genes to blacklist:
+
+```{r}
+idx <- which(seqnames(sce) == "MT")
+
+rowData(sce)$blacklist[idx] <- TRUE
+```
+
+Append cell-cycle genes to blacklist:
+
+```{r}
+org <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
+
+idx <- which(rowData(sce)$gene_id %in% org$ENSEMBL)
+
+rowData(sce)$blacklist[idx] <- TRUE
+```
+
+Append ribosomal genes to blacklist:
+
+```{r}
+sig <- msigdbr(species = "Mus musculus", category = "C2")
+
+sig <- subset(sig, gs_name == "KEGG_RIBOSOME")
+
+org <- select(org.Mm.eg.db, keys = sig$gene_symbol, keytype = "SYMBOL", column = "ENSEMBL")
+
+idx <- which(rowData(sce)$gene_id %in% org$ENSEMBL)
+
+rowData(sce)$blacklist[idx] <- TRUE
+```
+
+## Measuring variation {.tabset}
+
+### modelGeneVar
+
+Model the per-gene variance
+
+```{r}
+dec <- modelGeneVar(sce)
+
+dat <- as.data.frame(dec)
+  
+ggplot(dat, aes(mean, total)) +
+  geom_point(colour = "grey") +
+  geom_line(aes(y = tech)) +
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") +
+  theme_minimal()
+
+metadata(sce)$modelGeneVar <- dec
+```
+
+### modelGeneCV2
+
+Model the per-gene CV2:
+
+```{r}
+dec <- modelGeneCV2(sce)
+
+dat <- as.data.frame(dec)
+  
+ggplot(dat, aes(mean, total)) +
+  geom_point(colour = "grey") +
+  geom_line(aes(y = trend)) + 
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") +
+  theme_minimal()
+
+metadata(sce)$modelGeneCV2 <- dec
+```
+
+### modelGeneVarWithSpikes
+
+Model the per-gene variance with spike-ins:
+
+```{r}
+dec <- modelGeneVarWithSpikes(sce, "ERCC")
+
+alt <- metadata(dec)
+
+df1 <- as.data.frame(dec)
+
+df2 <- data.frame(mean = alt$mean, total = alt$var)
+  
+ggplot(df1, aes(mean, total)) +
+  geom_point(colour = "grey") +
+  geom_line(aes(mean, tech)) +
+  geom_point(data = df2, aes(mean, total), colour = "red") +
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") +
+  theme_minimal()
+
+metadata(sce)$modelGeneVarWithSpikes <- dec
+```
+
+### modelGeneCV2WithSpikes
+
+Model the per-gene CV2 with spike-ins:
+
+```{r}
+dec <- modelGeneCV2WithSpikes(sce, "ERCC")
+
+alt <- metadata(dec)
+
+df1 <- as.data.frame(dec)
+
+df2 <- data.frame(mean = alt$mean, cv2 = alt$cv2)
+  
+ggplot(df1, aes(mean, total)) +
+  geom_point(colour = "grey") +
+  geom_line(aes(mean, trend)) +
+  geom_point(data = df2, aes(mean, cv2), colour = "red") +
+  scale_x_log10() + 
+  scale_y_log10() + 
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") +
+  theme_minimal()
+
+metadata(sce)$modelGeneCV2WithSpikes <- dec
+```
+
+### modelGeneVarByPoisson
+
+Model the per-gene variance with Poisson noise:
+
+```{r}
+dec <- modelGeneVarByPoisson(sce)
+
+dat <- as.data.frame(dec)
+
+ggplot(dat, aes(mean, total)) +
+  geom_point(colour = "grey") +
+  geom_line(aes(y = tech)) +
+  labs(x = "Mean of log-expression", y = "Variance of log-expression") +
+  theme_minimal()
+
+metadata(sce)$modelGeneVarByPoisson <- dec
+```
+
+## Selecting genes {.tabset}
+
+### modelGeneVar
+
+Identify highly variable genes:
+
+```{r}
+dec <- metadata(sce)$modelGeneVar
+
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+
+del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
+
+hvg <- setdiff(hvg, del)
+
+sel <- rownames(dec) %in% hvg
+
+metadata(sce)$modelGeneVar$hvg <- sel
+```
+
+Plot expression of highly variable genes:
+
+```{r}
+plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)
+```
+
+### modelGeneCV2
+
+Identify highly variable genes:
+
+```{r}
+dec <- metadata(sce)$modelGeneCV2
+
+hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "p.value", fdr.threshold = 0.05)
+
+del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
+
+hvg <- setdiff(hvg, del)
+
+sel <- rownames(dec) %in% hvg
+
+metadata(sce)$modelGeneCV2$hvg <- sel
+```
+
+Plot expression of highly variable genes:
+
+```{r}
+plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)
+```
+
+### modelGeneVarWithSpikes
+
+Identify highly variable genes:
+
+```{r}
+dec <- metadata(sce)$modelGeneVarWithSpikes
+
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+
+del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
+
+hvg <- setdiff(hvg, del)
+
+sel <- rownames(dec) %in% hvg
+
+metadata(sce)$modelGeneVarWithSpikes$hvg <- sel
+```
+
+Plot expression of highly variable genes:
+
+```{r}
+plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)
+```
+
+### modelGeneCV2WithSpikes
+
+Identify highly variable genes:
+
+```{r}
+dec <- metadata(sce)$modelGeneCV2WithSpikes
+
+hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "p.value", fdr.threshold = 0.05)
+
+del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
+
+hvg <- setdiff(hvg, del)
+
+sel <- rownames(dec) %in% hvg
+
+metadata(sce)$modelGeneCV2WithSpikes$hvg <- sel
+```
+
+Plot expression of highly variable genes:
+
+```{r}
+plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)
+```
+
+### modelGeneVarByPoisson
+
+Identify highly variable genes:
+
+```{r}
+dec <- metadata(sce)$modelGeneVarByPoisson
+
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+
+del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
+
+hvg <- setdiff(hvg, del)
+
+sel <- rownames(dec) %in% hvg
+
+metadata(sce)$modelGeneVarByPoisson$hvg <- sel
+```
+
+Plot expression of highly variable genes:
+
+```{r}
+plotHeatmap(sce, hvg, center = TRUE, symmetric = TRUE, show_rownames = FALSE, show_colnames = FALSE)
+```
+
+## Comparison
+
+### Euler
+
+Compare number of features selected using an Euler diagram:
+
+```{r}
+sel <- cbind(
+  "Features" = TRUE,
+  "Var" = metadata(sce)$modelGeneVar$hvg,
+  "CV2" = metadata(sce)$modelGeneCV2$hvg,
+  "VarWithSpikes" = metadata(sce)$modelGeneVarWithSpikes$hvg,
+  "CV2WithSpikes" = metadata(sce)$modelGeneCV2WithSpikes$hvg,
+  "VarByPoisson" = metadata(sce)$modelGeneVarByPoisson$hvg
+)
+
+fit <- euler(sel)
+
+pal <- RColorBrewer::brewer.pal(n = 5, name = "Pastel1")
+
+lab <- comma(fit$original.values)
+
+plot(fit, fills = pal, quantities = lab)
+```
+
+### Jaccard
+
+Calculate Jaccard index:
+
+```{r}
+sel <- rbind(
+  "Var" = metadata(sce)$modelGeneVar$hvg,
+  "CV2" = metadata(sce)$modelGeneCV2$hvg,
+  "VarWithSpikes" = metadata(sce)$modelGeneVarWithSpikes$hvg,
+  "CV2WithSpikes" = metadata(sce)$modelGeneCV2WithSpikes$hvg,
+  "VarByPoisson" = metadata(sce)$modelGeneVarByPoisson$hvg
+)
+
+dst <- proxy::dist(sel, method = "Jaccard", diag = TRUE, upper = TRUE)
+
+mat <- as.matrix(dst)
+
+pal <- RColorBrewer::brewer.pal(n = 5, name = "Greens")
+
+col <- colorRampPalette(pal)(10)
+
+brk <- seq(0, 1, length.out = 11)
+
+pheatmap(mat, color = col, breaks = brk)
+```
+
+### Dimensionality reduction {.tabset}
+
+```{r}
+dec <- c("modelGeneVar", "modelGeneCV2", "modelGeneVarWithSpikes", "modelGeneCV2WithSpikes", "modelGeneVarByPoisson")
+```
+
+#### PCA
+
+```{r, fig.height = 11, fig.width = 10}
+plt <- lapply(dec, function(x) {
+  
+  set.seed(484961656)
+  
+  hvg <- metadata(sce)[[x]]$hvg
+  
+  sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
+
+  plotPCA(sce, colour_by = "sum") + ggtitle(x)
+
+})
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+#### TSNE
+
+```{r, fig.height = 11, fig.width = 10}
+plt <- lapply(dec, function(x) {
+  
+  set.seed(542623420)
+  
+  hvg <- metadata(sce)[[x]]$hvg
+  
+  sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
+  
+  sce <- runTSNE(sce, dimred = "PCA")
+
+  plotTSNE(sce, colour_by = "sum") + ggtitle(x)
+
+})
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+#### UMAP
+
+```{r, fig.height = 11, fig.width = 10}
+plt <- lapply(dec, function(x) {
+  
+  set.seed(292717757)
+  
+  hvg <- metadata(sce)[[x]]$hvg
+  
+  sce <- runPCA(sce, subset_row = hvg, BSPARAM = ExactParam())
+  
+  sce <- runUMAP(sce, dimred = "PCA")
+
+  plotUMAP(sce, colour_by = "sum") + ggtitle(x)
+
+})
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+## Selection
+
+Select highly variable genes and store in row metadata:
+
+```{r}
+dec <- metadata(sce)$modelGeneVar
+
+dec <- subset(dec, hvg == TRUE)
+
+sel <- rownames(sce) %in% rownames(dec)
+
+rowData(sce)$selected <- sel
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(sce, "data/03-feature-selection.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
