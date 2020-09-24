@@ -291,7 +291,7 @@ $(document).ready(function () {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Analysis
+    Processing
      
     <span class="caret"></span>
   </a>
@@ -308,7 +308,7 @@ $(document).ready(function () {
     <li>
       <a href="03-feature-selection.html"></a>
     </li>
-    <li class="dropdown-header">Reduced dimensions</li>
+    <li class="dropdown-header">Dimensionality reduction</li>
     <li>
       <a href="04-reduced-dimensions.html"></a>
     </li>
@@ -320,17 +320,30 @@ $(document).ready(function () {
     <li>
       <a href="06-doublet-detection"></a>
     </li>
-    <li class="dropdown-header">Cell cycle</li>
+    <li class="dropdown-header">Cell cycle assignment</li>
     <li>
       <a href="07-cell-cycle.html"></a>
     </li>
-    <li class="dropdown-header">Marker detection</li>
+    <li class="dropdown-header">Marker gene detection</li>
     <li>
       <a href="08-marker-detection.html"></a>
     </li>
-    <li class="dropdown-header">Cell annotation</li>
+    <li class="dropdown-header">Cell type annotation</li>
     <li>
       <a href="09-cell-annotation.html"></a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Atlas integration</li>
+    <li>
+      <a href="10-atlas-integration.html"></a>
     </li>
   </ul>
 </li>
@@ -380,7 +393,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-22
+<strong>Last updated:</strong> 2020-09-24
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -411,16 +424,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong79b6e35"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 79b6e35 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong79b6e35" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 79b6e35. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -433,18 +446,11 @@ Ignored files:
 
 Untracked files:
     Untracked:  LICENSE
-    Untracked:  analysis/01-quality-control.Rmd
-    Untracked:  analysis/02-normalization.Rmd
-    Untracked:  analysis/03-feature-selection.Rmd
-    Untracked:  analysis/04-reduced-dimensions.Rmd
-    Untracked:  analysis/05-atlas-mapping.Rmd
-    Untracked:  analysis/05-clustering.Rmd
-    Untracked:  analysis/06-doublet-detection.Rmd
-    Untracked:  analysis/07-cell-cycle.Rmd
-    Untracked:  analysis/08-marker-detection.Rmd
-    Untracked:  analysis/09-cell-annotation.Rmd
-    Untracked:  analysis/10-data-integration.Rmd
+    Untracked:  analysis/10-atlas-integration.Rmd
     Untracked:  analysis/11-scenic-analysis.Rmd
+    Untracked:  analysis/12-haystack-analysis.Rmd
+    Untracked:  analysis/13-geneset-activity.Rmd
+    Untracked:  analysis/Untitled.Rmd
     Untracked:  analysis/cache/
     Untracked:  backup/
     Untracked:  data/01-quality-control.rds
@@ -465,7 +471,10 @@ Untracked files:
     Untracked:  data/salmon-quant.rds
 
 Unstaged changes:
-    Modified:   _workflowr.yml
+    Modified:   analysis/01-quality-control.Rmd
+    Modified:   analysis/08-marker-detection.Rmd
+    Modified:   analysis/09-cell-annotation.Rmd
+    Deleted:    analysis/10-data-integration.Rmd
     Modified:   analysis/_site.yml
 
 </code></pre>
@@ -510,7 +519,24 @@ Message
 html
 </td>
 <td>
-79b6e35
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/about.html" target="_blank">10d37f2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-09-22
+</td>
+<td>
+build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/79b6e3577a48d7c4b8667dec3b3cc6528bf87a54/docs/about.html" target="_blank">79b6e35</a>
 </td>
 <td>
 James Ashmore
@@ -527,7 +553,7 @@ Build site.
 html
 </td>
 <td>
-3428f1a
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/3428f1a9e76b92a8a0fa8ee5ab17529d5339dbbb/docs/about.html" target="_blank">3428f1a</a>
 </td>
 <td>
 James Ashmore
@@ -544,7 +570,7 @@ Build site.
 Rmd
 </td>
 <td>
-b692892
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/b692892e1777f67e49718b72093a2178244d8f01/analysis/about.Rmd" target="_blank">b692892</a>
 </td>
 <td>
 James Ashmore
@@ -561,7 +587,7 @@ wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”, “analysis/
 html
 </td>
 <td>
-c831112
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/c831112298ba17c39db60bcb906680b463996642/docs/about.html" target="_blank">c831112</a>
 </td>
 <td>
 James Ashmore
@@ -578,7 +604,7 @@ Build site.
 Rmd
 </td>
 <td>
-619bade
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/619bade0c377be534dff52f1791a598e1d07615a/analysis/about.Rmd" target="_blank">619bade</a>
 </td>
 <td>
 James Ashmore
@@ -595,7 +621,7 @@ wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”, “analysis/
 html
 </td>
 <td>
-663050f
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/663050feb1a9b74a024d2a7c5a44f585d2112e14/docs/about.html" target="_blank">663050f</a>
 </td>
 <td>
 James Ashmore
@@ -612,7 +638,7 @@ Build site.
 Rmd
 </td>
 <td>
-4031e4a
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4031e4afccaad5aa82663a8ed7d4a6f3b4c0cf96/analysis/about.Rmd" target="_blank">4031e4a</a>
 </td>
 <td>
 James Ashmore
@@ -629,7 +655,7 @@ wflow_publish(c(“analysis/index.Rmd”, “analysis/about.Rmd”, “analysis/
 html
 </td>
 <td>
-836dfe9
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/836dfe9175fdd332c508e71b037268bcee73ef13/docs/about.html" target="_blank">836dfe9</a>
 </td>
 <td>
 James Ashmore
@@ -646,7 +672,7 @@ Build site.
 Rmd
 </td>
 <td>
-966b9b4
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/966b9b4524697f58511e1b72e2d7df1e45465419/analysis/about.Rmd" target="_blank">966b9b4</a>
 </td>
 <td>
 James Ashmore
