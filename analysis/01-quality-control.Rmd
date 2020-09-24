@@ -1,5 +1,5 @@
 ---
-title: "Quality Control"
+title: "Quality control"
 author: "James Ashmore"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html

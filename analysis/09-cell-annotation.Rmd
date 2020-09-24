@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
   cache.path = "cache/09-cell-annotation.Rmd/",
+  cache.lazy = FALSE,
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -125,44 +126,52 @@ plotScoreDistribution(dat, show = "delta.med", ncol = 3, show.nmads = 3)
 
 ### Gastrulation data
 
-Load the gastrulation data package:
+Load the mouse gastrulation data package:
 
 ```{r cache = FALSE}
 library(MouseGastrulationData)
 ```
 
-Process EHF samples from gastrulation data:
+Subset atlas sample metadata by embryonic stage:
+
+```{r}
+AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
+```
+
+Retrieve processed samples from embryo atlas data:
 
 ```{r cache = FALSE}
-sel <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
+ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
+```
 
-ref <- EmbryoAtlasData(type = "processed", samples = sel$sample)
+Compute log-normalized expression values:
 
+```{r}
 ref <- logNormCounts(ref)
 ```
 
-Remove cells with NA values for the given celltype label:
+Remove cells without a celltype label:
 
 ```{r cache = FALSE}
-sel <- !is.na(ref$celltype)
+use <- !is.na(ref$celltype)
 
-ref <- ref[, sel]
+ref <- ref[, use]
 ```
 
 Remove cells marked as stripped nuclei:
 
 ```{r cache = FALSE}
-sel <- !is.na(ref$stripped)
+use <- !ref$stripped
 
-ref <- ref[, sel]
+ref <- ref[, use]
 ```
 
 Remove cells marked as doublets:
 
 ```{r cache = FALSE}
-sel <- !is.na(ref$doublet)
+use <- !ref$doublet
 
-ref <- ref[, sel]
+ref <- ref[, use]
 ```
 
 Identify marker genes for each cell type whilst blocking on sample:

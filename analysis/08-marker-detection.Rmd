@@ -1,5 +1,5 @@
 ---
-title: "Marker detection"
+title: "Marker gene detection"
 author: "James Ashmore"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
