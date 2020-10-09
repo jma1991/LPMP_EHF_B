@@ -35,6 +35,15 @@ div.section {
 }
 </style>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -345,6 +354,34 @@ $(document).ready(function () {
     <li>
       <a href="10-atlas-integration.html"></a>
     </li>
+    <li class="dropdown-header">Atlas neighbors</li>
+    <li>
+      <a href="11-atlas-neighbors.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas trajectory</li>
+    <li>
+      <a href="12-atlas-trajectory.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas clustering</li>
+    <li>
+      <a href="13-atlas-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas markers</li>
+    <li>
+      <a href="14-atlas-markers.html"></a>
+    </li>
+    <li class="dropdown-header">Scenic analysis</li>
+    <li>
+      <a href="15-scenic-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Geneset activity</li>
+    <li>
+      <a href="16-geneset-activity.html"></a>
+    </li>
+    <li class="dropdown-header">Haystack analysis</li>
+    <li>
+      <a href="17-haystack-analysis.html"></a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -393,7 +430,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-24
+<strong>Last updated:</strong> 2020-10-09
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -424,16 +461,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -446,34 +483,45 @@ Ignored files:
 
 Untracked files:
     Untracked:  LICENSE
-    Untracked:  analysis/10-atlas-integration.Rmd
-    Untracked:  analysis/11-scenic-analysis.Rmd
-    Untracked:  analysis/12-haystack-analysis.Rmd
-    Untracked:  analysis/13-geneset-activity.Rmd
-    Untracked:  analysis/Untitled.Rmd
+    Untracked:  _workflowr.R
+    Untracked:  _workflowr.sh
+    Untracked:  analysis/11-atlas-neighbors.Rmd
+    Untracked:  analysis/12-atlas-trajectory.Rmd
+    Untracked:  analysis/13-atlas-clustering.Rmd
+    Untracked:  analysis/14-atlas-markers.Rmd
+    Untracked:  analysis/15-scenic-analysis.Rmd
+    Untracked:  analysis/16-geneset-activity.Rmd
+    Untracked:  analysis/17-haystack-analysis.Rmd
     Untracked:  analysis/cache/
-    Untracked:  backup/
-    Untracked:  data/01-quality-control.rds
-    Untracked:  data/02-normalization.rds
-    Untracked:  data/03-feature-selection.rds
-    Untracked:  data/04-reduced-dimensions.rds
-    Untracked:  data/05-clustering.rds
-    Untracked:  data/06-doublet-detection.rds
-    Untracked:  data/07-cell-cycle.rds
-    Untracked:  data/08-marker-detection.rds
-    Untracked:  data/09-cell-annotation.rds
-    Untracked:  data/10-data-integration.rds
     Untracked:  data/cell-lineage.csv
-    Untracked:  data/cell-markers.csv
+    Untracked:  data/gene-sets.csv
     Untracked:  data/pyscenic-activity.csv
     Untracked:  data/pyscenic-modules.csv
     Untracked:  data/pyscenic-regulons.csv
     Untracked:  data/salmon-quant.rds
+    Untracked:  output/01-quality-control.rds
+    Untracked:  output/02-normalization.rds
+    Untracked:  output/03-feature-selection.rds
+    Untracked:  output/04-reduced-dimensions.rds
+    Untracked:  output/05-clustering.rds
+    Untracked:  output/06-doublet-detection.rds
+    Untracked:  output/07-cell-cycle.rds
+    Untracked:  output/08-marker-detection.rds
+    Untracked:  output/09-cell-annotation.rds
+    Untracked:  output/10-atlas-integration.rds
+    Untracked:  output/11-atlas-neighbors.rds
 
 Unstaged changes:
     Modified:   analysis/01-quality-control.Rmd
+    Modified:   analysis/02-normalization.Rmd
+    Modified:   analysis/03-feature-selection.Rmd
+    Modified:   analysis/04-reduced-dimensions.Rmd
+    Modified:   analysis/05-clustering.Rmd
+    Modified:   analysis/06-doublet-detection.Rmd
+    Modified:   analysis/07-cell-cycle.Rmd
     Modified:   analysis/08-marker-detection.Rmd
     Modified:   analysis/09-cell-annotation.Rmd
+    Modified:   analysis/10-atlas-integration.Rmd
     Deleted:    analysis/10-data-integration.Rmd
     Modified:   analysis/_site.yml
 
@@ -514,6 +562,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/5af95d320199428478faa972cbfbd54d75364d11/docs/license.html" target="_blank">5af95d3</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+build
+</td>
+</tr>
 <tr>
 <td>
 html

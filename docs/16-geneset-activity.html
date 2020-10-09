@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+
+<title>Geneset activity</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP-EHF Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Quality control</li>
+    <li>
+      <a href="01-quality-control.html"></a>
+    </li>
+    <li class="dropdown-header">Normalization</li>
+    <li>
+      <a href="02-normalization.html"></a>
+    </li>
+    <li class="dropdown-header">Feature selection</li>
+    <li>
+      <a href="03-feature-selection.html"></a>
+    </li>
+    <li class="dropdown-header">Dimensionality reduction</li>
+    <li>
+      <a href="04-reduced-dimensions.html"></a>
+    </li>
+    <li class="dropdown-header">Clustering</li>
+    <li>
+      <a href="05-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Doublet detection</li>
+    <li>
+      <a href="06-doublet-detection"></a>
+    </li>
+    <li class="dropdown-header">Cell cycle assignment</li>
+    <li>
+      <a href="07-cell-cycle.html"></a>
+    </li>
+    <li class="dropdown-header">Marker gene detection</li>
+    <li>
+      <a href="08-marker-detection.html"></a>
+    </li>
+    <li class="dropdown-header">Cell type annotation</li>
+    <li>
+      <a href="09-cell-annotation.html"></a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Atlas integration</li>
+    <li>
+      <a href="10-atlas-integration.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas neighbors</li>
+    <li>
+      <a href="11-atlas-neighbors.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas trajectory</li>
+    <li>
+      <a href="12-atlas-trajectory.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas clustering</li>
+    <li>
+      <a href="13-atlas-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas markers</li>
+    <li>
+      <a href="14-atlas-markers.html"></a>
+    </li>
+    <li class="dropdown-header">Scenic analysis</li>
+    <li>
+      <a href="15-scenic-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Geneset activity</li>
+    <li>
+      <a href="16-geneset-activity.html"></a>
+    </li>
+    <li class="dropdown-header">Haystack analysis</li>
+    <li>
+      <a href="17-haystack-analysis.html"></a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">License</li>
+<li>
+  <a href="license.html"></a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Geneset activity</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">09 October, 2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-10-09
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree18fbbcde45f8a05a3c2c25cf508d775c68f5ebadtargetblank18fbbcda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/18fbbcde45f8a05a3c2c25cf508d775c68f5ebad" target="_blank">18fbbcd</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree18fbbcde45f8a05a3c2c25cf508d775c68f5ebadtargetblank18fbbcda" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/18fbbcde45f8a05a3c2c25cf508d775c68f5ebad" target="_blank">18fbbcd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  LICENSE
+    Untracked:  analysis/cache/
+    Untracked:  code/EmbryoColourPalette.R
+    Untracked:  code/coolmap.R
+    Untracked:  code/reorder_within.R
+    Untracked:  data/cell-lineage.csv
+    Untracked:  data/gene-sets.csv
+    Untracked:  data/pyscenic-activity.csv
+    Untracked:  data/pyscenic-modules.csv
+    Untracked:  data/pyscenic-regulons.csv
+    Untracked:  data/salmon-quant.rds
+    Untracked:  output/01-quality-control.rds
+    Untracked:  output/02-normalization.rds
+    Untracked:  output/03-feature-selection.rds
+    Untracked:  output/04-reduced-dimensions.rds
+    Untracked:  output/05-clustering.rds
+    Untracked:  output/06-doublet-detection.rds
+    Untracked:  output/07-cell-cycle.rds
+    Untracked:  output/08-marker-detection.rds
+    Untracked:  output/09-cell-annotation.rds
+    Untracked:  output/10-atlas-integration.rds
+    Untracked:  output/11-atlas-neighbors.rds
+
+Unstaged changes:
+    Deleted:    analysis/10-data-integration.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/16-geneset-activity.Rmd</code>) and HTML (<code>docs/16-geneset-activity.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/18fbbcde45f8a05a3c2c25cf508d775c68f5ebad/analysis/16-geneset-activity.Rmd" target="_blank">18fbbcd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+<td>
+publish
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/16-geneset-activity.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(AUCell)
+library(GSEABase)
+library(scater)
+library(SingleR)
+library(MouseGastrulationData)</code></pre>
+<p>Load CRAN packages</p>
+<pre class="r"><code>library(msigdbr)
+library(pheatmap)
+library(RColorBrewer)</code></pre>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/11-atlas-neighbors.rds&quot;)</code></pre>
+<p>Make cell names unique:</p>
+<pre class="r"><code>colnames(sce) &lt;- paste0(&quot;S&quot;, seq_len(ncol(sce)))</code></pre>
+<p>Make feature names unique:</p>
+<pre class="r"><code>rownames(sce) &lt;- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)</code></pre>
+<p>Source convenience functions:</p>
+<pre class="r"><code>source(&quot;code/EmbryoColourPalette.R&quot;)
+source(&quot;code/coolmap.R&quot;)</code></pre>
+</div>
+<div id="marker-genes" class="section level2">
+<h2>Marker genes</h2>
+<p>Create list of LPM, PXM and NMP marker genes:</p>
+<pre class="r"><code>ids &lt;- list(
+  
+  LPM = c(
+    &quot;Bmp4&quot;,
+    &quot;Bmp7&quot;,
+    &quot;Id1&quot;,
+    &quot;Id2&quot;,
+    &quot;Id3&quot;,
+    &quot;Id4&quot;,
+    &quot;Pdgfra&quot;,
+    &quot;Adora2b&quot;,
+    &quot;Tgfb1&quot;,
+    &quot;Fgf10&quot;,
+    &quot;Efna1&quot;,
+    &quot;Cxcl12&quot;,
+    &quot;Wnt4&quot;,
+    &quot;Wnt5b&quot;,
+    &quot;Wnt6&quot;,
+    &quot;Vegfa&quot;,
+    &quot;Tbx4&quot;,
+    &quot;Ctsh&quot;,
+    &quot;Etv2&quot;,
+    &quot;Ets1&quot;,
+    &quot;Sox17&quot;,
+    &quot;Sox7&quot;,
+    &quot;Sox18&quot;
+  ),
+  
+  PXM = c(
+    &quot;Tcf15&quot;,
+    &quot;Meox1&quot;,
+    &quot;Fgf17&quot;,
+    &quot;Cyp26a1&quot;,
+    &quot;Hes7&quot;,
+    &quot;Dll3&quot;,
+    &quot;Lef1&quot;,
+    &quot;Rspo3&quot;,
+    &quot;Dkk1&quot;,
+    &quot;Wnt3a&quot;,
+    &quot;Fgfr1&quot;,
+    &quot;Mesp2&quot;,
+    &quot;Smc6&quot;
+  ),
+  
+  NMP = c(
+    &quot;Sox2&quot;,
+    &quot;Mnx1&quot;,
+    &quot;Aph1a&quot;,
+    &quot;Ncstn&quot;,
+    &quot;Ctbp2&quot;,
+    &quot;Dvl1&quot;,
+    &quot;Kat2a&quot;,
+    &quot;Nkx1-2&quot;,
+    &quot;Fst&quot;,
+    &quot;Dnmt3b&quot;,
+    &quot;Epcam&quot;,
+    &quot;Pou5f1&quot;
+  ),
+  
+  LPM_PXM = c(
+    &quot;Mesp1&quot;,
+    &quot;Mixl1&quot;
+  ),
+  
+  PXM_NMP = c(
+    &quot;Tbx6&quot;,
+    &quot;T&quot;,
+    &quot;Cdx1&quot;,
+    &quot;Cdx2&quot;
+  )
+
+)</code></pre>
+<p>Plot expression of NMP and LPMP differentially expressed genes:</p>
+<pre class="r"><code>out &lt;- coolmap(assay(sce, &quot;reconstructed&quot;)[unlist(ids), ])
+
+par &lt;- list(
+  annotation_row = data.frame(
+    Marker = rep(names(ids), times = sapply(ids, length)),
+    row.names = unlist(ids)
+  ),
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Marker = c(&quot;LPM&quot; = &quot;#6388b4&quot;, &quot;PXM&quot; = &quot;#ffae34&quot;, &quot;NMP&quot; = &quot;#ef6f6a&quot;, &quot;LPM_PXM&quot; = &quot;#8cc2ca&quot;, &quot;PXM_NMP&quot; = &quot;#55ad89&quot;),
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c(&quot;reference&quot; = &quot;#C8D0D9&quot;, &quot;test&quot; = &quot;#57606C&quot;)
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = out$color,
+  breaks = out$breaks,
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_row = par$annotation_row,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/16-geneset-activity.Rmd/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="differential-genes" class="section level2">
+<h2>Differential genes</h2>
+<p>Create list of NMP and LPMP differentially expressed genes:</p>
+<pre class="r"><code>ids &lt;- list(
+  
+  NMP = c(
+    &quot;Rxrg&quot;,
+    &quot;Dkk4&quot;,
+    &quot;Il17rd&quot;,
+    &quot;Akt1s1&quot;,
+    &quot;Dusp6&quot;,
+    &quot;Fgf15&quot;,
+    &quot;Dll1&quot;,
+    &quot;Wnt10a&quot;,
+    &quot;Hes7&quot;,
+    &quot;Hras&quot;,
+    &quot;Aph1a&quot;,
+    &quot;Tcf7&quot;,
+    &quot;Ncstn&quot;,
+    &quot;Dner&quot;,
+    &quot;Lef1&quot;,
+    &quot;Cyp26a1&quot;,
+    &quot;Cdkn1a&quot;,
+    &quot;Wnt5b&quot;,
+    &quot;Fzd10&quot;,
+    &quot;Fgf17&quot;,
+    &quot;Fgf8&quot;,
+    &quot;Wnt3a&quot;,
+    &quot;Axin2&quot;,
+    &quot;Ptk7&quot;,
+    &quot;Rarg&quot;
+  ),
+  
+  LPMP = c(
+    &quot;Fgf10&quot;,
+    &quot;Hey1&quot;,
+    &quot;Bmp7&quot;,
+    &quot;Prkar2b&quot;,
+    &quot;Id1&quot;,
+    &quot;Id2&quot;,
+    &quot;Id3&quot;,
+    &quot;Rac1&quot;,
+    &quot;Bmp4&quot;,
+    &quot;Smad6&quot;,
+    &quot;Prkcd&quot;,
+    &quot;Ptpn11&quot;,
+    &quot;Wnt6&quot;,
+    &quot;Wnt4&quot;,
+    &quot;Wnt5a&quot;
+  )
+
+)</code></pre>
+<p>Plot expression of NMP and LPMP differentially expressed genes:</p>
+<pre class="r"><code>out &lt;- coolmap(assay(sce, &quot;reconstructed&quot;)[c(ids$NMP, ids$LPMP), ])
+
+par &lt;- list(
+  annotation_row = data.frame(
+    Marker = rep(names(ids), times = sapply(ids, length)),
+    row.names = unlist(ids)
+  ),
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Marker = c(&quot;NMP&quot; = &quot;#1170AA&quot;, &quot;LPMP&quot; = &quot;#FC7D0B&quot;),
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c(&quot;reference&quot; = &quot;#C8D0D9&quot;, &quot;test&quot; = &quot;#57606C&quot;)
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = colorRampPalette(rev(brewer.pal(n = 5, name = &quot;RdBu&quot;)))(100),
+  breaks = seq(-max(abs(out$mat)), max(abs(out$mat)), length.out = 101),
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_row = par$annotation_row,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/16-geneset-activity.Rmd/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="differential-pathways" class="section level2">
+<h2>Differential pathways</h2>
+<p>Retrive the MSigDB collections for mouse:</p>
+<pre class="r"><code>dbr &lt;- msigdbr(species = &quot;Mus musculus&quot;)</code></pre>
+<p>Create list of KEGG expression pathways to retrieve:</p>
+<pre class="r"><code>ids &lt;- c(
+  &quot;M19428&quot; = &quot;KEGG_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;M7946&quot; = &quot;KEGG_NOTCH_SIGNALING_PATHWAY&quot;,
+  &quot;M269&quot; = &quot;PID_RAS_PATHWAY&quot;, 
+  &quot;M923&quot; = &quot;REACTOME_RAP1_SIGNALLING&quot;,
+  &quot;M591&quot; = &quot;REACTOME_SIGNALING_BY_HIPPO&quot;,
+  &quot;M2642&quot; = &quot;KEGG_TGF_BETA_SIGNALING_PATHWAY&quot;,
+  &quot;M6370&quot; = &quot;KEGG_P53_SIGNALING_PATHWAY&quot;,
+  &quot;M7098&quot; = &quot;KEGG_ECM_RECEPTOR_INTERACTION&quot;,
+  &quot;M10792&quot; = &quot;KEGG_MAPK_SIGNALING_PATHWAY&quot;
+)</code></pre>
+<p>Retrieve the user-defined list of KEGG pathways:</p>
+<pre class="r"><code>dbr &lt;- subset(dbr, gs_id %in% names(ids))
+
+dbr &lt;- subset(dbr, gene_symbol %in% rownames(sce)) # remove genes absent from experiment object
+
+dbr &lt;- split(dbr, dbr$gs_description)</code></pre>
+<p>Aggregate gene expression by KEGG pathways:</p>
+<pre class="r"><code>mat &lt;- lapply(dbr, function(x) colMeans(assay(sce, &quot;reconstructed&quot;)[x$gene_symbol, ]))
+
+mat &lt;- do.call(rbind, mat)</code></pre>
+<p>Plot pathways using aggregated gene expression:</p>
+<pre class="r"><code>out &lt;- coolmap(mat)
+
+par &lt;- list(
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c(&quot;reference&quot; = &quot;#C8D0D9&quot;, &quot;test&quot; = &quot;#57606C&quot;)
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = colorRampPalette(rev(brewer.pal(n = 5, name = &quot;RdBu&quot;)))(100),
+  breaks = seq(-max(abs(out$mat)), max(abs(out$mat)), length.out = 101),
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/16-geneset-activity.Rmd/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pathway-activity" class="section level2">
+<h2>Pathway activity</h2>
+<p>Retrive the MSigDB collections for mouse:</p>
+<pre class="r"><code>dbr &lt;- msigdbr(species = &quot;Mus musculus&quot;)</code></pre>
+<p>Define which geneset categories to use:</p>
+<pre class="r"><code>use &lt;- c(
+  &quot;PID_BMP_PATHWAY&quot;,
+  &quot;GO_BMP_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT&quot;,
+  &quot;GO_NEGATIVE_REGULATION_OF_BMP_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_BMP_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_BMP_SIGNALING_PATHWAY&quot;,
+  &quot;BIOCARTA_TGFB_PATHWAY&quot;,
+  &quot;BIOCARTA_NOTCH_PATHWAY&quot;,
+  &quot;GO_NOTCH_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_NOTCH_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_NOTCH_SIGNALING_PATHWAY&quot;,
+  &quot;KEGG_NOTCH_SIGNALING_PATHWAY&quot;,
+  &quot;PID_NOTCH_PATHWAY&quot;,
+  &quot;PID_WNT_CANONICAL_PATHWAY&quot;,
+  &quot;PID_WNT_NONCANONICAL_PATHWAY&quot;,
+  &quot;PID_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;WP_WNT_SIGNALING_PATHWAY_NETPATH&quot;,
+  &quot;GO_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_CANONICAL_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT&quot;,
+  &quot;GO_CORECEPTOR_ACTIVITY_INVOLVED_IN_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_CORECEPTOR_ACTIVITY_INVOLVED_IN_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY&quot;,
+  &quot;GO_NEGATIVE_REGULATION_OF_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_NEGATIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT&quot;,
+  &quot;GO_NON_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_HEART_INDUCTION_BY_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_NON_CANONICAL_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT&quot;,
+  &quot;GO_REGULATION_OF_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY&quot;,
+  &quot;BIOCARTA_WNT_PATHWAY&quot;,
+  &quot;GO_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT&quot;,
+  &quot;KEGG_WNT_SIGNALING_PATHWAY&quot;,
+  &quot;PID_FGF_PATHWAY&quot;,
+  &quot;GO_FIBROBLAST_GROWTH_FACTOR_RECEPTOR_SIGNALING_PATHWAY&quot;,
+  &quot;HALLMARK_WNT_BETA_CATENIN_SIGNALING&quot;,
+  &quot;PID_BETA_CATENIN_DEG_PATHWAY&quot;,
+  &quot;PID_BETA_CATENIN_NUC_PATHWAY&quot;,
+  &quot;GO_NEGATIVE_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY&quot;,
+  &quot;GO_POSITIVE_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY&quot;,
+  &quot;GO_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY&quot;,
+  &quot;PID_RETINOIC_ACID_PATHWAY&quot;
+)</code></pre>
+<p>Create geneset collection for AUCell input:</p>
+<pre class="r"><code>dbr &lt;- subset(dbr, gs_name %in% use)
+
+dbr &lt;- split(dbr, dbr$gs_name)
+
+ids &lt;- names(dbr)
+
+dbr &lt;- lapply(ids, function(x) GeneSet(unique(dbr[[x]]$gene_symbol), setName = x))
+
+dbr &lt;- GeneSetCollection(dbr)</code></pre>
+<p>Build gene expression rankings for each cell:</p>
+<pre class="r"><code>rankings &lt;- AUCell_buildRankings(
+  exprMat = counts(sce), 
+  plotStats = FALSE, 
+  verbose = FALSE
+)</code></pre>
+<p>Calculate the AUC for each gene-set in each cell:</p>
+<pre class="r"><code>auc &lt;- AUCell_calcAUC(dbr, rankings)</code></pre>
+<p>Get assignments from AUCell scores:</p>
+<pre class="r"><code>res &lt;- t(assay(auc))
+
+lab &lt;- colnames(res)[max.col(res)]</code></pre>
+<p>Create results table for use with SingleR functions:</p>
+<pre class="r"><code>dat &lt;- DataFrame(scores = I(res), labels = lab, pruned.labels = lab, row.names = rownames(res))</code></pre>
+<p>Create a heatmap of the AUCell assignment scores:</p>
+<pre class="r"><code>plotScoreHeatmap(dat, cluster_cols = TRUE, show.labels = FALSE, max.labels = Inf)</code></pre>
+<p><img src="figure/16-geneset-activity.Rmd/unnamed-chunk-24-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] RColorBrewer_1.1-2          pheatmap_1.0.12            
+ [3] msigdbr_7.2.1               MouseGastrulationData_1.2.0
+ [5] SingleR_1.2.4               scater_1.16.2              
+ [7] ggplot2_3.3.2               SingleCellExperiment_1.10.1
+ [9] SummarizedExperiment_1.18.2 DelayedArray_0.14.1        
+[11] matrixStats_0.57.0          GenomicRanges_1.40.0       
+[13] GenomeInfoDb_1.24.2         GSEABase_1.50.1            
+[15] graph_1.66.0                annotate_1.66.0            
+[17] XML_3.99-0.5                AnnotationDbi_1.50.3       
+[19] IRanges_2.22.2              S4Vectors_0.26.1           
+[21] Biobase_2.48.0              BiocGenerics_0.34.0        
+[23] AUCell_1.10.0               workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+ [1] ggbeeswarm_0.6.0              colorspace_1.4-1             
+ [3] ellipsis_0.3.1                rprojroot_1.3-2              
+ [5] XVector_0.28.0                BiocNeighbors_1.6.0          
+ [7] fs_1.5.0                      rstudioapi_0.11              
+ [9] farver_2.0.3                  bit64_4.0.5                  
+[11] interactiveDisplayBase_1.26.3 codetools_0.2-16             
+[13] R.methodsS3_1.8.1             knitr_1.30                   
+[15] dbplyr_1.4.4                  R.oo_1.24.0                  
+[17] shiny_1.5.0                   BiocManager_1.30.10          
+[19] compiler_4.0.2                httr_1.4.2                   
+[21] dqrng_0.2.1                   backports_1.1.10             
+[23] assertthat_0.2.1              Matrix_1.2-18                
+[25] fastmap_1.0.1                 limma_3.44.3                 
+[27] later_1.1.0.1                 BiocSingular_1.4.0           
+[29] htmltools_0.5.0               tools_4.0.2                  
+[31] igraph_1.2.5                  rsvd_1.0.3                   
+[33] gtable_0.3.0                  glue_1.4.2                   
+[35] GenomeInfoDbData_1.2.3        dplyr_1.0.2                  
+[37] rappdirs_0.3.1                Rcpp_1.0.5                   
+[39] vctrs_0.3.4                   ExperimentHub_1.14.2         
+[41] DelayedMatrixStats_1.10.1     xfun_0.18                    
+[43] stringr_1.4.0                 mime_0.9                     
+[45] lifecycle_0.2.0               irlba_2.3.3                  
+[47] statmod_1.4.34                AnnotationHub_2.20.2         
+[49] edgeR_3.30.3                  zlibbioc_1.34.0              
+[51] scales_1.1.1                  promises_1.1.1               
+[53] yaml_2.2.1                    curl_4.3                     
+[55] memoise_1.1.0                 gridExtra_2.3                
+[57] stringi_1.5.3                 RSQLite_2.2.1                
+[59] BiocVersion_3.11.1            scran_1.16.0                 
+[61] BiocParallel_1.22.0           rlang_0.4.7                  
+[63] pkgconfig_2.0.3               bitops_1.0-6                 
+[65] evaluate_0.14                 lattice_0.20-41              
+[67] purrr_0.3.4                   bit_4.0.4                    
+[69] tidyselect_1.1.0              magrittr_1.5                 
+[71] R6_2.4.1                      generics_0.0.2               
+[73] DBI_1.1.0                     pillar_1.4.6                 
+[75] whisker_0.4                   withr_2.3.0                  
+[77] RCurl_1.98-1.2                tibble_3.0.3                 
+[79] crayon_1.3.4                  BiocFileCache_1.12.1         
+[81] rmarkdown_2.4                 viridis_0.5.1                
+[83] locfit_1.5-9.4                grid_4.0.2                   
+[85] data.table_1.13.0             blob_1.2.1                   
+[87] git2r_0.27.1                  digest_0.6.25                
+[89] xtable_1.8-4                  httpuv_1.5.4                 
+[91] R.utils_2.10.1                munsell_0.5.0                
+[93] beeswarm_0.2.3                viridisLite_0.3.0            
+[95] vipor_0.4.5                  </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

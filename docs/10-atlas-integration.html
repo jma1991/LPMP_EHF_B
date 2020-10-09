@@ -12,7 +12,7 @@
 <meta name="author" content="James Ashmore" />
 
 
-<title>Atlas Integration</title>
+<title>Atlas integration</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,6 +38,15 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -422,6 +431,34 @@ div.tocify {
     <li>
       <a href="10-atlas-integration.html"></a>
     </li>
+    <li class="dropdown-header">Atlas neighbors</li>
+    <li>
+      <a href="11-atlas-neighbors.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas trajectory</li>
+    <li>
+      <a href="12-atlas-trajectory.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas clustering</li>
+    <li>
+      <a href="13-atlas-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas markers</li>
+    <li>
+      <a href="14-atlas-markers.html"></a>
+    </li>
+    <li class="dropdown-header">Scenic analysis</li>
+    <li>
+      <a href="15-scenic-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Geneset activity</li>
+    <li>
+      <a href="16-geneset-activity.html"></a>
+    </li>
+    <li class="dropdown-header">Haystack analysis</li>
+    <li>
+      <a href="17-haystack-analysis.html"></a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -445,9 +482,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Atlas Integration</h1>
+<h1 class="title toc-ignore">Atlas integration</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">24 September, 2020</h4>
+<h4 class="date">08 October, 2020</h4>
 
 </div>
 
@@ -472,7 +509,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-24
+<strong>Last updated:</strong> 2020-10-08
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -496,7 +533,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -563,16 +600,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a12d9c15fb5df63036e332fd054b1624a1e556btargetblank8a12d9ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a12d9c15fb5df63036e332fd054b1624a1e556b" target="_blank">8a12d9c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -585,34 +622,44 @@ Ignored files:
 
 Untracked files:
     Untracked:  LICENSE
-    Untracked:  analysis/10-atlas-integration.Rmd
-    Untracked:  analysis/11-scenic-analysis.Rmd
-    Untracked:  analysis/12-haystack-analysis.Rmd
-    Untracked:  analysis/13-geneset-activity.Rmd
-    Untracked:  analysis/Untitled.Rmd
+    Untracked:  _workflowr.R
+    Untracked:  _workflowr.sh
+    Untracked:  analysis/11-atlas-neighbors.Rmd
+    Untracked:  analysis/12-atlas-trajectory.Rmd
+    Untracked:  analysis/13-atlas-clustering.Rmd
+    Untracked:  analysis/14-atlas-markers.Rmd
+    Untracked:  analysis/15-scenic-analysis.Rmd
+    Untracked:  analysis/16-geneset-activity.Rmd
+    Untracked:  analysis/17-haystack-analysis.Rmd
     Untracked:  analysis/cache/
-    Untracked:  backup/
-    Untracked:  data/01-quality-control.rds
-    Untracked:  data/02-normalization.rds
-    Untracked:  data/03-feature-selection.rds
-    Untracked:  data/04-reduced-dimensions.rds
-    Untracked:  data/05-clustering.rds
-    Untracked:  data/06-doublet-detection.rds
-    Untracked:  data/07-cell-cycle.rds
-    Untracked:  data/08-marker-detection.rds
-    Untracked:  data/09-cell-annotation.rds
-    Untracked:  data/10-data-integration.rds
     Untracked:  data/cell-lineage.csv
-    Untracked:  data/cell-markers.csv
+    Untracked:  data/gene-sets.csv
     Untracked:  data/pyscenic-activity.csv
     Untracked:  data/pyscenic-modules.csv
     Untracked:  data/pyscenic-regulons.csv
     Untracked:  data/salmon-quant.rds
+    Untracked:  output/01-quality-control.rds
+    Untracked:  output/02-normalization.rds
+    Untracked:  output/03-feature-selection.rds
+    Untracked:  output/04-reduced-dimensions.rds
+    Untracked:  output/05-clustering.rds
+    Untracked:  output/06-doublet-detection.rds
+    Untracked:  output/07-cell-cycle.rds
+    Untracked:  output/08-marker-detection.rds
+    Untracked:  output/09-cell-annotation.rds
+    Untracked:  output/11-atlas-neighbors.rds
 
 Unstaged changes:
     Modified:   analysis/01-quality-control.Rmd
+    Modified:   analysis/02-normalization.Rmd
+    Modified:   analysis/03-feature-selection.Rmd
+    Modified:   analysis/04-reduced-dimensions.Rmd
+    Modified:   analysis/05-clustering.Rmd
+    Modified:   analysis/06-doublet-detection.Rmd
+    Modified:   analysis/07-cell-cycle.Rmd
     Modified:   analysis/08-marker-detection.Rmd
     Modified:   analysis/09-cell-annotation.Rmd
+    Modified:   analysis/10-atlas-integration.Rmd
     Deleted:    analysis/10-data-integration.Rmd
     Modified:   analysis/_site.yml
 
@@ -627,23 +674,89 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/10-atlas-integration.Rmd</code>) and HTML (<code>docs/10-atlas-integration.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/5af95d320199428478faa972cbfbd54d75364d11/docs/10-atlas-integration.html" target="_blank">5af95d3</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/442ee23d427da12ae7649e909c05f9efcd9c7dc1/analysis/10-atlas-integration.Rmd" target="_blank">442ee23</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+publish
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
 </div>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
+</div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<p>Set chunk options:</p>
+<p>Setup chunk options:</p>
 <pre class="r"><code>knitr::opts_chunk$set(
   autodep    = TRUE,
-  cache      = FALSE,
+  cache      = TRUE,
+  cache.path = &quot;cache/10-atlas-integration.Rmd/&quot;,
   dev        = &quot;png&quot;,
   error      = FALSE,
   message    = FALSE,
-  warning    = FALSE
+  warning    = FALSE,
+  fig.align = &quot;center&quot;,
+  out.width = &#39;100%&#39;
 )</code></pre>
 <p>Load Bioconductor packages:</p>
 <pre class="r"><code>library(batchelor)
@@ -658,10 +771,10 @@ library(scran)</code></pre>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
-<div id="query-data" class="section level3">
-<h3>Query data</h3>
+<div id="test-data" class="section level3">
+<h3>Test data</h3>
 <p>Read experiment object:</p>
-<pre class="r"><code>sce &lt;- readRDS(&quot;data/09-cell-annotation.rds&quot;)</code></pre>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/09-cell-annotation.rds&quot;)</code></pre>
 <p>Clear metadata slot:</p>
 <pre class="r"><code>metadata(sce) &lt;- list()</code></pre>
 <p>Make rownames compatible:</p>
@@ -669,31 +782,29 @@ library(scran)</code></pre>
 <p>Clear rowData slot:</p>
 <pre class="r"><code>rowData(sce) &lt;- NULL</code></pre>
 <p>Replace rowRanges slot:</p>
-<pre class="r"><code>row &lt;- PartitioningByEnd(integer(length(sce)), names = rownames(sce))
-
-row &lt;- relist(GRanges(), row)
-
-rowRanges(sce) &lt;- row</code></pre>
+<pre class="r"><code>rowRanges(sce) &lt;- relist(GRanges(), PartitioningByEnd(integer(length(sce)), names = rownames(sce)))</code></pre>
 <p>Clear colnames slot:</p>
 <pre class="r"><code>colnames(sce) &lt;- NULL</code></pre>
-<p>Replace colData slot:</p>
+<p>Make colData compatible:</p>
 <pre class="r"><code>colData(sce) &lt;- DataFrame(
-  cell = paste(&quot;cell&quot;, seq_len(ncol(sce)), sep = &quot;_&quot;),
+  cell = NA,
   barcode = NA,
-  sample = &quot;LPMP_EHF_B&quot;,
+  sample = 38, # reference data has 37 samples
   pool = NA,
-  stage = &quot;E7.25-8&quot;,
+  stage = NA,
   sequencing.batch = NA,
-  theiler = &quot;TS11c&quot;,
-  doub.density = sce$doublet_score,
-  doublet = sce$doublet_cluster,
-  cluster = sce$cluster,
+  theiler = NA,
+  doub.density = NA,
+  doublet = NA,
+  cluster = NA,
   cluster.sub = NA,
   cluster.stage = NA,
   cluster.theiler = NA,
   stripped = NA,
-  celltype = sce$celltype,
-  colour = EmbryoCelltypeColours[sce$celltype]
+  celltype = NA,
+  colour = NA,
+  sizeFactor = sizeFactors(sce),
+  source = &quot;test&quot; # identify source of data
 )</code></pre>
 <p>Clear reducedDims slot:</p>
 <pre class="r"><code>reducedDims(sce) &lt;- NULL</code></pre>
@@ -702,22 +813,36 @@ rowRanges(sce) &lt;- row</code></pre>
 </div>
 <div id="reference-data" class="section level3">
 <h3>Reference data</h3>
-<p>Subset experiment metadata:</p>
-<pre class="r"><code>dat &lt;- subset(AtlasSampleMetadata, stage %in% c(&quot;E7.25&quot;, &quot;E7.5&quot;, &quot;E7.75&quot;, &quot;E8.0&quot;))</code></pre>
-<p>Read experiment object:</p>
-<pre class="r"><code>ref &lt;- EmbryoAtlasData(type = &quot;processed&quot;, samples = dat$sample)</code></pre>
-<p>Filter problematic and unknown cells:</p>
-<pre class="r"><code>nan &lt;- ref$stripped | ref$doublet | is.na(ref$celltype)
-
-ref &lt;- ref[, !nan]</code></pre>
+<p>Load the mouse gastrulation data package:</p>
+<pre class="r"><code>library(MouseGastrulationData)</code></pre>
+<p>Subset atlas sample metadata by embryonic stage:</p>
+<pre class="r"><code>AtlasSampleMetadata &lt;- subset(AtlasSampleMetadata, stage %in% c(&quot;E7.25&quot;, &quot;E7.5&quot;, &quot;E7.75&quot;, &quot;E8.0&quot;))</code></pre>
+<p>Retrieve processed samples from embryo atlas data:</p>
+<pre class="r"><code>ref &lt;- EmbryoAtlasData(type = &quot;processed&quot;, samples = AtlasSampleMetadata$sample)</code></pre>
+<p>Append source label to colData:</p>
+<pre class="r"><code>ref$source &lt;- &quot;reference&quot;</code></pre>
 <p>Compute log-normalized expression values:</p>
 <pre class="r"><code>ref &lt;- logNormCounts(ref)</code></pre>
+<p>Remove cells without a celltype label:</p>
+<pre class="r"><code>use &lt;- !is.na(ref$celltype)
+
+ref &lt;- ref[, use]</code></pre>
+<p>Remove cells marked as stripped nuclei:</p>
+<pre class="r"><code>use &lt;- !ref$stripped
+
+ref &lt;- ref[, use]</code></pre>
+<p>Remove cells marked as doublets:</p>
+<pre class="r"><code>use &lt;- !ref$doublet
+
+ref &lt;- ref[, use]</code></pre>
 <p>Clear metadata slot:</p>
 <pre class="r"><code>metadata(ref) &lt;- list()</code></pre>
 <p>Make rownames compatible:</p>
 <pre class="r"><code>rownames(ref) &lt;- rowData(ref)$ENSEMBL</code></pre>
 <p>Clear rowData slot:</p>
 <pre class="r"><code>rowData(ref) &lt;- NULL</code></pre>
+<p>Replace rowRanges slot:</p>
+<pre class="r"><code>rowRanges(ref) &lt;- relist(GRanges(), PartitioningByEnd(integer(length(ref)), names = rownames(ref)))</code></pre>
 <p>Clear colnames slot:</p>
 <pre class="r"><code>colnames(ref) &lt;- NULL</code></pre>
 <p>Clear reducedDims slot:</p>
@@ -744,11 +869,16 @@ ref &lt;- ref[, !nan]</code></pre>
 </div>
 <div id="integration" class="section level2">
 <h2>Integration</h2>
-<div id="combine-objects" class="section level3">
-<h3>Combine objects</h3>
+<div id="data-processing" class="section level3">
+<h3>Data processing</h3>
 <p>Create list of experiment data:</p>
-<pre class="r"><code>all &lt;- c(ref, LPMP_EHF_B = sce)</code></pre>
-<p>Subset to common features:</p>
+<pre class="r"><code>all &lt;- c(ref, &quot;38&quot; = sce)</code></pre>
+<p>Delete large objects and trigger garbage collection:</p>
+<pre class="r"><code>rm(sce, ref); gc()</code></pre>
+<pre><code>            used   (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
+Ncells   9598043  512.6   17162871   916.6         NA   17162871   916.6
+Vcells 600098384 4578.4 1839124908 14031.5      16384 1835313662 14002.4</code></pre>
+<p>Subset data to common features:</p>
 <pre class="r"><code>ids &lt;- Reduce(intersect, lapply(all, rownames))
 
 all &lt;- lapply(all, &quot;[&quot;, i = ids)</code></pre>
@@ -758,14 +888,16 @@ all &lt;- lapply(all, &quot;[&quot;, i = ids)</code></pre>
 <p>Model the per-gene variance:</p>
 <pre class="r"><code>dec &lt;- lapply(all, modelGeneVar)</code></pre>
 <p>Combine variance decompositions:</p>
-<pre class="r"><code>dec &lt;- do.call(combineVar, dec)</code></pre>
-</div>
-<div id="gene-blacklist" class="section level3">
-<h3>Gene blacklist</h3>
-<p>Append Xist gene to blacklist:</p>
-<pre class="r"><code>dec$blacklist &lt;- FALSE
+<pre class="r"><code>dec &lt;- do.call(combineVar, dec)
 
-idx &lt;- which(rownames(dec) == &quot;ENSMUSG00000086503&quot;)
+rownames(dec) &lt;- Reduce(intersect, lapply(all, rownames))</code></pre>
+</div>
+<div id="feature-selection" class="section level3">
+<h3>Feature selection</h3>
+<p>Create a blacklist of genes to ignore for feature selection:</p>
+<pre class="r"><code>dec$blacklist &lt;- FALSE</code></pre>
+<p>Append Xist gene to blacklist:</p>
+<pre class="r"><code>idx &lt;- which(rownames(dec) == &quot;ENSMUSG00000086503&quot;)
 
 dec$blacklist[idx] &lt;- TRUE</code></pre>
 <p>Append Y chromosome genes to blacklist:</p>
@@ -796,13 +928,10 @@ sel &lt;- select(org.Mm.eg.db, keys = msd$gene_symbol, keytype = &quot;SYMBOL&qu
 idx &lt;- which(rownames(dec) %in% sel$ENSEMBL)
 
 dec$blacklist[idx] &lt;- TRUE</code></pre>
-</div>
-<div id="feature-selection" class="section level3">
-<h3>Feature selection</h3>
 <p>Identify highly variable genes:</p>
 <pre class="r"><code>hvg &lt;- subset(dec, blacklist == FALSE)
 
-hvg &lt;- getTopHVGs(hvg, var.field = &quot;bio&quot;, var.threshold = 0)</code></pre>
+hvg &lt;- getTopHVGs(hvg, var.field = &quot;bio&quot;, var.threshold = 0, fdr.field = &quot;p.value&quot;, fdr.threshold = 0.05)</code></pre>
 </div>
 <div id="batch-normalization" class="section level3">
 <h3>Batch normalization</h3>
@@ -822,9 +951,9 @@ dat$stage &lt;- factor(dat$stage, levels = intersect(lvl, all$stage))
 
 dat &lt;- dat[order(dat$stage, dat$ncells, decreasing = TRUE), ]
   
-idx &lt;- c(as.character(dat$sample), &quot;LPMP_EHF_B&quot;)</code></pre>
+idx &lt;- c(as.character(dat$sample), &quot;38&quot;)</code></pre>
 <p>Correct experiments using nearest neighbours:</p>
-<pre class="r"><code>set.seed(195538969)
+<pre class="r"><code>set.seed(692066530)
 
 mnn &lt;- correctExperiments(
   all,
@@ -833,67 +962,12 @@ mnn &lt;- correctExperiments(
   correct.all = TRUE,
   PARAM = FastMnnParam(merge.order = idx)
 )</code></pre>
-</div>
-</div>
-<div id="diagnostics" class="section level2">
-<h2>Diagnostics</h2>
-<p>Check proportion of lost variance:</p>
-<pre class="r"><code>var &lt;- metadata(mnn)$merge.info$lost.var
-
-col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Reds&quot;))(100)
-
-brk &lt;- seq(0, max(var), length.out = 101)
-
-pheatmap(var, color = col, display_numbers = TRUE, number_format = &quot;%.2f&quot;, cluster_cols = FALSE, cluster_rows = FALSE)</code></pre>
-<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Cluster on the corrected PCA to obtain a partitioning of the cells:</p>
-<pre class="r"><code>snn &lt;- buildSNNGraph(mnn, type = &quot;jaccard&quot;, use.dimred = &quot;corrected&quot;)
-
-com &lt;- igraph::cluster_louvain(snn)
-
-mnn$cluster &lt;- factor(com$membership)</code></pre>
-<p>Tabulate number of cells from multiple batches within each cluster:</p>
-<pre class="r"><code>tab &lt;- table(Cluster = mnn$cluster, Batch = mnn$batch)
-
-col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Blues&quot;))(100)
-
-brk &lt;- seq(0, max(tab), length.out = 101)
-
-pheatmap(tab, color = col, display_numbers = TRUE, number_format = &quot;%d&quot;, cluster_cols = FALSE, cluster_rows = FALSE)</code></pre>
-<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Perform UMAP on the corrected PCA matrix:</p>
-<pre class="r"><code>set.seed(42)
-
-mnn &lt;- runUMAP(mnn, dimred = &quot;corrected&quot;, n_neighbors = 20, min_dist = 0.7)</code></pre>
-<p>Visualize the corrected PCA using a UMAP plot:</p>
-<pre class="r"><code>dim &lt;- reducedDim(mnn, &quot;UMAP&quot;)
-
-dim &lt;- as.data.frame(dim)
-
-colnames(dim) &lt;- c(&quot;x&quot;, &quot;y&quot;)
-
-col &lt;- colData(mnn)
-
-col &lt;- as.data.frame(col)
-
-dat &lt;- cbind(dim, col)
-
-dim &lt;- dim[sample(nrow(dim), nrow(dim) * 0.1), ]
-
-dat$batch &lt;- factor(dat$batch, levels = idx)
-
-ggplot(dat, aes(x, y)) + 
-  geom_point(data = dim, colour = &quot;gainsboro&quot;, size = 0.1) + 
-  geom_point(aes(colour = celltype), size = 0.1, show.legend = FALSE) + 
-  scale_colour_manual(values = EmbryoCelltypeColours) + 
-  facet_wrap(~ batch) + 
-  theme_bw() + 
-  theme(aspect.ratio = 1, axis.title = element_blank())</code></pre>
-<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-44-1.png" width="864" style="display: block; margin: auto;" /></p>
-</div>
-<div id="post-processing" class="section level2">
-<h2>Post-processing</h2>
-<p>Make feature names unique:</p>
+<p>Delete large objects and trigger garbage collection:</p>
+<pre class="r"><code>rm(all); gc()</code></pre>
+<pre><code>            used   (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
+Ncells   9846178  525.9   17162871   916.6         NA   17162871   916.6
+Vcells 622523475 4749.5 1839124908 14031.5      16384 1838946176 14030.1</code></pre>
+<p>Replace rowData slot:</p>
 <pre class="r"><code>rowData(mnn) &lt;- DataFrame(
   gene_id = rownames(mnn),
   gene_name = mapIds(EnsDb.Mmusculus.v79, keys = rownames(mnn), column = &quot;GENENAME&quot;, keytype = &quot;GENEID&quot;),
@@ -906,12 +980,64 @@ metadata(mnn)$combineVar &lt;- dec</code></pre>
 <p>Store highly variable genes:</p>
 <pre class="r"><code>metadata(mnn)$getTopHVGs &lt;- hvg</code></pre>
 </div>
+</div>
+<div id="diagnostics" class="section level2">
+<h2>Diagnostics</h2>
+<p>Check proportion of lost variance:</p>
+<pre class="r"><code>var &lt;- metadata(mnn)$merge.info$lost.var
+
+col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Reds&quot;))(100)
+
+brk &lt;- seq(0, max(var), length.out = 101)
+
+pheatmap(var[, idx], color = col, display_numbers = TRUE, number_format = &quot;%.2f&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
+<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-50-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Cluster on the corrected PCA to obtain a partitioning of the cells:</p>
+<pre class="r"><code>snn &lt;- buildSNNGraph(mnn, type = &quot;jaccard&quot;, use.dimred = &quot;corrected&quot;)
+
+com &lt;- igraph::cluster_louvain(snn)</code></pre>
+<p>Tabulate number of cells from multiple batches within each cluster:</p>
+<pre class="r"><code>tab &lt;- table(Cluster = com$membership, Batch = mnn$batch)
+
+col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Blues&quot;))(100)
+
+brk &lt;- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab[, idx], color = col, display_numbers = TRUE, number_format = &quot;%d&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
+<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-52-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Perform TSNE on the corrected PCA matrix:</p>
+<pre class="r"><code>set.seed(42)
+
+mnn &lt;- runTSNE(mnn, dimred = &quot;corrected&quot;, perplexity = 120) # same settings as reference analysis</code></pre>
+<p>Visualize the corrected PCA using a TSNE plot:</p>
+<pre class="r"><code>ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = &quot;#000000&quot;) + 
+  labs(x = &quot;UMAP 1&quot;, y = &quot;UMAP 2&quot;) + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-54-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Perform UMAP on the corrected PCA matrix:</p>
+<pre class="r"><code>set.seed(42)
+
+mnn &lt;- runUMAP(mnn, dimred = &quot;corrected&quot;, n_neighbors = 20, min_dist = 0.7) # same settings as reference analysis</code></pre>
+<p>Visualize the corrected PCA using a UMAP plot:</p>
+<pre class="r"><code>ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = &quot;#000000&quot;) + 
+  labs(x = &quot;UMAP 1&quot;, y = &quot;UMAP 2&quot;) + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/10-atlas-integration.Rmd/unnamed-chunk-56-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
 <div id="output" class="section level3">
 <h3>Output</h3>
 <p>Save integrated experiment object to disk:</p>
-<pre class="r"><code>saveRDS(mnn, file = &quot;data/10-atlas-integration.rds&quot;)</code></pre>
+<pre class="r"><code>saveRDS(mnn, file = &quot;output/10-atlas-integration.rds&quot;)</code></pre>
 </div>
 <div id="session" class="section level3">
 <h3>Session</h3>
@@ -933,7 +1059,7 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] msigdbr_7.1.1               scran_1.16.0               
+ [1] msigdbr_7.2.1               scran_1.16.0               
  [3] scater_1.16.2               ggplot2_3.3.2              
  [5] pheatmap_1.0.12             org.Mm.eg.db_3.11.4        
  [7] MouseGastrulationData_1.2.0 EnsDb.Mmusculus.v79_2.99.0 
@@ -941,66 +1067,67 @@ other attached packages:
 [11] GenomicFeatures_1.40.1      AnnotationDbi_1.50.3       
 [13] batchelor_1.4.0             SingleCellExperiment_1.10.1
 [15] SummarizedExperiment_1.18.2 DelayedArray_0.14.1        
-[17] matrixStats_0.56.0          Biobase_2.48.0             
+[17] matrixStats_0.57.0          Biobase_2.48.0             
 [19] GenomicRanges_1.40.0        GenomeInfoDb_1.24.2        
 [21] IRanges_2.22.2              S4Vectors_0.26.1           
 [23] BiocGenerics_0.34.0         workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
-  [1] ggbeeswarm_0.6.0              colorspace_1.4-1             
-  [3] ellipsis_0.3.1                rprojroot_1.3-2              
-  [5] XVector_0.28.0                BiocNeighbors_1.6.0          
-  [7] fs_1.5.0                      rstudioapi_0.11              
-  [9] farver_2.0.3                  bit64_4.0.5                  
- [11] RSpectra_0.16-0               interactiveDisplayBase_1.26.3
- [13] codetools_0.2-16              knitr_1.30                   
- [15] Rsamtools_2.4.0               dbplyr_1.4.4                 
- [17] uwot_0.1.8                    shiny_1.5.0                  
- [19] BiocManager_1.30.10           compiler_4.0.2               
- [21] httr_1.4.2                    dqrng_0.2.1                  
- [23] backports_1.1.10              fastmap_1.0.1                
- [25] assertthat_0.2.1              Matrix_1.2-18                
- [27] lazyeval_0.2.2                limma_3.44.3                 
- [29] later_1.1.0.1                 BiocSingular_1.4.0           
- [31] htmltools_0.5.0               prettyunits_1.1.1            
- [33] tools_4.0.2                   rsvd_1.0.3                   
- [35] igraph_1.2.5                  gtable_0.3.0                 
- [37] glue_1.4.2                    GenomeInfoDbData_1.2.3       
- [39] dplyr_1.0.2                   rappdirs_0.3.1               
- [41] Rcpp_1.0.5                    vctrs_0.3.4                  
- [43] Biostrings_2.56.0             ExperimentHub_1.14.2         
- [45] rtracklayer_1.48.0            DelayedMatrixStats_1.10.1    
- [47] xfun_0.17                     stringr_1.4.0                
- [49] mime_0.9                      lifecycle_0.2.0              
- [51] irlba_2.3.3                   statmod_1.4.34               
- [53] XML_3.99-0.5                  edgeR_3.30.3                 
- [55] AnnotationHub_2.20.2          zlibbioc_1.34.0              
- [57] scales_1.1.1                  hms_0.5.3                    
- [59] promises_1.1.1                ProtGenerics_1.20.0          
- [61] RColorBrewer_1.1-2            yaml_2.2.1                   
- [63] curl_4.3                      memoise_1.1.0                
- [65] gridExtra_2.3                 biomaRt_2.44.1               
- [67] stringi_1.5.3                 RSQLite_2.2.0                
- [69] BiocVersion_3.11.1            BiocParallel_1.22.0          
- [71] rlang_0.4.7                   pkgconfig_2.0.3              
- [73] bitops_1.0-6                  evaluate_0.14                
- [75] lattice_0.20-41               purrr_0.3.4                  
- [77] labeling_0.3                  GenomicAlignments_1.24.0     
- [79] bit_4.0.4                     tidyselect_1.1.0             
- [81] RcppAnnoy_0.0.16              magrittr_1.5                 
- [83] R6_2.4.1                      generics_0.0.2               
- [85] DBI_1.1.0                     withr_2.3.0                  
- [87] pillar_1.4.6                  RCurl_1.98-1.2               
- [89] tibble_3.0.3                  crayon_1.3.4                 
- [91] BiocFileCache_1.12.1          rmarkdown_2.3                
- [93] viridis_0.5.1                 progress_1.2.2               
- [95] locfit_1.5-9.4                grid_4.0.2                   
- [97] blob_1.2.1                    git2r_0.27.1                 
- [99] digest_0.6.25                 xtable_1.8-4                 
-[101] httpuv_1.5.4                  openssl_1.4.3                
-[103] munsell_0.5.0                 beeswarm_0.2.3               
-[105] viridisLite_0.3.0             vipor_0.4.5                  
-[107] askpass_1.1                  </code></pre>
+  [1] Rtsne_0.15                    ggbeeswarm_0.6.0             
+  [3] colorspace_1.4-1              ellipsis_0.3.1               
+  [5] rprojroot_1.3-2               XVector_0.28.0               
+  [7] BiocNeighbors_1.6.0           fs_1.5.0                     
+  [9] rstudioapi_0.11               farver_2.0.3                 
+ [11] bit64_4.0.5                   RSpectra_0.16-0              
+ [13] interactiveDisplayBase_1.26.3 codetools_0.2-16             
+ [15] knitr_1.30                    Rsamtools_2.4.0              
+ [17] dbplyr_1.4.4                  uwot_0.1.8                   
+ [19] shiny_1.5.0                   BiocManager_1.30.10          
+ [21] compiler_4.0.2                httr_1.4.2                   
+ [23] dqrng_0.2.1                   backports_1.1.10             
+ [25] fastmap_1.0.1                 assertthat_0.2.1             
+ [27] Matrix_1.2-18                 lazyeval_0.2.2               
+ [29] limma_3.44.3                  later_1.1.0.1                
+ [31] BiocSingular_1.4.0            htmltools_0.5.0              
+ [33] prettyunits_1.1.1             tools_4.0.2                  
+ [35] rsvd_1.0.3                    igraph_1.2.5                 
+ [37] gtable_0.3.0                  glue_1.4.2                   
+ [39] GenomeInfoDbData_1.2.3        dplyr_1.0.2                  
+ [41] rappdirs_0.3.1                Rcpp_1.0.5                   
+ [43] vctrs_0.3.4                   Biostrings_2.56.0            
+ [45] ExperimentHub_1.14.2          rtracklayer_1.48.0           
+ [47] DelayedMatrixStats_1.10.1     xfun_0.18                    
+ [49] stringr_1.4.0                 mime_0.9                     
+ [51] lifecycle_0.2.0               irlba_2.3.3                  
+ [53] statmod_1.4.34                XML_3.99-0.5                 
+ [55] edgeR_3.30.3                  AnnotationHub_2.20.2         
+ [57] zlibbioc_1.34.0               scales_1.1.1                 
+ [59] hms_0.5.3                     promises_1.1.1               
+ [61] ProtGenerics_1.20.0           RColorBrewer_1.1-2           
+ [63] yaml_2.2.1                    curl_4.3                     
+ [65] memoise_1.1.0                 gridExtra_2.3                
+ [67] biomaRt_2.44.1                stringi_1.5.3                
+ [69] RSQLite_2.2.1                 BiocVersion_3.11.1           
+ [71] BiocParallel_1.22.0           rlang_0.4.7                  
+ [73] pkgconfig_2.0.3               bitops_1.0-6                 
+ [75] evaluate_0.14                 lattice_0.20-41              
+ [77] purrr_0.3.4                   labeling_0.3                 
+ [79] GenomicAlignments_1.24.0      bit_4.0.4                    
+ [81] tidyselect_1.1.0              RcppAnnoy_0.0.16             
+ [83] magrittr_1.5                  R6_2.4.1                     
+ [85] generics_0.0.2                DBI_1.1.0                    
+ [87] withr_2.3.0                   pillar_1.4.6                 
+ [89] whisker_0.4                   RCurl_1.98-1.2               
+ [91] tibble_3.0.3                  crayon_1.3.4                 
+ [93] BiocFileCache_1.12.1          rmarkdown_2.4                
+ [95] viridis_0.5.1                 progress_1.2.2               
+ [97] locfit_1.5-9.4                grid_4.0.2                   
+ [99] blob_1.2.1                    git2r_0.27.1                 
+[101] digest_0.6.25                 xtable_1.8-4                 
+[103] httpuv_1.5.4                  openssl_1.4.3                
+[105] munsell_0.5.0                 beeswarm_0.2.3               
+[107] viridisLite_0.3.0             vipor_0.4.5                  
+[109] askpass_1.1                  </code></pre>
 </div>
 </div>
 
