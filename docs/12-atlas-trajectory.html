@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+<meta name="date" content="2020-10-02" />
+
+<title>Atlas trajectory</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.15/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP-EHF Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Quality control</li>
+    <li>
+      <a href="01-quality-control.html"></a>
+    </li>
+    <li class="dropdown-header">Normalization</li>
+    <li>
+      <a href="02-normalization.html"></a>
+    </li>
+    <li class="dropdown-header">Feature selection</li>
+    <li>
+      <a href="03-feature-selection.html"></a>
+    </li>
+    <li class="dropdown-header">Dimensionality reduction</li>
+    <li>
+      <a href="04-reduced-dimensions.html"></a>
+    </li>
+    <li class="dropdown-header">Clustering</li>
+    <li>
+      <a href="05-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Doublet detection</li>
+    <li>
+      <a href="06-doublet-detection"></a>
+    </li>
+    <li class="dropdown-header">Cell cycle assignment</li>
+    <li>
+      <a href="07-cell-cycle.html"></a>
+    </li>
+    <li class="dropdown-header">Marker gene detection</li>
+    <li>
+      <a href="08-marker-detection.html"></a>
+    </li>
+    <li class="dropdown-header">Cell type annotation</li>
+    <li>
+      <a href="09-cell-annotation.html"></a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Atlas integration</li>
+    <li>
+      <a href="10-atlas-integration.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas neighbors</li>
+    <li>
+      <a href="11-atlas-neighbors.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas trajectory</li>
+    <li>
+      <a href="12-atlas-trajectory.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas clustering</li>
+    <li>
+      <a href="13-atlas-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas markers</li>
+    <li>
+      <a href="14-atlas-markers.html"></a>
+    </li>
+    <li class="dropdown-header">Scenic analysis</li>
+    <li>
+      <a href="15-scenic-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Geneset activity</li>
+    <li>
+      <a href="16-geneset-activity.html"></a>
+    </li>
+    <li class="dropdown-header">Haystack analysis</li>
+    <li>
+      <a href="17-haystack-analysis.html"></a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">License</li>
+<li>
+  <a href="license.html"></a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Atlas trajectory</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">2020-10-02</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-10-09
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree38618515fdb32bac450b5e31cad7a6b2e0812472targetblank3861851a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/38618515fdb32bac450b5e31cad7a6b2e0812472" target="_blank">3861851</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree38618515fdb32bac450b5e31cad7a6b2e0812472targetblank3861851a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/38618515fdb32bac450b5e31cad7a6b2e0812472" target="_blank">3861851</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  LICENSE
+    Untracked:  analysis/cache/
+    Untracked:  code/EmbryoColourPalette.R
+    Untracked:  code/coolmap.R
+    Untracked:  code/reorder_within.R
+    Untracked:  data/cell-lineage.csv
+    Untracked:  data/gene-sets.csv
+    Untracked:  data/pyscenic-activity.csv
+    Untracked:  data/pyscenic-modules.csv
+    Untracked:  data/pyscenic-regulons.csv
+    Untracked:  data/salmon-quant.rds
+    Untracked:  output/01-quality-control.rds
+    Untracked:  output/02-normalization.rds
+    Untracked:  output/03-feature-selection.rds
+    Untracked:  output/04-reduced-dimensions.rds
+    Untracked:  output/05-clustering.rds
+    Untracked:  output/06-doublet-detection.rds
+    Untracked:  output/07-cell-cycle.rds
+    Untracked:  output/08-marker-detection.rds
+    Untracked:  output/09-cell-annotation.rds
+    Untracked:  output/10-atlas-integration.rds
+    Untracked:  output/11-atlas-neighbors.rds
+
+Unstaged changes:
+    Deleted:    analysis/10-data-integration.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/12-atlas-trajectory.Rmd</code>) and HTML (<code>docs/12-atlas-trajectory.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/18fbbcde45f8a05a3c2c25cf508d775c68f5ebad/analysis/12-atlas-trajectory.Rmd" target="_blank">18fbbcd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+<td>
+publish
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Setup chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/12-atlas-trajectory.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = &quot;center&quot;,
+  out.width = &#39;100%&#39;
+)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(MouseGastrulationData)
+library(scater)
+library(scran)
+library(slingshot)
+library(tradeSeq)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(bigmemory)
+library(ggforce)
+library(ggthemes)
+library(pheatmap)
+library(RColorBrewer)</code></pre>
+<p>Source convienence functions:</p>
+<pre class="r"><code>source(&quot;code/reorder_within.R&quot;)</code></pre>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/11-atlas-neighbors.rds&quot;)</code></pre>
+</div>
+<div id="diffusion" class="section level2">
+<h2>Diffusion</h2>
+<p>Remove cells not known to be present in the data:</p>
+<pre class="r"><code>nan &lt;- c(&quot;NMP&quot;, &quot;PGC&quot;, &quot;Surface ectoderm&quot;)
+
+sce &lt;- sce[, !sce$celltype %in% nan]</code></pre>
+<p>Produce a diffusion map for the cells:</p>
+<pre class="r"><code>set.seed(385008972)
+
+sce &lt;- runDiffusionMap(sce, dimred = &quot;corrected&quot;)</code></pre>
+<p>Define annotation labels for visualisation:</p>
+<pre class="r"><code>source.labels &lt;- c(&quot;reference&quot; = &quot;Mouse Embryo Atlas&quot;, &quot;test&quot; = &quot;Mouse LPMP LHF&quot;)</code></pre>
+<p>Plot DiffusionMap of cells coloured by source data:</p>
+<pre class="r"><code>ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = &quot;Source&quot;, labels = source.labels, palette = &quot;Tableau 10&quot;) + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot DiffusionMap of cells coloured by embryonic stage:</p>
+<pre class="r"><code>ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = &quot;Stage&quot;, palette = &quot;Tableau 10&quot;, na.value = &quot;#000000&quot;) + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot DiffusionMap of cells coloured by celltype annotation:</p>
+<pre class="r"><code>ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(name = &quot;Celltype&quot;, values = EmbryoCelltypeColours) + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="entropy" class="section level2">
+<h2>Entropy</h2>
+<p>Function to compute the entropy of the expression profile within each cell:</p>
+<pre class="r"><code>whichNonZero &lt;- function(x) {
+  
+  x &lt;- as(x, &quot;SparseArraySeed&quot;)
+  
+  z &lt;- nzindex(x)
+  
+  list(i = z[, 1], j = z[, 2], x = nzdata(x))
+
+}
+
+calculateEntropy &lt;- function(x) {
+  
+  n &lt;- whichNonZero(counts(x))
+  
+  p &lt;- n$x / colSums(counts(x))[n$j]
+  
+  e &lt;- - p * log(p)
+  
+  e &lt;- by(e, INDICES = n$j, FUN = sum)
+  
+  e &lt;- as.vector(e)
+  
+}</code></pre>
+<p>Calculate the entropy of the expression profile within each cell:</p>
+<pre class="r"><code>sce$entropy &lt;- calculateEntropy(sce)</code></pre>
+<p>Plot DiffusionMap of cells from reference and test data coloured by entropy:</p>
+<pre class="r"><code>ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot DiffusionMap of cells from reference data coloured by entropy:</p>
+<pre class="r"><code>ggcells(sce[, sce$source == &quot;reference&quot;], aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot DiffusionMap of cells from test data coloured by entropy:</p>
+<pre class="r"><code>ggcells(sce[, sce$source == &quot;test&quot;], aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot entropy of cells from reference and test data:</p>
+<pre class="r"><code>ggcells(sce, aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = &quot;free_x&quot;) + 
+  labs(y = &quot;Entropy&quot;, colour = &quot;Celltype&quot;) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot entropy of cells from reference data:</p>
+<pre class="r"><code>ggcells(sce[, sce$source == &quot;reference&quot;], aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = &quot;free_x&quot;) + 
+  labs(y = &quot;Entropy&quot;, colour = &quot;Celltype&quot;) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot entropy of cells from test data:</p>
+<pre class="r"><code>ggcells(sce[, sce$source == &quot;test&quot;], aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = &quot;free_x&quot;) + 
+  labs(y = &quot;Entropy&quot;, colour = &quot;Celltype&quot;) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="trajectory" class="section level2">
+<h2>Trajectory</h2>
+<p>Function to calculate distance with MNN coordinates:</p>
+<pre class="r"><code>dist_clusters_diag &lt;- function(X, w1, w2){
+    if(length(w1) != nrow(X) | length(w2) != nrow(X)){
+        stop(&quot;Reduced dimensional matrix and weights vector contain different
+             numbers of points.&quot;)
+    }
+    mu1 &lt;- colWeightedMeans(X, w = w1)
+    mu2 &lt;- colWeightedMeans(X, w = w2)
+    diff &lt;- mu1 - mu2
+    if(sum(w1&gt;0)==1){
+        s1 &lt;-  diag(ncol(X))
+    }else{
+        s1 &lt;- diag(diag(cov.wt(X, wt = w1)$cov))
+    }
+    if(sum(w2&gt;0)==1){
+        s2 &lt;-  diag(ncol(X))
+    }else{
+        s2 &lt;- diag(diag(cov.wt(X, wt = w2)$cov))
+    }
+    return(as.numeric(t(diff) %*% solve(s1 + s2) %*% diff))
+}</code></pre>
+<p>Perform lineage inference with Slingshot:</p>
+<pre class="r"><code>set.seed(378891116)
+
+sce &lt;- slingshot(sce, reducedDim = &quot;corrected&quot;, dist.fun = dist_clusters_diag)</code></pre>
+<p>Reverse pseudotime to fit with known developmental trajectory:</p>
+<pre class="r"><code>sce$slingPseudotime_1 &lt;- max(abs(sce$slingPseudotime_1)) + -sce$slingPseudotime_1</code></pre>
+<p>Construct path data from trajectory curves:</p>
+<pre class="r"><code>sc1 &lt;- embedCurves(sce, &quot;DiffusionMap&quot;)
+
+sc1 &lt;- slingCurves(sc1)[[1]]
+
+sc1 &lt;- data.frame(sc1$s[sc1$ord, ])</code></pre>
+<p>Plot DiffusionMap of cells coloured by pseudotime:</p>
+<pre class="r"><code>ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2)) + 
+  geom_point(aes(colour = slingPseudotime_1)) + 
+  geom_path(data = sc1, aes(DC1, DC2), size = 0.8) + 
+  scale_colour_viridis_c() + 
+  labs(x = &quot;DC1&quot;, y = &quot;DC2&quot;, colour = &quot;Pseudotime&quot;) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot pseudotime of cells coloured by celltype and facteted by data source:</p>
+<pre class="r"><code>ggcells(sce, aes(slingPseudotime_1, reorder(celltype, slingPseudotime_1, mean), colour = celltype)) + 
+  geom_jitter(show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  labs(x = &quot;Pseudotime&quot;, y = &quot;Celltype&quot;, colour = &quot;Celltype&quot;) + 
+  theme_bw() + theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-25-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="differential" class="section level2">
+<h2>Differential</h2>
+<p>Fit the NB-GAM model with batch effect design matrix on highly variable genes:</p>
+<pre class="r"><code>set.seed(430396281)
+
+mod &lt;- model.matrix(~ 0 + source, colData(sce))
+
+colnames(mod) &lt;- c(&quot;reference&quot;, &quot;test&quot;)
+
+idx &lt;- which(rowData(sce)$gene_id %in% metadata(sce)$getTopHVGs)
+
+fit &lt;- fitGAM(counts = counts(sce), sds = SlingshotDataSet(sce), U = mod, genes = idx)</code></pre>
+<p>Test whether average gene expression is associated with pseudotime:</p>
+<pre class="r"><code>res &lt;- associationTest(fit)
+
+res$FDR &lt;- p.adjust(res$pvalue, method = &quot;fdr&quot;)
+
+res$symbol &lt;- rowData(sce)$gene_name[match(rownames(res), rowData(sce)$gene_id)]
+
+res &lt;- subset(res, FDR &lt; 0.05)
+
+res &lt;- res[order(res$pvalue), ]</code></pre>
+<p>Create table of associationTest results:</p>
+<pre class="r"><code>knitr::knit_print(DT::datatable(res))</code></pre>
+<div id="htmlwidget-1ccb42a44ed25044a657" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1ccb42a44ed25044a657">{"x":{"filter":"none","data":[["ENSMUSG00000026193","ENSMUSG00000039323","ENSMUSG00000026497","ENSMUSG00000066652","ENSMUSG00000026728","ENSMUSG00000026970","ENSMUSG00000027478","ENSMUSG00000017723","ENSMUSG00000042821","ENSMUSG00000055653","ENSMUSG00000067924","ENSMUSG00000073139","ENSMUSG00000051159","ENSMUSG00000051323","ENSMUSG00000051579","ENSMUSG00000050071","ENSMUSG00000031353","ENSMUSG00000027559","ENSMUSG00000028484","ENSMUSG00000028645","ENSMUSG00000029231","ENSMUSG00000062960","ENSMUSG00000005892","ENSMUSG00000003153","ENSMUSG00000023456","ENSMUSG00000008540","ENSMUSG00000002985","ENSMUSG00000003436","ENSMUSG00000074227","ENSMUSG00000030544","ENSMUSG00000030699","ENSMUSG00000048528","ENSMUSG00000025491","ENSMUSG00000010760","ENSMUSG00000031074","ENSMUSG00000019880","ENSMUSG00000031633","ENSMUSG00000079042","ENSMUSG00000042812","ENSMUSG00000032291","ENSMUSG00000013584","ENSMUSG00000020388","ENSMUSG00000037335","ENSMUSG00000000805","ENSMUSG00000018973","ENSMUSG00000017493","ENSMUSG00000034936","ENSMUSG00000025161","ENSMUSG00000021765","ENSMUSG00000020608","ENSMUSG00000020577","ENSMUSG00000022257","ENSMUSG00000062327","ENSMUSG00000014773","ENSMUSG00000023906","ENSMUSG00000024406","ENSMUSG00000045394","ENSMUSG00000024538","ENSMUSG00000055302","ENSMUSG00000047751","ENSMUSG00000027533","ENSMUSG00000102252","ENSMUSG00000010797","ENSMUSG00000022055","ENSMUSG00000042258","ENSMUSG00000049866","ENSMUSG00000024619","ENSMUSG00000030246","ENSMUSG00000036111","ENSMUSG00000021953","ENSMUSG00000075588","ENSMUSG00000044338","ENSMUSG00000024232","ENSMUSG00000041959","ENSMUSG00000075304","ENSMUSG00000000031","ENSMUSG00000022054","ENSMUSG00000019960","ENSMUSG00000020205","ENSMUSG00000044221","ENSMUSG00000031326","ENSMUSG00000022464","ENSMUSG00000032294","ENSMUSG00000023781","ENSMUSG00000019647","ENSMUSG00000024409","ENSMUSG00000030695","ENSMUSG00000024907","ENSMUSG00000020427","ENSMUSG00000031799","ENSMUSG00000027954","ENSMUSG00000038580","ENSMUSG00000031073","ENSMUSG00000030543","ENSMUSG00000062070","ENSMUSG00000021268","ENSMUSG00000051855","ENSMUSG00000026124","ENSMUSG00000031160","ENSMUSG00000048332","ENSMUSG00000084897","ENSMUSG00000002265","ENSMUSG00000070436","ENSMUSG00000020108","ENSMUSG00000024987","ENSMUSG00000029103","ENSMUSG00000022025","ENSMUSG00000063229","ENSMUSG00000018698","ENSMUSG00000029646","ENSMUSG00000047139","ENSMUSG00000057666","ENSMUSG00000017002","ENSMUSG00000023043","ENSMUSG00000079523","ENSMUSG00000027004","ENSMUSG00000046714","ENSMUSG00000039476","ENSMUSG00000032446","ENSMUSG00000071553","ENSMUSG00000028946","ENSMUSG00000097154","ENSMUSG00000043008","ENSMUSG00000060591","ENSMUSG00000029755","ENSMUSG00000024868","ENSMUSG00000021018","ENSMUSG00000019987","ENSMUSG00000023495","ENSMUSG00000003868","ENSMUSG00000046402","ENSMUSG00000030934","ENSMUSG00000006311","ENSMUSG00000038132","ENSMUSG00000063524","ENSMUSG00000026147","ENSMUSG00000055833","ENSMUSG00000024521","ENSMUSG00000009013","ENSMUSG00000025289","ENSMUSG00000049775","ENSMUSG00000025810","ENSMUSG00000027203","ENSMUSG00000015217","ENSMUSG00000031673","ENSMUSG00000024661","ENSMUSG00000025278","ENSMUSG00000031661","ENSMUSG00000020224","ENSMUSG00000061082","ENSMUSG00000026385","ENSMUSG00000015053","ENSMUSG00000039419","ENSMUSG00000042712","ENSMUSG00000004885","ENSMUSG00000036158","ENSMUSG00000030268","ENSMUSG00000043342","ENSMUSG00000004285","ENSMUSG00000031367","ENSMUSG00000068614","ENSMUSG00000027523","ENSMUSG00000042515","ENSMUSG00000020737","ENSMUSG00000006442","ENSMUSG00000056812","ENSMUSG00000027907","ENSMUSG00000063856","ENSMUSG00000033400","ENSMUSG00000037016","ENSMUSG00000053907","ENSMUSG00000016087","ENSMUSG00000031059","ENSMUSG00000030654","ENSMUSG00000027562","ENSMUSG00000029247","ENSMUSG00000032570","ENSMUSG00000045140","ENSMUSG00000021520","ENSMUSG00000024952","ENSMUSG00000045106","ENSMUSG00000085696","ENSMUSG00000087658","ENSMUSG00000024338","ENSMUSG00000068523","ENSMUSG00000029591","ENSMUSG00000005161","ENSMUSG00000032712","ENSMUSG00000059334","ENSMUSG00000046160","ENSMUSG00000003452","ENSMUSG00000021156","ENSMUSG00000006445","ENSMUSG00000031167","ENSMUSG00000031461","ENSMUSG00000021134","ENSMUSG00000040856","ENSMUSG00000068798","ENSMUSG00000042607","ENSMUSG00000032249","ENSMUSG00000030417","ENSMUSG00000063694","ENSMUSG00000067194","ENSMUSG00000061086","ENSMUSG00000021270","ENSMUSG00000075706","ENSMUSG00000005610","ENSMUSG00000086798","ENSMUSG00000049382","ENSMUSG00000022051","ENSMUSG00000002944","ENSMUSG00000032698","ENSMUSG00000037169","ENSMUSG00000038526","ENSMUSG00000043251","ENSMUSG00000031409","ENSMUSG00000094942","ENSMUSG00000045667","ENSMUSG00000093445","ENSMUSG00000039542","ENSMUSG00000096356","ENSMUSG00000056209","ENSMUSG00000014226","ENSMUSG00000024805","ENSMUSG00000004980","ENSMUSG00000024503"],[219.297260154701,131.001625067289,86.6914207797621,157.868886071744,102.858469747394,101.176076309549,214.069162068439,107.201575612113,122.518069532849,137.285133453468,100.023316111713,92.7314367474277,271.856837665406,116.697074422704,187.979116290592,466.075337474559,92.9693397252064,158.469090865711,108.153026934249,272.406382209497,101.514200237066,99.092832951398,87.9550311671721,277.282194890165,136.264170918246,91.6369737098388,109.008542755189,228.904014120641,117.789331655107,291.45951416481,97.5723715329017,187.081954627998,716.158436851817,1004.07460567974,155.24724675415,225.44588924925,205.241786343813,94.6963380247184,181.08681761329,181.669352957246,92.8166629266027,115.182482411988,155.169862210665,85.4145916912706,99.380019771296,91.1124564562906,93.5380076491396,135.184007611762,233.758136984333,187.610516238174,147.850386692338,414.917102844704,314.257236924695,100.808384430624,105.145168116312,128.328330386582,274.738003394673,126.705536870715,82.2786402776179,80.3798247524954,77.0981712227982,76.5518800795711,74.4564302744,73.7953817187745,71.9929056897517,71.9527087375836,71.5949031557594,69.7214226710239,69.7076336189729,66.5513418635693,65.8981522352227,65.5508249360649,63.5456583022527,63.3578042092852,63.2122202718116,62.9983514578501,61.2110560594622,59.1292138689689,58.5842251617753,58.2677374050768,57.6270014608066,57.3652990680216,56.9221942738085,56.0004574627425,55.6489540523047,55.6050130565096,54.9168493103639,53.4690297696604,52.9863980726617,52.7561626883003,52.6460226129437,52.4518740502854,52.2336383715015,51.5654773122441,50.9018141068725,50.3514299164455,49.5076529522059,48.5748917385122,48.1919736903705,48.1336922108586,47.2287656481687,46.668018518016,46.632713026062,46.5646622548945,46.4988905311696,46.1359223997474,45.0704473307784,44.7863719925394,44.7071885965027,44.597000447698,43.8821476893846,43.2531541043865,42.7473410311904,42.6466754305828,42.4788443999044,42.2619608000885,41.7728291513714,40.9986209096161,39.9496603918453,38.4312698965992,36.6473904473968,36.1702326965945,36.12478101151,33.8515664593905,33.6978424365735,33.6137177886456,33.3821063610751,33.0315891604394,32.3757050527762,32.1331167565607,31.7980244215295,31.7744201552822,31.6678961966137,31.6274929090852,31.5423663681811,30.803887531952,30.7189047011849,30.2228513348122,29.7160155560486,28.533968381272,28.3402549646293,28.0957918173892,27.9446555401727,27.5216858699225,26.5599114054195,26.3079847710065,25.9920414482609,25.8778097938676,25.7920145259842,25.389534506823,24.9023608607337,24.6010551849841,24.3410939485201,24.2177320338851,24.0976323396206,24.0570398795511,23.6446394255997,23.1402337802838,23.1075523053323,22.8901736879739,22.2800315962006,22.0625718448675,21.8086619696392,21.7558845867311,21.6714646476901,20.8076726764466,20.578721520469,20.4140042170281,20.1720317970342,20.013544149608,19.9759971271553,19.4435479549287,19.3980312035341,19.3376461454927,19.3317545343303,19.1156353375762,18.9836591466623,18.7972318469082,18.6353821400562,18.527316942601,18.2822042162855,18.106058750283,18.0768416983301,17.9241059657878,17.9023253783863,17.8067144383073,17.3937929901619,17.3384870861627,17.3290317708859,17.1875196098293,17.0862258933197,17.0310106037316,17.027033223924,16.9932741181023,16.8823872674112,16.8371439257086,16.7576556470907,16.6803775363015,16.5739439162291,16.4367202677409,16.3830048445234,16.3568543271115,16.1784192837032,16.0076134200866,15.8547664477968,15.7494668708922,15.7215996923061,15.6537813827899,15.5620933421475,15.5593102911716,15.5347871904951,15.5269858800453,15.0859926626339,14.9608733347069,14.8424346199911,14.8187126921523,14.8047121802097,14.66225043469,14.5221577742791,14.4159923262858,14.3868271000314,14.3076814934963,14.2279344186536,14.1783586856224,13.8528730557047,13.7861412444546],[4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.11022302462516e-16,1.11022302462516e-16,6.66133814775094e-16,8.88178419700125e-16,2.55351295663786e-15,3.5527136788005e-15,8.65973959207622e-15,8.77076189453874e-15,1.04360964314765e-14,2.59792187762287e-14,2.62012633811537e-14,1.21236354289067e-13,1.66422431391311e-13,1.96953564568503e-13,5.20916643154123e-13,5.70543612354868e-13,6.12287998080774e-13,6.79123424163208e-13,1.61415325550252e-12,4.42046399484752e-12,5.75339775821249e-12,6.70463684571132e-12,9.13835673799213e-12,1.03701491838137e-11,1.2845502439518e-11,2.00472971556565e-11,2.37544428571823e-11,2.42635911362754e-11,3.38196137761315e-11,6.79779565970762e-11,8.57778292839839e-11,9.58402246453716e-11,1.01062491708603e-10,1.10969344824241e-10,1.23267396290316e-10,1.70041092317774e-10,2.34019470468638e-10,3.04947067597539e-10,4.5750048194293e-10,7.16145476253871e-10,8.60696736104671e-10,8.85118089932746e-10,1.3664470666086e-09,1.78806047745894e-09,1.81858472725338e-09,1.87889470648628e-09,1.93908133994114e-09,2.307549595848e-09,3.84410325793283e-09,4.40405023560686e-09,4.57415705312769e-09,4.82183515337908e-09,6.78775946560961e-09,9.16886933044481e-09,1.16753544610049e-08,1.22504268951218e-08,1.32727110413455e-08,1.47208357725859e-08,1.85917394812662e-08,2.68959642335531e-08,4.43343067813018e-08,9.12941947595058e-08,2.12917057429429e-07,2.66949171434661e-07,2.72760096509117e-07,7.99289084030264e-07,8.59445736578479e-07,8.94254720495979e-07,9.97519500667288e-07,1.17682366418403e-06,1.60297442242108e-06,1.79691818480432e-06,2.10381743015464e-06,2.12730732984667e-06,2.23660709375295e-06,2.27951088671574e-06,2.37260735647116e-06,3.35672783924323e-06,3.49336013727441e-06,4.40884865604563e-06,5.59110742215374e-06,9.72032416357571e-06,1.06409660349804e-05,1.19275735398494e-05,1.27992486487205e-05,1.5590247366748e-05,2.43958176571191e-05,2.74266427512382e-05,3.17617548735161e-05,3.34914273121267e-05,3.48518021182631e-05,4.20036749018138e-05,5.26358261880855e-05,6.05086704820179e-05,6.82342494696675e-05,7.22356244390321e-05,7.63548690853044e-05,7.77992206837386e-05,9.41018988190878e-05,0.000118713851662067,0.000120512793121197,0.000133186396963914,0.000176267344757286,0.000194753577205553,0.000218783324750893,0.000224135629150801,0.000232968057752747,0.000345718216277269,0.000383757389327055,0.000413661174916702,0.000461821819471409,0.000496334060797854,0.000504877402205839,0.000642915438963776,0.000656318830907443,0.000674528037078681,0.000676331199390812,0.00074587608905452,0.000791775429518027,0.000861407214167165,0.000926745966238873,0.000973075271089807,0.00108681331739413,0.00117656587890513,0.00119214504795984,0.00127696410681122,0.00128953538562748,0.00134618123939945,0.00162038644850371,0.00166106973769498,0.00166812529078075,0.00177732307320277,0.00185978719378876,0.00190631599723223,0.00190971163775466,0.00193877428604783,0.00203733801613493,0.0020789579797772,0.00215411990877379,0.00222975780865731,0.00233823383771437,0.0024857944513651,0.00254602231339141,0.00257586132269028,0.00278886190553507,0.00300896457520372,0.00322036715063179,0.00337444255908315,0.00341641743861787,0.00352072667516079,0.00366674452970472,0.00367126857463784,0.00371137062993177,0.00372421801851686,0.00452614576301857,0.0047830602145239,0.0050394268754298,0.00509237269157803,0.00512387681170856,0.00545552353886281,0.00580216768615982,0.00607916856113833,0.00615750913686064,0.00637512440745924,0.00660201557911455,0.00674703548602429,0.00777973534150833,0.00800983286357271],[0.554036046625789,0.292965364211668,0.92344227754384,1.84451973015917,0.388014402605176,0.258905097556124,0.322408687106208,0.493325964782434,0.654610002348276,0.24026550592335,0.314499128289312,0.701305968472462,0.853536088042339,1.5792784033916,0.372242571077023,0.362154411742478,0.168122217726947,1.03799535198859,0.0993631536088839,0.471696288704289,3.0516266795766,1.21926273152411,0.847798906351367,0.511668383857457,0.128349976399755,1.47317440399585,0.320610016073784,1.19932855259192,0.377471520050903,1.24888761105435,1.09038582829983,0.99310854119456,0.785993827418105,0.978537841305807,0.826926102440688,0.777438394565539,0.120597761522228,0.751215732162845,1.37597396499169,0.713141429322402,0.999153667442887,0.458601469486871,0.661986981392079,0.39778149051681,0.994862947746639,0.380421244751096,0.902511759656689,0.293840821220626,1.07299963800133,0.39957868467446,0.694886294545682,0.643559078311081,1.08261601747304,1.44259526810913,1.17779117593097,0.296010234104329,0.555755420248701,0.262472422055678,0.118203577825963,0.625411215066518,0.0971044778868518,0.180606884159185,1.4921676971907,0.520950412930081,3.38715757044012,0.620854771187007,1.05211036716798,0.261070428136062,1.45819350303399,0.534174450001507,0.612926092127039,0.755584654281075,0.378780392730615,0.524895261507201,0.400777904366615,0.355922289029246,0.616697877773172,0.539077978326174,0.299588810444543,0.506594890791427,1.22809143187179,0.379021832172988,0.0614580968268392,0.986563664175351,2.51320837144679,1.10148257866684,0.141516117330184,1.18403714880285,1.28392201047005,0.105909173034817,0.678824138037763,0.985171371512047,0.670916977920464,1.68149788072846,0.096331452676739,0.221595186575543,0.49909102999911,1.21407629898939,0.791871918779678,0.604764490658233,3.99019970191299,0.404128391067429,0.087209988214611,0.846560137791134,1.04426392290541,0.262762582661655,2.31135170415346,0.0673821987196399,1.53422328631518,0.511846921855927,0.228813122316582,0.0395116358688415,1.52503303184309,0.457250668079165,0.0866667725081493,0.508505502300864,1.46839292563433,1.09027116918733,0.462344021619285,1.30019558215989,1.28260754963698,4.46966574306012,0.828011867696503,0.0821768676733379,1.84003385072324,0.482190255150823,0.102594127880225,1.78443675294377,0.173348103914487,0.14107379418711,0.351330628621407,0.0767984123089198,1.21133749315542,1.27270537258235,0.0436985055651864,2.13909673749255,1.67863240998856,0.376206718056695,0.0751702542281708,0.138345893348456,0.369799532115791,0.730467903164367,0.0809591121675571,0.10196237171622,0.702970318787673,0.0907793328471109,0.317745978320843,0.253979103228398,0.0565699046793096,3.33713896166226,0.0539547052622792,0.512035205413757,0.723353377593047,0.0780138282438879,0.335237751844677,0.74948140545108,0.198001186818771,0.805675925336106,0.0744418056260268,0.438644871475681,1.77887270036434,0.0616497033646668,0.286007161557561,0.0950133616369425,0.176158424924419,0.783219521666126,0.288390097341259,0.0992238076347393,0.772054710787271,0.707068972832489,0.169433663752887,0.74957451124873,0.0449318734470274,0.221085532185505,0.21387594221435,0.0334893626322891,0.322034165242571,1.95501338407605,0.188596261260681,0.532241420258006,1.39746338340744,1.21301451184195,0.48174008267244,1.64986842287153,0.0320441286722013,0.0765569111336696,0.0409652327293092,0.317803595732996,0.930972718044445,0.936834848237187,0.341902461426699,0.329331469868761,0.49535328098216,0.0602351682844034,2.2428638811828,0.129459177334905,0.456477908024706,0.0701873546719828,0.297271070072001,0.0410424980255939,0.0637242003546909,0.0498301445555622,0.0324088471122072,0.529339872354648,0.0229458686041499,0.0888370366856779,0.0717663142523247,2.14295525147836,0.311611868840042,0.0415420814344735,8.6979336735977,0.413722134193261,0.161172693022477,0.107549371097887,1.49397164083052,0.887036163053261,0.603312187641285,0.830526004736302,2.39167428989357,0.550212913098371,0.261820773973158,0.0777429714371463,0.0324794105579083,0.201952885243258,0.0674133375673217,0.713403804766827],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2.52760775272994e-15,2.52760775272994e-15,1.49170293603734e-14,1.95685761501673e-14,5.53666460121796e-14,7.58282325818982e-14,1.81528193150605e-13,1.81528193150605e-13,2.12771757095476e-13,5.18709069255883e-13,5.18709069255883e-13,2.36584085655522e-12,3.20187382085255e-12,3.73664679445243e-12,9.7475634869662e-12,1.05319266821182e-11,1.11518054050445e-11,1.22063499658808e-11,2.86354980132005e-11,7.74147925251502e-11,9.94828017432691e-11,1.14481674140521e-10,1.54111053137003e-10,1.72751509574263e-10,2.11409112438332e-10,3.26007237078889e-10,3.817478699166e-10,3.85396110373863e-10,5.31006809404548e-10,1.05520328081371e-09,1.31654511013396e-09,1.45464163183975e-09,1.51704795246101e-09,1.64765353293384e-09,1.81057272400615e-09,2.47102268197957e-09,3.36495364905431e-09,4.33914264935664e-09,6.44273874571177e-09,9.9821910261509e-09,1.18758761769594e-08,1.20907131084813e-08,1.84808583464094e-08,2.3945986394205e-08,2.41183178391079e-08,2.46785593178871e-08,2.52265248605676e-08,2.97369127163054e-08,4.907518738632e-08,5.57030798318423e-08,5.73238397667195e-08,5.98784256319621e-08,8.35322471173219e-08,1.11827459869532e-07,1.41137470740997e-07,1.46790202971372e-07,1.57656724195461e-07,1.73350531597865e-07,2.1706253103769e-07,3.1135497578842e-07,5.08913134985363e-07,1.03923225034571e-06,2.40367521031901e-06,2.98895547688317e-06,3.02918936448336e-06,8.80507168375274e-06,9.39202300932962e-06,9.69485673172625e-06,1.07292254953663e-05,1.2558915041214e-05,1.69741322560247e-05,1.88814633880208e-05,2.19375161037499e-05,2.20144076709891e-05,2.29714683463649e-05,2.32374020242814e-05,2.40072714736267e-05,3.37153693265166e-05,3.48316054563274e-05,4.36412120591183e-05,5.49457031558418e-05,9.48425914817459e-05,0.000103089075204137,0.000114739897573481,0.000122264151427638,0.000147890818770679,0.000229825427031894,0.000256608178069804,0.000295146647328047,0.000309116822353818,0.000319513836869446,0.000382513466105851,0.000476162507105462,0.000543781867621293,0.000609202514872979,0.000640739370024142,0.000672908072067909,0.000681241893935813,0.000818746457241235,0.0010263488694328,0.00103534890190915,0.00113707886407941,0.00149553535986617,0.00164218139791843,0.00183348479515166,0.00186688578914631,0.0019286931326682,0.00284488604478764,0.00313899756778897,0.00336345931509652,0.00373283198460322,0.00398819015911687,0.0040331142187905,0.00510594470711929,0.00518226313884143,0.00527924810495914,0.00527924810495914,0.00578901555482088,0.00611053806057415,0.00661057446377723,0.00707226251330894,0.00738456011282598,0.00820213807491924,0.00883070873947479,0.00889874390990785,0.00948007048860937,0.00952165046901158,0.00988647082268626,0.0118366197254335,0.0120563976042672,0.0120563976042672,0.0127780174631315,0.013300886422594,0.0135164046485641,0.0135164046485641,0.0136513694574296,0.0142718140002067,0.0144890642876309,0.0149366893166751,0.0153830765991206,0.0160503890568735,0.0169779761028236,0.0173028183089187,0.0174189433999748,0.0187664303594133,0.0201482627927857,0.021458641598844,0.022376157940328,0.0225450542084638,0.0231216953762963,0.0238807279664538,0.0238807279664538,0.0239966123268586,0.0239966123268586,0.0290268315130675,0.0305311226777554,0.0320179400550563,0.0322045421143314,0.0322544503446723,0.0341846107985624,0.0361906897684672,0.0377461102477952,0.0380595361129033,0.0392271168495015,0.0404410461034551,0.0411448681870945,0.047231637673335,0.0484134145647802],["Fn1","Igfbp2","Mixl1","Lefty2","Vim","Rbms1","Dnmt3b","Wfdc2","Snai1","Gpc3","Cxx1b","BC023829","Cited1","Pcdh19","Tceal8","Bex1","Rbbp7","Car3","Psip1","Slc2a1","Pdgfra","Kdr","Trh","Slc2a3","Tpi1","Mgst1","Apoe","Dll3","Spint2","Mesp1","Tbx6","Nkx1-2","Ifitm1","Phlda2","Fgf3","Rspo3","Slc25a4","Trim61","Foxf1","Crabp1","Aldh1a2","Pdlim4","Hand1","Car4","Hoxb1","Igfbp4","Arl4d","Slc16a3","Fst","Smc6","Tspan13","Laptm4b","T","Dll1","Cldn6","Pou5f1","Epcam","Ppic","Mrfap1","Utf1","Fabp5","Snrpn","Wnt2","Nefl","Isl1","Arl4c","Cdx1","Ldhb","Lmo1","Tdh","Hoxb2","Aplnr","Bambi","S100a10","Sp5","H19","Nefm","Dusp6","Phlda1","Grsf1","Cdx4","Slc38a4","Pkm","Hes7","Sema6a","Psors1c2","Aldoa","Gal","Igfbp3","Tpm4","Efna1","Sct","Fgf15","Mesp2","Pgk1","Meg3","Mest","Cfc1","Eras","Lhfp","Gm14226","Peg3","Serpinh1","Ddit4","Cyp26a1","Lrpap1","Lect1","Ldha","Lhx1","Cdx2","Cd24a","Gapdh","Slpi","Krt18","Tmsb10","Frzb","Foxc2","Prrx2","Eomes","Cpa2","Hes3","Gm26510","Klhl6","Ifitm2","Dlx5","Dkk1","Polr2h","Arg1","Pcbp4","Ruvbl2","Rbp1","Oat","Etv2","Rbm24","Eno1","Col9a1","1700034H15Rik","Pmaip1","Dynll1","Prdx4","Tmsb4x","Nrp1","Dut","Hmgb3","Cdh11","Fth1","Flnb","Nkd1","Llph","Plac1","Dbi","Gata2","Cntnap2","Wbp5","Crabp2","Prickle1","Bcat1","Hoxd9","Atp6v1f","Ap1s2","Actc1","Gnas","Mum1l1","Hn1","Srm","St8sia3","S100a11","Gpx1","Agl","Frem2","Mat2a","Fli1","Ndufb11","Arl6ip1","Car2","Paics","Atp2c1","Pigw","Uqcrb","Rps6ka4","Ccdc73","Hoxaas3","Hotairm1","Psmb8","Gng5","Ung","Prdx2","2810474O19Rik","Zfp36l3","Olig1","Bicd1","Zmynd11","Epha2","Rbm3","Myom2","Srsf5","Dlk1","Rap1a","Asb4","Anp32a","Pdcd5","Cycs","Eif1ax","Myl4","Hsp90aa1","Gpx4","Eif4g2","Gm16222","Krt8","Bnip3l","Cd36","Lmo2","Mycn","Car14","Exoc3l","Tceal6","Gm3604","Smtnl2","Lrch4","Ncam1","Olfr889","Npm3","Cacybp","Pcgf5","Hnrnpa2b1","Spink3"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>waldStat<\/th>\n      <th>df<\/th>\n      <th>pvalue<\/th>\n      <th>meanLogFC<\/th>\n      <th>FDR<\/th>\n      <th>symbol<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Function to plot expression of genes associated with pseudotime:</p>
+<pre class="r"><code>plotPseudotime &lt;- function(object, features) {
+  
+  colnames(object) &lt;- paste(&quot;cell&quot;, seq_len(ncol(object)), sep = &quot;-&quot;)
+  
+  object &lt;- object[features, order(object$slingPseudotime_1)]
+  
+  x &lt;- assay(object, &quot;reconstructed&quot;)
+  
+  rownames(x) &lt;- rowData(object)$gene_name
+
+  M &lt;- rowMeans(x, na.rm = TRUE)
+  
+  DF &lt;- ncol(x) - 1L
+  
+  IsNA &lt;- is.na(x)
+  
+  if (any(IsNA)) {
+    
+    mode(IsNA) &lt;- &quot;integer&quot;
+    
+    DF &lt;-  DF - rowSums(IsNA)
+    
+    DF[DF == 0L] &lt;- 1L
+  
+  }
+
+  x &lt;- x - M
+  
+  V &lt;- rowSums(x^2L, na.rm = TRUE) / DF
+    
+  x &lt;- x / sqrt(V + 0.01)
+  
+  pheatmap.cluster_rows &lt;- hclust(dist(x, method = &quot;euclidean&quot;), method = &quot;complete&quot;)
+
+  pheatmap.color &lt;- colorRampPalette(rev(brewer.pal(n = 5, name = &quot;RdBu&quot;)))(100)
+  
+  l &lt;- max(abs(x))
+  
+  pheatmap.breaks &lt;- seq(-l, l, length.out = 101)
+  
+  pheatmap.annotation_col &lt;- data.frame(
+    Celltype = object$celltype, 
+    Stage = object$stage,
+    Source = object$source,
+    row.names = colnames(object))
+  
+  pheatmap.annotation_colors = list(
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% object$celltype],
+    Stage = setNames(tableau_color_pal(&quot;Tableau 10&quot;)(5), sort(unique(sce$stage))),
+    Source = setNames(tableau_color_pal(&quot;Classic Green-Orange 6&quot;)(2), sort(unique(sce$source)))
+  )
+
+  pheatmap(
+    mat = x,
+    color = pheatmap.color,
+    breaks = pheatmap.breaks,
+    cluster_rows = pheatmap.cluster_rows,
+    cluster_cols = FALSE,
+    annotation_col = pheatmap.annotation_col,
+    annotation_colors = pheatmap.annotation_colors,
+    show_colnames = FALSE
+  )
+
+}</code></pre>
+<p>Plot expression of genes associated with pseudotime:</p>
+<pre class="r"><code>plotPseudotime(sce, head(rownames(res), n = 50))</code></pre>
+<p><img src="figure/12-atlas-trajectory.Rmd/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<p>Save integrated experiment object to disk:</p>
+<pre class="r"><code>saveRDS(sce, file = &quot;output/12-atlas-trajectory.rds&quot;)</code></pre>
+</div>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] RColorBrewer_1.1-2          pheatmap_1.0.12            
+ [3] ggthemes_4.2.0              ggforce_0.3.2              
+ [5] tradeSeq_1.2.01             bigmemory_4.5.36           
+ [7] slingshot_1.6.1             princurve_2.1.5            
+ [9] scran_1.16.0                scater_1.16.2              
+[11] ggplot2_3.3.2               MouseGastrulationData_1.2.0
+[13] SingleCellExperiment_1.10.1 SummarizedExperiment_1.18.2
+[15] DelayedArray_0.14.1         matrixStats_0.57.0         
+[17] Biobase_2.48.0              GenomicRanges_1.40.0       
+[19] GenomeInfoDb_1.24.2         IRanges_2.22.2             
+[21] S4Vectors_0.26.1            BiocGenerics_0.34.0        
+[23] workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+  [1] rappdirs_0.3.1                pkgmaker_0.31.1              
+  [3] tidyr_1.1.2                   bit64_4.0.5                  
+  [5] knitr_1.30                    irlba_2.3.3                  
+  [7] data.table_1.13.0             RCurl_1.98-1.2               
+  [9] doParallel_1.0.15             generics_0.0.2               
+ [11] RSQLite_2.2.1                 RANN_2.6.1                   
+ [13] VGAM_1.1-3                    combinat_0.0-8               
+ [15] proxy_0.4-24                  bit_4.0.4                    
+ [17] phylobase_0.8.10              xml2_1.3.2                   
+ [19] httpuv_1.5.4                  assertthat_0.2.1             
+ [21] viridis_0.5.1                 xfun_0.18                    
+ [23] hms_0.5.3                     evaluate_0.14                
+ [25] promises_1.1.1                DEoptimR_1.0-8               
+ [27] progress_1.2.2                dbplyr_1.4.4                 
+ [29] readxl_1.3.1                  htmlwidgets_1.5.2            
+ [31] igraph_1.2.5                  DBI_1.1.0                    
+ [33] sparsesvd_0.2                 purrr_0.3.4                  
+ [35] ellipsis_0.3.1                crosstalk_1.1.0.1            
+ [37] RSpectra_0.16-0               dplyr_1.0.2                  
+ [39] backports_1.1.10              DDRTree_0.1.5                
+ [41] annotate_1.66.0               gridBase_0.4-7               
+ [43] locfdr_1.1-8                  vctrs_0.3.4                  
+ [45] TTR_0.24.2                    abind_1.4-5                  
+ [47] RcppEigen_0.3.3.7.0           withr_2.3.0                  
+ [49] robustbase_0.93-6             vcd_1.4-8                    
+ [51] xts_0.12.1                    prettyunits_1.1.1            
+ [53] softImpute_1.4                cluster_2.1.0                
+ [55] ExperimentHub_1.14.2          ape_5.4-1                    
+ [57] lazyeval_0.2.2                laeken_0.5.1                 
+ [59] crayon_1.3.4                  genefilter_1.70.0            
+ [61] labeling_0.3                  edgeR_3.30.3                 
+ [63] pkgconfig_2.0.3               slam_0.1-47                  
+ [65] tweenr_1.0.1                  nlme_3.1-149                 
+ [67] vipor_0.4.5                   nnet_7.3-14                  
+ [69] rlang_0.4.7                   lifecycle_0.2.0              
+ [71] registry_0.5-1                bigmemory.sri_0.1.3          
+ [73] BiocFileCache_1.12.1          rsvd_1.0.3                   
+ [75] AnnotationHub_2.20.2          cellranger_1.1.0             
+ [77] rprojroot_1.3-2               polyclip_1.10-0              
+ [79] lmtest_0.9-38                 RcppHNSW_0.3.0               
+ [81] rngtools_1.5                  Matrix_1.2-18                
+ [83] carData_3.0-4                 zoo_1.8-8                    
+ [85] boot_1.3-25                   Rhdf5lib_1.10.1              
+ [87] beeswarm_0.2.3                whisker_0.4                  
+ [89] viridisLite_0.3.0             knn.covertree_1.0            
+ [91] bitops_1.0-6                  rncl_0.8.4                   
+ [93] blob_1.2.1                    DelayedMatrixStats_1.10.1    
+ [95] stringr_1.4.0                 zinbwave_1.10.1              
+ [97] scales_1.1.1                  hexbin_1.28.1                
+ [99] memoise_1.1.0                 magrittr_1.5                 
+[101] plyr_1.8.6                    howmany_0.3-1                
+[103] bibtex_0.4.2.3                zlibbioc_1.34.0              
+[105] compiler_4.0.2                HSMMSingleCell_1.8.0         
+[107] dqrng_0.2.1                   pcaMethods_1.80.0            
+[109] ade4_1.7-15                   XVector_0.28.0               
+[111] pbapply_1.4-3                 ggplot.multistats_1.0.0      
+[113] MASS_7.3-53                   mgcv_1.8-33                  
+[115] tidyselect_1.1.0              stringi_1.5.3                
+[117] forcats_0.5.0                 densityClust_0.3             
+[119] yaml_2.2.1                    BiocSingular_1.4.0           
+[121] locfit_1.5-9.4                ggrepel_0.8.2                
+[123] grid_4.0.2                    tools_4.0.2                  
+[125] rio_0.5.16                    rstudioapi_0.11              
+[127] uuid_0.1-4                    monocle_2.16.0               
+[129] foreach_1.5.0                 foreign_0.8-80               
+[131] git2r_0.27.1                  RNeXML_2.4.5                 
+[133] gridExtra_2.3                 smoother_1.1                 
+[135] scatterplot3d_0.3-41          farver_2.0.3                 
+[137] Rtsne_0.15                    digest_0.6.25                
+[139] BiocManager_1.30.10           FNN_1.1.3                    
+[141] shiny_1.5.0                   qlcMatrix_0.9.7              
+[143] Rcpp_1.0.5                    car_3.0-10                   
+[145] BiocVersion_3.11.1            later_1.1.0.1                
+[147] httr_1.4.2                    AnnotationDbi_1.50.3         
+[149] kernlab_0.9-29                colorspace_1.4-1             
+[151] ranger_0.12.1                 XML_3.99-0.5                 
+[153] fs_1.5.0                      clusterExperiment_2.8.0      
+[155] splines_4.0.2                 statmod_1.4.34               
+[157] sp_1.4-2                      xtable_1.8-4                 
+[159] jsonlite_1.7.1                destiny_3.2.0                
+[161] R6_2.4.1                      pillar_1.4.6                 
+[163] htmltools_0.5.0               mime_0.9                     
+[165] NMF_0.23.0                    DT_0.15                      
+[167] glue_1.4.2                    fastmap_1.0.1                
+[169] VIM_6.0.0                     BiocParallel_1.22.0          
+[171] BiocNeighbors_1.6.0           class_7.3-17                 
+[173] interactiveDisplayBase_1.26.3 codetools_0.2-16             
+[175] lattice_0.20-41               tibble_3.0.3                 
+[177] curl_4.3                      ggbeeswarm_0.6.0             
+[179] zip_2.1.1                     openxlsx_4.2.2               
+[181] survival_3.2-7                limma_3.44.3                 
+[183] rmarkdown_2.4                 docopt_0.7.1                 
+[185] fastICA_1.2-2                 munsell_0.5.0                
+[187] e1071_1.7-3                   rhdf5_2.32.3                 
+[189] GenomeInfoDbData_1.2.3        iterators_1.0.12             
+[191] HDF5Array_1.16.1              haven_2.3.1                  
+[193] reshape2_1.4.4                gtable_0.3.0                 </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
