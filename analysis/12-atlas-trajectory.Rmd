@@ -1,0 +1,429 @@
+---
+title: "Atlas trajectory"
+author: "James Ashmore"
+date: "2020-10-02"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/12-atlas-trajectory.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(MouseGastrulationData)
+library(scater)
+library(scran)
+library(slingshot)
+library(tradeSeq)
+```
+
+Load CRAN packages:
+
+```{r}
+library(bigmemory)
+library(ggforce)
+library(ggthemes)
+library(pheatmap)
+library(RColorBrewer)
+```
+
+Source convienence functions:
+
+```{r}
+source("code/reorder_within.R")
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/11-atlas-neighbors.rds")
+```
+
+## Diffusion
+
+Remove cells not known to be present in the data:
+
+```{r}
+nan <- c("NMP", "PGC", "Surface ectoderm")
+
+sce <- sce[, !sce$celltype %in% nan]
+```
+
+Produce a diffusion map for the cells:
+
+```{r}
+set.seed(385008972)
+
+sce <- runDiffusionMap(sce, dimred = "corrected")
+```
+
+Define annotation labels for visualisation:
+
+```{r}
+source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP LHF")
+```
+
+Plot DiffusionMap of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "DC1", y = "DC2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot DiffusionMap of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10", na.value = "#000000") + 
+  labs(x = "DC1", y = "DC2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot DiffusionMap of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  labs(x = "DC1", y = "DC2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+## Entropy
+
+Function to compute the entropy of the expression profile within each cell:
+
+```{r}
+whichNonZero <- function(x) {
+  
+  x <- as(x, "SparseArraySeed")
+  
+  z <- nzindex(x)
+  
+  list(i = z[, 1], j = z[, 2], x = nzdata(x))
+
+}
+
+calculateEntropy <- function(x) {
+  
+  n <- whichNonZero(counts(x))
+  
+  p <- n$x / colSums(counts(x))[n$j]
+  
+  e <- - p * log(p)
+  
+  e <- by(e, INDICES = n$j, FUN = sum)
+  
+  e <- as.vector(e)
+  
+}
+```
+
+Calculate the entropy of the expression profile within each cell:
+
+```{r}
+sce$entropy <- calculateEntropy(sce)
+```
+
+Plot DiffusionMap of cells from reference and test data coloured by entropy:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = "DC1", y = "DC2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot DiffusionMap of cells from reference data coloured by entropy:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce[, sce$source == "reference"], aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = "DC1", y = "DC2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot DiffusionMap of cells from test data coloured by entropy:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce[, sce$source == "test"], aes(DiffusionMap.1, DiffusionMap.2, colour = entropy)) + 
+  geom_point() + 
+  scale_colour_viridis_c() + 
+  labs(x = "DC1", y = "DC2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot entropy of cells from reference and test data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = "free_x") + 
+  labs(y = "Entropy", colour = "Celltype") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())
+```
+
+Plot entropy of cells from reference data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce[, sce$source == "reference"], aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = "free_x") + 
+  labs(y = "Entropy", colour = "Celltype") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())
+```
+
+Plot entropy of cells from test data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce[, sce$source == "test"], aes(x = reorder_within(x = celltype, by = -entropy, within = stage, fun = median), y = entropy, colour = celltype)) + 
+  geom_sina(seed = 42) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ stage, scales = "free_x") + 
+  labs(y = "Entropy", colour = "Celltype") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1, 
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank())
+```
+
+## Trajectory
+
+Function to calculate distance with MNN coordinates:
+
+```{r}
+dist_clusters_diag <- function(X, w1, w2){
+    if(length(w1) != nrow(X) | length(w2) != nrow(X)){
+        stop("Reduced dimensional matrix and weights vector contain different
+             numbers of points.")
+    }
+    mu1 <- colWeightedMeans(X, w = w1)
+    mu2 <- colWeightedMeans(X, w = w2)
+    diff <- mu1 - mu2
+    if(sum(w1>0)==1){
+        s1 <-  diag(ncol(X))
+    }else{
+        s1 <- diag(diag(cov.wt(X, wt = w1)$cov))
+    }
+    if(sum(w2>0)==1){
+        s2 <-  diag(ncol(X))
+    }else{
+        s2 <- diag(diag(cov.wt(X, wt = w2)$cov))
+    }
+    return(as.numeric(t(diff) %*% solve(s1 + s2) %*% diff))
+}
+```
+
+Perform lineage inference with Slingshot:
+
+```{r}
+set.seed(378891116)
+
+sce <- slingshot(sce, reducedDim = "corrected", dist.fun = dist_clusters_diag)
+```
+
+Reverse pseudotime to fit with known developmental trajectory:
+
+```{r}
+sce$slingPseudotime_1 <- max(abs(sce$slingPseudotime_1)) + -sce$slingPseudotime_1
+```
+
+Construct path data from trajectory curves:
+
+```{r}
+sc1 <- embedCurves(sce, "DiffusionMap")
+
+sc1 <- slingCurves(sc1)[[1]]
+
+sc1 <- data.frame(sc1$s[sc1$ord, ])
+```
+
+Plot DiffusionMap of cells coloured by pseudotime:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(DiffusionMap.1, DiffusionMap.2)) + 
+  geom_point(aes(colour = slingPseudotime_1)) + 
+  geom_path(data = sc1, aes(DC1, DC2), size = 0.8) + 
+  scale_colour_viridis_c() + 
+  labs(x = "DC1", y = "DC2", colour = "Pseudotime") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot pseudotime of cells coloured by celltype and facteted by data source:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(slingPseudotime_1, reorder(celltype, slingPseudotime_1, mean), colour = celltype)) + 
+  geom_jitter(show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  labs(x = "Pseudotime", y = "Celltype", colour = "Celltype") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+## Differential
+
+Fit the NB-GAM model with batch effect design matrix on highly variable genes:
+
+```{r}
+set.seed(430396281)
+
+mod <- model.matrix(~ 0 + source, colData(sce))
+
+colnames(mod) <- c("reference", "test")
+
+idx <- which(rowData(sce)$gene_id %in% metadata(sce)$getTopHVGs)
+
+fit <- fitGAM(counts = counts(sce), sds = SlingshotDataSet(sce), U = mod, genes = idx)
+```
+
+Test whether average gene expression is associated with pseudotime:
+
+```{r}
+res <- associationTest(fit)
+
+res$FDR <- p.adjust(res$pvalue, method = "fdr")
+
+res$symbol <- rowData(sce)$gene_name[match(rownames(res), rowData(sce)$gene_id)]
+
+res <- subset(res, FDR < 0.05)
+
+res <- res[order(res$pvalue), ]
+```
+
+Create table of associationTest results:
+
+```{r}
+knitr::knit_print(DT::datatable(res))
+```
+
+Function to plot expression of genes associated with pseudotime:
+
+```{r}
+plotPseudotime <- function(object, features) {
+  
+  colnames(object) <- paste("cell", seq_len(ncol(object)), sep = "-")
+  
+  object <- object[features, order(object$slingPseudotime_1)]
+  
+  x <- assay(object, "reconstructed")
+  
+  rownames(x) <- rowData(object)$gene_name
+
+  M <- rowMeans(x, na.rm = TRUE)
+  
+  DF <- ncol(x) - 1L
+  
+  IsNA <- is.na(x)
+  
+  if (any(IsNA)) {
+    
+    mode(IsNA) <- "integer"
+    
+    DF <-  DF - rowSums(IsNA)
+    
+    DF[DF == 0L] <- 1L
+  
+  }
+
+  x <- x - M
+  
+  V <- rowSums(x^2L, na.rm = TRUE) / DF
+	
+  x <- x / sqrt(V + 0.01)
+  
+  pheatmap.cluster_rows <- hclust(dist(x, method = "euclidean"), method = "complete")
+
+  pheatmap.color <- colorRampPalette(rev(brewer.pal(n = 5, name = "RdBu")))(100)
+  
+  l <- max(abs(x))
+  
+  pheatmap.breaks <- seq(-l, l, length.out = 101)
+  
+  pheatmap.annotation_col <- data.frame(
+    Celltype = object$celltype, 
+    Stage = object$stage,
+    Source = object$source,
+    row.names = colnames(object))
+  
+  pheatmap.annotation_colors = list(
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% object$celltype],
+    Stage = setNames(tableau_color_pal("Tableau 10")(5), sort(unique(sce$stage))),
+    Source = setNames(tableau_color_pal("Classic Green-Orange 6")(2), sort(unique(sce$source)))
+  )
+
+  pheatmap(
+    mat = x,
+    color = pheatmap.color,
+    breaks = pheatmap.breaks,
+    cluster_rows = pheatmap.cluster_rows,
+    cluster_cols = FALSE,
+    annotation_col = pheatmap.annotation_col,
+    annotation_colors = pheatmap.annotation_colors,
+    show_colnames = FALSE
+  )
+
+}
+```
+
+Plot expression of genes associated with pseudotime:
+
+```{r fig.width = 12, fig.height = 8}
+plotPseudotime(sce, head(rownames(res), n = 50))
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "output/12-atlas-trajectory.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

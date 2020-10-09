@@ -41,7 +41,7 @@ library(scran)
 Read experiment data:
 
 ```{r}
-sce <- readRDS("data/01-quality-control.rds")
+sce <- readRDS("output/01-quality-control.rds")
 ```
 
 Filter lowly detected and expressed genes:
@@ -367,7 +367,7 @@ sce <- runUMAP(sce, dimred = "PCA")
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, "data/02-normalization.rds")
+saveRDS(sce, "output/02-normalization.rds")
 ```
 
 ### Session

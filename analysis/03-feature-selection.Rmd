@@ -43,7 +43,7 @@ library(msigdbr)
 Read experiment data:
 
 ```{r}
-sce <- readRDS("data/02-normalization.rds")
+sce <- readRDS("output/02-normalization.rds")
 ```
 
 ## Blacklist
@@ -217,7 +217,7 @@ Identify highly variable genes:
 ```{r}
 dec <- metadata(sce)$modelGeneVar
 
-hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
 
 del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
 
@@ -241,7 +241,7 @@ Identify highly variable genes:
 ```{r}
 dec <- metadata(sce)$modelGeneCV2
 
-hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "p.value", fdr.threshold = 0.05)
+hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "FDR", fdr.threshold = 0.05)
 
 del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
 
@@ -265,7 +265,7 @@ Identify highly variable genes:
 ```{r}
 dec <- metadata(sce)$modelGeneVarWithSpikes
 
-hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
 
 del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
 
@@ -289,7 +289,7 @@ Identify highly variable genes:
 ```{r}
 dec <- metadata(sce)$modelGeneCV2WithSpikes
 
-hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "p.value", fdr.threshold = 0.05)
+hvg <- getTopHVGs(dec, var.field = "ratio", var.threshold = 1, fdr.field = "FDR", fdr.threshold = 0.05)
 
 del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
 
@@ -313,7 +313,7 @@ Identify highly variable genes:
 ```{r}
 dec <- metadata(sce)$modelGeneVarByPoisson
 
-hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
 
 del <- rownames(sce)[rowData(sce)$blacklist == TRUE]
 
@@ -450,7 +450,7 @@ patchwork::wrap_plots(plt, ncol = 2)
 Select highly variable genes and store in row metadata:
 
 ```{r}
-dec <- metadata(sce)$modelGeneVar
+dec <- metadata(sce)$modelGeneVarWithSpikes
 
 dec <- subset(dec, hvg == TRUE)
 
@@ -466,7 +466,7 @@ rowData(sce)$selected <- sel
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, "data/03-feature-selection.rds")
+saveRDS(sce, "output/03-feature-selection.rds")
 ```
 
 ### Session

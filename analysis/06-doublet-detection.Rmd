@@ -33,7 +33,7 @@ library(scran)
 Read experiment data:
 
 ```{r}
-sce <- readRDS("data/05-clustering.rds")
+sce <- readRDS("output/05-clustering.rds")
 ```
 
 ## Detection
@@ -147,7 +147,7 @@ plotUMAP(sce, colour_by = "doublet_score")
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "data/06-doublet-detection.rds" )
+saveRDS(sce, file = "output/06-doublet-detection.rds" )
 ```
 
 ### Session

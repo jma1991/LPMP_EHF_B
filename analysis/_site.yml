@@ -7,7 +7,7 @@ navbar:
     href: index.html
   - text: About
     href: about.html
-  - text: Analysis
+  - text: Processing
     menu:
       - text: Quality control
       - href: 01-quality-control.html
@@ -15,18 +15,36 @@ navbar:
       - href: 02-normalization.html
       - text: Feature selection
       - href: 03-feature-selection.html
-      - text: Reduced dimensions
+      - text: Dimensionality reduction
       - href: 04-reduced-dimensions.html
       - text: Clustering
       - href: 05-clustering.html
       - text: Doublet detection
       - href: 06-doublet-detection
-      - text: Cell cycle
+      - text: Cell cycle assignment
       - href: 07-cell-cycle.html
-      - text: Marker detection
+      - text: Marker gene detection
       - href: 08-marker-detection.html
-      - text: Cell annotation
+      - text: Cell type annotation
       - href: 09-cell-annotation.html
+  - text: Analysis
+    menu:
+      - text: Atlas integration
+      - href: 10-atlas-integration.html
+      - text: Atlas neighbors
+      - href: 11-atlas-neighbors.html
+      - text: Atlas trajectory
+      - href: 12-atlas-trajectory.html
+      - text: Atlas clustering
+      - href: 13-atlas-clustering.html
+      - text: Atlas markers
+      - href: 14-atlas-markers.html
+      - text: Scenic analysis
+      - href: 15-scenic-analysis.html
+      - text: Geneset activity
+      - href: 16-geneset-activity.html
+      - text: Haystack analysis
+      - href: 17-haystack-analysis.html
   right:
     - text: License
     - href: license.html

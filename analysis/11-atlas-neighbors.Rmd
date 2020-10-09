@@ -1,0 +1,310 @@
+---
+title: "Atlas neighbors"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/11-atlas-neighbors.Rmd/",
+  cache.lazy = FALSE,
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(batchelor)
+library(BiocNeighbors)
+library(MouseGastrulationData)
+library(scater)
+library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggbeeswarm)
+library(ggthemes)
+library(pheatmap)
+```
+
+## Neighbors
+
+Read experiment object:
+
+```{r cache = FALSE}
+sce <- readRDS("output/10-atlas-integration.rds")
+```
+
+Function to split experiment object by column data:
+
+```{r}
+splitColData <- function(x, f) {
+  
+  i <- split(seq_along(f), f)
+
+  v <- vector(mode = "list", length = length(i))
+  
+  names(v) <- names(i)
+  
+  for (n in names(i)) { v[[n]] <- x[, i[[n]]] }
+  
+  return(v)
+
+}
+```
+
+Split experiment object by source column:
+
+```{r cache = FALSE}
+sce <- splitColData(sce, sce$source)
+```
+
+Extract corrected PCA matrix for reference and test data:
+
+```{r}
+dim <- list(
+  reference = reducedDim(sce$reference, "corrected"),
+  test = reducedDim(sce$test, "corrected")
+)
+```
+
+Find the 10 nearest neighbors in the reference data for each point in the test data:
+
+```{r}
+set.seed(984529644)
+
+knn <- queryKNN(X = dim$reference, query = dim$test, k = 10)
+```
+
+Annotate test data using majority nearest neighbors: 
+
+```{r cache = FALSE}
+sce$test$stage <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$stage[x]))))
+
+sce$test$celltype <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$celltype[x]))))
+
+sce$test$theiler <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$theiler[x]))))
+```
+
+Create vector of nearest neighbor indexes:
+
+```{r}
+idx.neighbors <- unique(as.vector(knn$index))
+```
+
+Subset experiment object to test data and nearest neighbors:
+
+```{r}
+sce <- cbind(sce$reference[, idx.neighbors], sce$test)
+```
+
+## Integration
+
+Model the per-gene variance:
+
+```{r}
+dec <- modelGeneVar(sce, block = sce$sample)
+```
+
+Create a blacklist of genes to ignore for feature selection:
+
+```{r}
+var <- metadata(sce)$combineVar
+
+dec$blacklist <- var[rownames(dec), "blacklist"]
+```
+
+Identify highly variable genes:
+
+```{r}
+hvg <- subset(dec, blacklist == FALSE)
+
+hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
+```
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(498475642)
+
+mnn <- correctExperiments(
+  sce,
+  batch = sce$sample,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(auto.merge = TRUE, weights = FALSE)
+)
+```
+
+Store combined variance model:
+
+```{r}
+metadata(mnn)$modelGeneVar <- dec
+```
+
+Store highly variable genes:
+
+```{r}
+metadata(mnn)$getTopHVGs <- hvg
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r fig.width = 8, fig.height = 6}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var, na.rm = TRUE), length.out = 101)
+
+pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r fig.width = 8, fig.height = 6}
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab, na.rm = TRUE), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Perform TSNE on corrected data:
+
+```{r}
+set.seed(928262044)
+
+mnn <- runTSNE(mnn, dimred = "corrected")
+```
+
+Define annotation labels for visualisation:
+
+```{r}
+source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP EHF")
+```
+
+Visualise TSNE of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Visualise TSNE of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10", na.value = "#000000") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Visualise TSNE of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Perform UMAP on corrected data:
+
+```{r}
+set.seed(107520292)
+
+mnn <- runUMAP(mnn, dimred = "corrected")
+```
+
+Define annotation labels for visualisation:
+
+```{r}
+source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP EHF")
+```
+
+Visualise UMAP of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Visualise UMAP of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10", na.value = "#000000") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Visualise UMAP of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(values = EmbryoCelltypeColours) + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/11-atlas-neighbors.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

@@ -1,0 +1,470 @@
+---
+title: "Geneset activity"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/16-geneset-activity.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(AUCell)
+library(GSEABase)
+library(scater)
+library(SingleR)
+library(MouseGastrulationData)
+```
+
+Load CRAN packages
+
+```{r}
+library(msigdbr)
+library(pheatmap)
+library(RColorBrewer)
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/11-atlas-neighbors.rds")
+```
+
+Make cell names unique:
+
+```{r}
+colnames(sce) <- paste0("S", seq_len(ncol(sce)))
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Source convenience functions:
+
+```{r}
+source("code/EmbryoColourPalette.R")
+source("code/coolmap.R")
+```
+
+## Marker genes
+
+Create list of LPM, PXM and NMP marker genes:
+
+```{r}
+ids <- list(
+  
+  LPM = c(
+    "Bmp4",
+    "Bmp7",
+    "Id1",
+    "Id2",
+    "Id3",
+    "Id4",
+    "Pdgfra",
+    "Adora2b",
+    "Tgfb1",
+    "Fgf10",
+    "Efna1",
+    "Cxcl12",
+    "Wnt4",
+    "Wnt5b",
+    "Wnt6",
+    "Vegfa",
+    "Tbx4",
+    "Ctsh",
+    "Etv2",
+    "Ets1",
+    "Sox17",
+    "Sox7",
+    "Sox18"
+  ),
+  
+  PXM = c(
+    "Tcf15",
+    "Meox1",
+    "Fgf17",
+    "Cyp26a1",
+    "Hes7",
+    "Dll3",
+    "Lef1",
+    "Rspo3",
+    "Dkk1",
+    "Wnt3a",
+    "Fgfr1",
+    "Mesp2",
+    "Smc6"
+  ),
+  
+  NMP = c(
+    "Sox2",
+    "Mnx1",
+    "Aph1a",
+    "Ncstn",
+    "Ctbp2",
+    "Dvl1",
+    "Kat2a",
+    "Nkx1-2",
+    "Fst",
+    "Dnmt3b",
+    "Epcam",
+    "Pou5f1"
+  ),
+  
+  LPM_PXM = c(
+    "Mesp1",
+    "Mixl1"
+  ),
+  
+  PXM_NMP = c(
+    "Tbx6",
+    "T",
+    "Cdx1",
+    "Cdx2"
+  )
+
+)
+```
+
+Plot expression of NMP and LPMP differentially expressed genes:
+
+```{r fig.width = 12, fig.height = 9}
+out <- coolmap(assay(sce, "reconstructed")[unlist(ids), ])
+
+par <- list(
+  annotation_row = data.frame(
+    Marker = rep(names(ids), times = sapply(ids, length)),
+    row.names = unlist(ids)
+  ),
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Marker = c("LPM" = "#6388b4", "PXM" = "#ffae34", "NMP" = "#ef6f6a", "LPM_PXM" = "#8cc2ca", "PXM_NMP" = "#55ad89"),
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c("reference" = "#C8D0D9", "test" = "#57606C")
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = out$color,
+  breaks = out$breaks,
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_row = par$annotation_row,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)
+```
+
+## Differential genes
+
+Create list of NMP and LPMP differentially expressed genes:
+
+```{r}
+ids <- list(
+  
+  NMP = c(
+    "Rxrg",
+    "Dkk4",
+    "Il17rd",
+    "Akt1s1",
+    "Dusp6",
+    "Fgf15",
+    "Dll1",
+    "Wnt10a",
+    "Hes7",
+    "Hras",
+    "Aph1a",
+    "Tcf7",
+    "Ncstn",
+    "Dner",
+    "Lef1",
+    "Cyp26a1",
+    "Cdkn1a",
+    "Wnt5b",
+    "Fzd10",
+    "Fgf17",
+    "Fgf8",
+    "Wnt3a",
+    "Axin2",
+    "Ptk7",
+    "Rarg"
+  ),
+  
+  LPMP = c(
+    "Fgf10",
+    "Hey1",
+    "Bmp7",
+    "Prkar2b",
+    "Id1",
+    "Id2",
+    "Id3",
+    "Rac1",
+    "Bmp4",
+    "Smad6",
+    "Prkcd",
+    "Ptpn11",
+    "Wnt6",
+    "Wnt4",
+    "Wnt5a"
+  )
+
+)
+```
+
+Plot expression of NMP and LPMP differentially expressed genes:
+
+```{r fig.width = 12, fig.height = 9}
+out <- coolmap(assay(sce, "reconstructed")[c(ids$NMP, ids$LPMP), ])
+
+par <- list(
+  annotation_row = data.frame(
+    Marker = rep(names(ids), times = sapply(ids, length)),
+    row.names = unlist(ids)
+  ),
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Marker = c("NMP" = "#1170AA", "LPMP" = "#FC7D0B"),
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c("reference" = "#C8D0D9", "test" = "#57606C")
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = colorRampPalette(rev(brewer.pal(n = 5, name = "RdBu")))(100),
+  breaks = seq(-max(abs(out$mat)), max(abs(out$mat)), length.out = 101),
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_row = par$annotation_row,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)
+```
+
+## Differential pathways
+
+Retrive the MSigDB collections for mouse:
+
+```{r}
+dbr <- msigdbr(species = "Mus musculus")
+```
+
+Create list of KEGG expression pathways to retrieve:
+
+```{r}
+ids <- c(
+  "M19428" = "KEGG_WNT_SIGNALING_PATHWAY",
+  "M7946" = "KEGG_NOTCH_SIGNALING_PATHWAY",
+  "M269" = "PID_RAS_PATHWAY", 
+  "M923" = "REACTOME_RAP1_SIGNALLING",
+  "M591" = "REACTOME_SIGNALING_BY_HIPPO",
+  "M2642" = "KEGG_TGF_BETA_SIGNALING_PATHWAY",
+  "M6370" = "KEGG_P53_SIGNALING_PATHWAY",
+  "M7098" = "KEGG_ECM_RECEPTOR_INTERACTION",
+  "M10792" = "KEGG_MAPK_SIGNALING_PATHWAY"
+)
+```
+
+Retrieve the user-defined list of KEGG pathways:
+         
+```{r}
+dbr <- subset(dbr, gs_id %in% names(ids))
+
+dbr <- subset(dbr, gene_symbol %in% rownames(sce)) # remove genes absent from experiment object
+
+dbr <- split(dbr, dbr$gs_description)
+```
+
+Aggregate gene expression by KEGG pathways:
+
+```{r}
+mat <- lapply(dbr, function(x) colMeans(assay(sce, "reconstructed")[x$gene_symbol, ]))
+
+mat <- do.call(rbind, mat)
+```
+
+Plot pathways using aggregated gene expression:
+
+```{r fig.width = 12, fig.height = 9}
+out <- coolmap(mat)
+
+par <- list(
+  annotation_col = data.frame(
+    Stage = sce$stage,
+    Celltype = sce$celltype,
+    Source = sce$source,
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Stage = EmbryoStageColours[names(EmbryoStageColours) %in% sce$stage],
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% sce$celltype],
+    Source = c("reference" = "#C8D0D9", "test" = "#57606C")
+  )
+)
+
+pheatmap(
+  mat = out$mat,
+  color = colorRampPalette(rev(brewer.pal(n = 5, name = "RdBu")))(100),
+  breaks = seq(-max(abs(out$mat)), max(abs(out$mat)), length.out = 101),
+  cluster_rows = out$cluster_rows,
+  cluster_cols = out$cluster_cols,
+  annotation_col = par$annotation_col,
+  annotation_colors = par$annotation_colors,
+  drop_levels = TRUE,
+  show_colnames = FALSE
+)
+```
+
+## Pathway activity
+
+Retrive the MSigDB collections for mouse:
+
+```{r}
+dbr <- msigdbr(species = "Mus musculus")
+```
+
+Define which geneset categories to use:
+
+```{r}
+use <- c(
+  "PID_BMP_PATHWAY",
+  "GO_BMP_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT",
+  "GO_NEGATIVE_REGULATION_OF_BMP_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_BMP_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_BMP_SIGNALING_PATHWAY",
+  "BIOCARTA_TGFB_PATHWAY",
+  "BIOCARTA_NOTCH_PATHWAY",
+  "GO_NOTCH_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_NOTCH_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_NOTCH_SIGNALING_PATHWAY",
+  "KEGG_NOTCH_SIGNALING_PATHWAY",
+  "PID_NOTCH_PATHWAY",
+  "PID_WNT_CANONICAL_PATHWAY",
+  "PID_WNT_NONCANONICAL_PATHWAY",
+  "PID_WNT_SIGNALING_PATHWAY",
+  "WP_WNT_SIGNALING_PATHWAY_NETPATH",
+  "GO_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_CANONICAL_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT",
+  "GO_CORECEPTOR_ACTIVITY_INVOLVED_IN_WNT_SIGNALING_PATHWAY",
+  "GO_CORECEPTOR_ACTIVITY_INVOLVED_IN_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY",
+  "GO_NEGATIVE_REGULATION_OF_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_NEGATIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT",
+  "GO_NON_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY",
+  "GO_REGULATION_OF_HEART_INDUCTION_BY_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_NON_CANONICAL_WNT_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_WNT_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT",
+  "GO_REGULATION_OF_WNT_SIGNALING_PATHWAY_PLANAR_CELL_POLARITY_PATHWAY",
+  "BIOCARTA_WNT_PATHWAY",
+  "GO_WNT_SIGNALING_PATHWAY_INVOLVED_IN_HEART_DEVELOPMENT",
+  "KEGG_WNT_SIGNALING_PATHWAY",
+  "PID_FGF_PATHWAY",
+  "GO_FIBROBLAST_GROWTH_FACTOR_RECEPTOR_SIGNALING_PATHWAY",
+  "HALLMARK_WNT_BETA_CATENIN_SIGNALING",
+  "PID_BETA_CATENIN_DEG_PATHWAY",
+  "PID_BETA_CATENIN_NUC_PATHWAY",
+  "GO_NEGATIVE_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY",
+  "GO_POSITIVE_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY",
+  "GO_REGULATION_OF_RETINOIC_ACID_RECEPTOR_SIGNALING_PATHWAY",
+  "PID_RETINOIC_ACID_PATHWAY"
+)
+```
+
+Create geneset collection for AUCell input:
+
+```{r}
+dbr <- subset(dbr, gs_name %in% use)
+
+dbr <- split(dbr, dbr$gs_name)
+
+ids <- names(dbr)
+
+dbr <- lapply(ids, function(x) GeneSet(unique(dbr[[x]]$gene_symbol), setName = x))
+
+dbr <- GeneSetCollection(dbr)
+```
+
+Build gene expression rankings for each cell:
+
+```{r}
+rankings <- AUCell_buildRankings(
+  exprMat = counts(sce), 
+  plotStats = FALSE, 
+  verbose = FALSE
+)
+```
+
+Calculate the AUC for each gene-set in each cell:
+
+```{r}
+auc <- AUCell_calcAUC(dbr, rankings)
+```
+
+Get assignments from AUCell scores:
+
+```{r}
+res <- t(assay(auc))
+
+lab <- colnames(res)[max.col(res)]
+```
+
+Create results table for use with SingleR functions:
+
+```{r}
+dat <- DataFrame(scores = I(res), labels = lab, pruned.labels = lab, row.names = rownames(res))
+```
+
+Create a heatmap of the AUCell assignment scores:
+
+```{r fig.width = 12, fig.height = 9}
+plotScoreHeatmap(dat, cluster_cols = TRUE, show.labels = FALSE, max.labels = Inf)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

@@ -36,7 +36,7 @@ library(org.Mm.eg.db)
 Import experiment data:
 
 ```{r}
-sce <- readRDS("data/06-doublet-detection.rds")
+sce <- readRDS("output/06-doublet-detection.rds")
 ```
 
 ## Expression
@@ -126,7 +126,7 @@ plotUMAP(sce, colour_by = "phase", text_by = "cluster")
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "data/07-cell-cycle.rds")
+saveRDS(sce, file = "output/07-cell-cycle.rds")
 ```
 
 ### Session

@@ -20,7 +20,6 @@ knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
   cache.path = "cache/09-cell-annotation.Rmd/",
-  cache.lazy = FALSE,
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -45,32 +44,22 @@ library(pheatmap)
 Import experiment data:
 
 ```{r}
-sce <- readRDS("data/08-marker-detection.rds")
+sce <- readRDS("output/08-marker-detection.rds")
 ```
 
 ## Annotation
 
-### Manually curated
+### Gene sets
 
-Manually annotate cells based on prior investigation:
-
-```{r}
-ann <- read.csv("data/cell-lineage.csv", stringsAsFactors = FALSE)
-
-sce$lineage <- ann$lineage[match(sce$position, ann$cell)]
-```
-
-### Known markers
-
-Read marker sets from disk and check they are present in the data:
+Read gene sets from disk and check they are present in the data:
 
 ```{r}
-all <- read.csv("data/cell-markers.csv", stringsAsFactors = FALSE)
+all <- read.csv("data/gene-sets.csv", stringsAsFactors = FALSE)
 
 all <- all[all$gene_id %in% rowData(sce)$gene_id, ]
 ```
 
-Format marker sets for entry into the AUCell package:
+Format gene sets for entry into the AUCell package:
 
 ```{r}
 all <- split(all, all$gene_set)
@@ -80,7 +69,7 @@ all <- lapply(all, function(x) GeneSet(x$gene_id, setName = unique(x$gene_set)))
 all <- GeneSetCollection(all)
 ```
 
-Use the AUCell package to identify markers sets that are highly expressed in each cell:
+Use the AUCell package to identify gene sets that are highly expressed in each cell:
 
 ```{r}
 mat <- counts(sce)
@@ -124,7 +113,7 @@ Plot score distributions of labels:
 plotScoreDistribution(dat, show = "delta.med", ncol = 3, show.nmads = 3)
 ```
 
-### Gastrulation data
+### Reference data
 
 Load the mouse gastrulation data package:
 
@@ -134,7 +123,7 @@ library(MouseGastrulationData)
 
 Subset atlas sample metadata by embryonic stage:
 
-```{r}
+```{r cache = FALSE}
 AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
 ```
 
@@ -146,7 +135,7 @@ ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
 
 Compute log-normalized expression values:
 
-```{r}
+```{r cache = FALSE}
 ref <- logNormCounts(ref)
 ```
 
@@ -241,7 +230,7 @@ sce$celltype <- sce$celltype_singler
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "data/09-cell-annotation.rds")
+saveRDS(sce, file = "output/09-cell-annotation.rds")
 ```
 
 ### Session

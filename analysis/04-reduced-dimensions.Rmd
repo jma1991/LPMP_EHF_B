@@ -40,7 +40,7 @@ library(scran)
 Read experiment data:
 
 ```{r}
-sce <- readRDS("data/03-feature-selection.rds")
+sce <- readRDS("output/03-feature-selection.rds")
 ```
 
 ## PCA
@@ -151,7 +151,7 @@ ggplot(dat, aes(n.pcs, n.clusters)) +
 Choose number of PCs to retain from the above analyses:
 
 ```{r}
-num <- 5
+num <- 6
 
 len <- seq_len(num)
 
@@ -221,7 +221,7 @@ Select optimal perplexity value and number of iterations:
 ```{r}
 set.seed(658412747)
 
-sce <- runTSNE(sce, dimred = "PCA", perplexity = 22, max_iter = 700)
+sce <- runTSNE(sce, dimred = "PCA", perplexity = 26, max_iter = 500)
 ```
 
 ## UMAP
@@ -267,7 +267,7 @@ Select optimal number of nearest neighbors:
 ```{r}
 set.seed(161831143)
 
-sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 17, min_dist = 0.2)
+sce <- runUMAP(sce, dimred = "PCA", n_neighbors = 17, min_dist = 0)
 ```
 
 ## Variables {.tabset}
@@ -309,7 +309,7 @@ patchwork::wrap_plots(plt, ncol = 2)
 Save experiment object to disk:
 
 ```{r output}
-saveRDS(sce, file = "data/04-reduced-dimensions.rds")
+saveRDS(sce, file = "output/04-reduced-dimensions.rds")
 ```
 
 ### Session

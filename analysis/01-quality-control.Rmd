@@ -430,7 +430,7 @@ After quality control we have a dataset with `r ncol(sce)` cells and `r nrow(sce
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, "data/01-quality-control.rds")
+saveRDS(sce, "output/01-quality-control.rds")
 ```
 
 ### Session

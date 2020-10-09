@@ -1,5 +1,5 @@
 ---
-title: "Clustering"
+title: "Atlas clustering"
 author: "James Ashmore"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
@@ -19,7 +19,7 @@ Set chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = "cache/05-clustering.Rmd/",
+  cache.path = "cache/13-atlas-clustering.Rmd/",
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -40,7 +40,7 @@ library(scran)
 Read experiment data:
 
 ```{r}
-sce <- readRDS("output/04-reduced-dimensions.rds")
+sce <- readRDS("output/12-atlas-trajectory.rds")
 ```
 
 ## Graph
@@ -50,7 +50,7 @@ sce <- readRDS("output/04-reduced-dimensions.rds")
 Perform clustering using rank-based weights followed by Walktrap clustering:
 
 ```{r}
-snn <- buildSNNGraph(sce, type = "rank", use.dimred = "PCA")
+snn <- buildSNNGraph(sce, type = "rank", use.dimred = "corrected")
 
 cls <- cluster_walktrap(snn)$membership
 
@@ -78,13 +78,13 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_walktrap", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_walktrap", "celltype", "stage", "source")
 ```
 
-#### PCA
+#### MNN
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -110,7 +110,7 @@ patchwork::wrap_plots(plt)
 Perform clustering using Jaccard-based weights followed by Louvain clustering:
 
 ```{r}
-snn <- buildSNNGraph(sce, type = "jaccard", use.dimred = "PCA")
+snn <- buildSNNGraph(sce, type = "jaccard", use.dimred = "corrected")
 
 cls <- cluster_louvain(snn)$membership
 
@@ -138,13 +138,13 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_louvain", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_louvain", "celltype", "stage", "source")
 ```
 
-#### PCA
+#### MNN
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -169,12 +169,12 @@ patchwork::wrap_plots(plt)
 
 ### K-means {.tabset}
 
-Perform k-means clustering on the PCA matrix:
+Perform k-means clustering on the MNN matrix:
 
 ```{r}
-set.seed(124183532)
+set.seed(80593233)
 
-dim <- reducedDim(sce, "PCA")
+dim <- reducedDim(sce, "corrected")
 
 gap <- clusGap(dim, kmeans, K.max = 20)
 
@@ -196,7 +196,7 @@ ggplot(dat, aes(var, val)) +
 Select optimal number of clusters:
 
 ```{r}
-set.seed(124183532)
+set.seed(80593233)
 
 cls <- kmeans(dim, centers = num)
 
@@ -226,13 +226,13 @@ plot(hcl)
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_kmeans", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_kmeans", "celltype", "stage", "source")
 ```
 
-#### PCA
+#### MNN
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -257,10 +257,10 @@ patchwork::wrap_plots(plt)
 
 ### Hierarchical {.tabset}
 
-Perform hierarchical cluster analysis on the PCA data:
+Perform hierarchical cluster analysis on the MNN data:
 
 ```{r}
-dim <- reducedDim(sce, "PCA")
+dim <- reducedDim(sce, "corrected")
 
 dst <- dist(dim)
 
@@ -286,13 +286,13 @@ plot(sil, col = col, border = NA)
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_hclust", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_hclust", "celltype", "stage", "source")
 ```
 
-#### PCA
+#### MNN
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + coord_fixed())
 
 patchwork::wrap_plots(plt)
 ```
@@ -328,7 +328,7 @@ sce$cluster <- sce$cluster_louvain
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "output/05-clustering.rds")
+saveRDS(sce, file = "output/13-atlas-clustering.rds")
 ```
 
 ### Session

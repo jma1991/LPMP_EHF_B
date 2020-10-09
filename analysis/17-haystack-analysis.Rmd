@@ -1,0 +1,364 @@
+---
+title: "Haystack analysis"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+Excerpt from the abstract of the [singleCellHaystack][ref] preprint:
+
+*"A common analysis of single-cell sequencing data includes dimensionality reduction using t-SNE or UMAP, clustering of cells, and identifying differentially expressed genes. How cell clusters are defined has important consequences in the interpretation of results and downstream analyses, but is often not straightforward. To address this difficulty, we present a new approach called singleCellHaystack that enables the identification of differentially expressed genes (DEGs) without relying on explicit clustering of cells. Our method uses Kullback-Leibler Divergence to find genes that are expressed in subsets of cells that are non-randomly positioned in a multi-dimensional space."*
+
+[ref]: https://www.biorxiv.org/content/10.1101/557967v4
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/17-haystack-analysis.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages
+
+```{r}
+library(scater)
+library(MouseGastrulationData)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggthemes)
+library(patchwork)
+library(singleCellHaystack)
+```
+
+Read SingleCellExperiment object:
+
+```{r}
+sce <- readRDS("output/11-atlas-neighbors.rds")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Rename reduced dimensions:
+
+```{r}
+reducedDimNames(sce) <- c("MNN", "TSNE", "UMAP")
+```
+
+Define annotation labels for visualisation:
+
+```{r}
+source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP LHF")
+```
+
+## Haystack {.tabset}
+
+Find genes that are expressed in subsets of cells that are non-randomly positioned in reduced dimensions.
+
+### MNN
+
+Plot MNN of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(MNN.1, MNN.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "MNN 1", y = "MNN 2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot MNN of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(MNN.1, MNN.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10") + 
+  labs(x = "MNN 1", y = "MNN 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot MNN of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(MNN.1, MNN.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  labs(x = "MNN 1", y = "MNN 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Run the main haystack function:
+
+```{r}
+set.seed(681386886)
+
+res <- haystack(
+  x = reducedDim(sce, "MNN"),
+  detection = counts(sce) > 0,
+  grid.points = 100,
+  method = "highD")
+```
+
+Get results of the haystack analysis:
+
+```{r}
+tab <- show_result_haystack(res.haystack = res)
+
+tab <- tab[order(tab$log.p.adj, decreasing = FALSE), ] # order by decreasing significance
+
+tab <- subset(tab, log.p.adj < log10(0.05)) # filter non-significant results
+```
+
+Print table of haystack analysis results:
+
+```{r include = FALSE}
+knitr::knit_print(DT::datatable(tab))
+```
+
+Check for significant genes before plotting:
+
+```{r}
+run <- ifelse(nrow(tab) > 0, TRUE, FALSE)
+```
+
+Visualize the expression of significant genes:
+
+```{r eval = run, fig.width = 12, fig.height = 15}
+ids <- rownames(tab)
+
+top <- head(ids, n = 20)
+
+plt <- lapply(top, function(i) {
+
+  x <- makePerCellDF(sce, features = i, exprs_values = "reconstructed")
+
+  x$exprs <- log10(x[[i]])
+
+  ggplot(x, aes(MNN.1, MNN.2, colour = exprs)) +
+    geom_point(show.legend = FALSE) +
+    scale_color_viridis_c() +
+    labs(x = "PC1", y = "PC2", title = i) +
+    theme_bw() +
+    theme(aspect.ratio = 1, legend.title = element_blank())
+
+})
+
+wrap_plots(plt, ncol = 4)
+```
+
+### TSNE
+
+Plot TSNE of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(TSNE.1, TSNE.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot TSNE of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(TSNE.1, TSNE.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot TSNE of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(TSNE.1, TSNE.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Run the main haystack function:
+
+```{r}
+set.seed(681386886)
+
+res <- haystack(
+  x = reducedDim(sce, "TSNE"),
+  detection = counts(sce) > 0,
+  grid.points = 100,
+  method = "2D")
+```
+
+Get results of the haystack analysis:
+
+```{r}
+tab <- show_result_haystack(res.haystack = res)
+
+tab <- tab[order(tab$log.p.adj, decreasing = FALSE), ] # order by decreasing significance
+
+tab <- subset(tab, log.p.adj < log10(0.05)) # filter non-significant results
+```
+
+Print table of haystack analysis results:
+
+```{r include = FALSE}
+knitr::knit_print(DT::datatable(tab))
+```
+
+Check for significant genes before plotting:
+
+```{r}
+run <- ifelse(nrow(tab) > 0, TRUE, FALSE)
+```
+
+Visualize the expression of significant genes:
+
+```{r eval = run, fig.width = 12, fig.height = 15}
+ids <- rownames(tab)
+
+top <- head(ids, n = 20)
+
+plt <- lapply(top, function(i) {
+
+  x <- makePerCellDF(sce, features = i, exprs_values = "reconstructed")
+
+  x$exprs <- log10(x[[i]])
+
+  ggplot(x, aes(TSNE.1, TSNE.2, colour = exprs)) +
+    geom_point(show.legend = FALSE) +
+    scale_color_viridis_c() +
+    labs(x = "TSNE 1", y = "TSNE 2", title = i) +
+    theme_bw() +
+    theme(aspect.ratio = 1, legend.title = element_blank())
+
+})
+
+wrap_plots(plt, ncol = 4)
+```
+
+### UMAP
+
+Plot UMAP of cells coloured by source data:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(UMAP.1, UMAP.2, colour = source)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot UMAP of cells coloured by embryonic stage:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(UMAP.1, UMAP.2, colour = stage)) + 
+  geom_point() + 
+  scale_colour_tableau(name = "Stage", palette = "Tableau 10") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Plot UMAP of cells coloured by celltype annotation:
+
+```{r fig.width = 8, fig.height = 6}
+ggcells(sce, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point() + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
+  theme_bw() + theme(aspect.ratio = 1)
+```
+
+Run the main haystack function:
+
+```{r}
+set.seed(681386886)
+
+res <- haystack(
+  x = reducedDim(sce, "UMAP"),
+  detection = counts(sce) > 0,
+  grid.points = 100,
+  method = "2D")
+```
+
+Get results of the haystack analysis:
+
+```{r}
+tab <- show_result_haystack(res.haystack = res)
+
+tab <- tab[order(tab$log.p.adj, decreasing = FALSE), ] # order by decreasing significance
+
+tab <- subset(tab, log.p.adj < log10(0.05)) # filter non-significant results
+```
+
+Print table of haystack analysis results:
+
+```{r include = FALSE}
+knitr::knit_print(DT::datatable(tab))
+```
+
+Check for significant genes before plotting:
+
+```{r}
+run <- ifelse(nrow(tab) > 0, TRUE, FALSE)
+```
+
+Visualize the expression of significant genes:
+
+```{r eval = run, fig.width = 12, fig.height = 15}
+ids <- rownames(tab)
+
+top <- head(ids, n = 20)
+
+plt <- lapply(top, function(i) {
+
+  x <- makePerCellDF(sce, features = i, exprs_values = "reconstructed")
+
+  x$exprs <- log10(x[[i]])
+
+  ggplot(x, aes(UMAP.1, UMAP.2, colour = exprs)) +
+    geom_point(show.legend = FALSE) +
+    scale_color_viridis_c() +
+    labs(x = "UMAP 1", y = "UMAP 2", title = i) +
+    theme_bw() +
+    theme(aspect.ratio = 1, legend.title = element_blank())
+
+})
+
+wrap_plots(plt, ncol = 4)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
