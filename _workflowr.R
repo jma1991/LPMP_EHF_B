@@ -115,6 +115,12 @@ unlink("output/17-haystack-analysis.rds")
 unlink("docs/17-haystack-analysis.html")
 wflow_build(files = "analysis/17-haystack-analysis.Rmd")
 
+unlink("analysis/cache/18-cell-exploration.Rmd", recursive = TRUE)
+unlink("docs/figure/18-cell-exploration.Rmd", recursive = TRUE)
+unlink("output/18-cell-exploration.rds")
+unlink("docs/18-cell-exploration.html")
+wflow_build(files = "analysis/18-cell-exploration.Rmd")
+
 unlink("analysis/cache/interactive.Rmd", recursive = TRUE)
 unlink("docs/figure/interactive.Rmd", recursive = TRUE)
 unlink("output/interactive.rds")

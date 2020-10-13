@@ -9,10 +9,22 @@ editor_options:
 
 ## Setup
 
-Load CRAN packages
+Load CRAN packages:
 
 ```{r}
 library(rsconnect)
+```
+
+Include Bioconductor package repositories:
+
+```{r}
+options(repos = BiocManager::repositories())
+```
+
+Automatically answer yes to any user prompt:
+
+```{r}
+options(needs.promptUser = FALSE)
 ```
 
 Create shiny directory for interactive data exploration:
@@ -109,8 +121,6 @@ iSEE(sce, appTitle = "LPMP_EHF_B", colormap = ecm)
 Deploy the iSEE application to the shiny server:
 
 ```{r}
-options(repos = BiocManager::repositories()) # bioc repo
-
 deployApp(appDir = "shiny/v1", appName = "LPMP_EHF_B", appTitle = "LPMP_EHF_B", launch.browser = FALSE, forceUpdate = TRUE)
 ```
 
@@ -206,8 +216,6 @@ iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm)
 Deploy the iSEE application to the shiny server:
 
 ```{r}
-options(repos = BiocManager::repositories()) # bioc repo
-
 deployApp(appDir = "shiny/v2", appName = "LPMP_EHF_B_ATLAS", appTitle = "LPMP_EHF_B_ATLAS", launch.browser = FALSE, forceUpdate = TRUE)
 ```
 

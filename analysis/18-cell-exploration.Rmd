@@ -1,0 +1,198 @@
+---
+title: "Cell type exploration"
+author: "James Ashmore"
+date: "2020-10-13"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this analysis we are going to explore the expression of some celltype marker genes in the LPMP (test) and Atlas (reference) data.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/18-cell-exploration.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+library(pheatmap)
+```
+
+Source user-defined functions:
+
+```{r}
+source("code/coolmap.R")
+```
+
+Create a default graphics palette:
+
+```{r}
+TableauColors <- function(x, palette = NULL) {
+  
+  x <- factor(x)
+
+  p <- tableau_color_pal(palette = palette)(nlevels(x))
+  
+  p <- setNames(p, levels(x))
+
+}
+
+EmbryoCelltypeColors <- MouseGastrulationData::EmbryoCelltypeColours
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/14-atlas-markers.rds")
+```
+
+Make cell names unique:
+
+```{r}
+colnames(sce) <- paste0("cell_", seq_len(ncol(sce)))
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Read markers for celltype exploration:
+
+```{r}
+ids <- read.csv("data/cell-exploration.csv")
+```
+
+## Markers {.tabset}
+
+Subset experiment object to required genes:
+
+```{r}
+sce <- sce[rowData(sce)$gene_name %in% ids$gene_name, ]
+```
+
+Create list of annotations to be displayed:
+
+```{r}
+ann <- list()
+```
+
+Define row annotations to be displayed:
+
+```{r}
+ann$annotation_row <- data.frame(
+  Marker = factor(ids$celltype),
+  row.names = ids$gene_name
+)
+```
+
+Define column annotations to be displayed:
+
+```{r}
+ann$annotation_col <- data.frame(
+  Stage = factor(sce$stage),
+  Celltype = factor(sce$celltype),
+  Data = factor(tools::toTitleCase(sce$source)),
+  row.names = colnames(sce)
+)
+```
+
+Define colour palette for row and column annotations:
+
+```{r}
+ann$annotation_colors <- list(
+  Marker = TableauColors(ann$annotation_row$Marker, palette = "Nuriel Stone"),
+  Stage = TableauColors(ann$annotation_col$Stage, palette = "Tableau 10"),
+  Celltype = EmbryoCelltypeColors[levels(ann$annotation_col$Celltype)],
+  Data = TableauColors(ann$annotation_col$Data, palette = "Miller Stone")
+)
+```
+
+### LPMP/Atlas
+
+```{r fig.width = 12, fig.height = 9}
+fit <- coolmap(assay(sce, "reconstructed"))
+
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)
+```
+
+### LPMP
+
+```{r fig.width = 12, fig.height = 9}
+fit <- coolmap(assay(sce, "logcounts")[, sce$source == "test"])
+
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)
+```
+
+### Atlas
+
+```{r fig.width = 12, fig.height = 9}
+fit <- coolmap(assay(sce, "logcounts")[, sce$source == "reference"])
+
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)
+```
+
+## Summary
+
+## Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

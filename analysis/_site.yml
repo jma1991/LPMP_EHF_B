@@ -45,6 +45,8 @@ navbar:
       - href: 16-geneset-activity.html
       - text: Haystack analysis
       - href: 17-haystack-analysis.html
+      - text: Cell type exploration
+      - href: 18-cell-exploration.html
   - text: Interactive
     href: interactive.html
   right:

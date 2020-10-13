@@ -13,7 +13,7 @@
 
 <meta name="date" content="2020-10-13" />
 
-<title>Interactive data exploration</title>
+<title>Cell type exploration</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -460,6 +460,10 @@ div.tocify {
     <li>
       <a href="17-haystack-analysis.html"></a>
     </li>
+    <li class="dropdown-header">Cell type exploration</li>
+    <li>
+      <a href="18-cell-exploration.html"></a>
+    </li>
   </ul>
 </li>
 <li>
@@ -486,7 +490,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Interactive data exploration</h1>
+<h1 class="title toc-ignore">Cell type exploration</h1>
 <h4 class="author">James Ashmore</h4>
 <h4 class="date">2020-10-13</h4>
 
@@ -537,7 +541,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -624,6 +628,7 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/cache/
+    Ignored:    data/cell-exploration.csv
     Ignored:    data/cell-lineage.csv
     Ignored:    data/gene-sets.csv
     Ignored:    data/pyscenic-activity.csv
@@ -646,7 +651,12 @@ Ignored files:
     Ignored:    output/14-atlas-markers.rds
     Ignored:    shiny/
 
+Untracked files:
+    Untracked:  analysis/18-cell-exploration.Rmd
+
 Unstaged changes:
+    Modified:   _workflowr.R
+    Modified:   analysis/_site.yml
     Modified:   analysis/interactive.Rmd
 
 </code></pre>
@@ -660,289 +670,141 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/interactive.Rmd</code>) and HTML (<code>docs/interactive.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/7041d81b45fdce1318effa91adb64be0a6ef6d6e/analysis/interactive.Rmd" target="_blank">7041d81</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-10-13
-</td>
-<td>
-publish
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/7041d81b45fdce1318effa91adb64be0a6ef6d6e/docs/interactive.html" target="_blank">7041d81</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-10-13
-</td>
-<td>
-publish
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this analysis we are going to explore the expression of some celltype marker genes in the LPMP (test) and Atlas (reference) data.</p>
+</div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/18-cell-exploration.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scater)
+library(scran)</code></pre>
 <p>Load CRAN packages:</p>
-<pre class="r"><code>library(rsconnect)</code></pre>
-<p>Include Bioconductor package repositories:</p>
-<pre class="r"><code>options(repos = BiocManager::repositories())</code></pre>
-<p>Automatically answer yes to any user prompt:</p>
-<pre class="r"><code>options(needs.promptUser = FALSE)</code></pre>
-<p>Create shiny directory for interactive data exploration:</p>
-<pre class="r"><code>dir.create(&quot;shiny&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
-</div>
-<div id="applications" class="section level2">
-<h2>Applications</h2>
-<div id="processed-data" class="section level3">
-<h3>Processed data</h3>
-<p>Create iSEE directory for processed data:</p>
-<pre class="r"><code>dir.create(&quot;shiny/v1&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
-<p>Copy processed data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/v1/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<p>Write application code to file within iSEE directory:</p>
-<pre class="r r"><code>library(SingleCellExperiment)
+<pre class="r"><code>library(ggplot2)
+library(ggthemes)
+library(pheatmap)</code></pre>
+<p>Source user-defined functions:</p>
+<pre class="r"><code>source(&quot;code/coolmap.R&quot;)</code></pre>
+<p>Create a default graphics palette:</p>
+<pre class="r"><code>TableauColors &lt;- function(x, palette = NULL) {
+  
+  x &lt;- factor(x)
 
-library(BiocSingular)
-
-library(scran)
-
-sce &lt;- readRDS(&quot;data.rds&quot;)
-
-library(iSEE)
-
-library(shiny)
-
-packageVersion(&quot;iSEE&quot;)
-
-celltype_colours = function(n) {
-
-  col &lt;- c(&quot;Allantois&quot; = &quot;#532C8A&quot;,
-           &quot;Anterior Primitive Streak&quot; = &quot;#c19f70&quot;,
-           &quot;Blood progenitors 1&quot; = &quot;#f9decf&quot;,
-           &quot;Blood progenitors 2&quot; = &quot;#c9a997&quot;,
-           &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
-           &quot;Caudal epiblast&quot; = &quot;#9e6762&quot;,
-           &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
-           &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
-           &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
-           &quot;Endothelium&quot; = &quot;#ff891c&quot;,
-           &quot;Epiblast&quot; = &quot;#635547&quot;,
-           &quot;Erythroid1&quot; = &quot;#C72228&quot;,
-           &quot;Erythroid2&quot; = &quot;#f79083&quot;,
-           &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
-           &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
-           &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
-           &quot;ExE mesoderm&quot; = &quot;#8870ad&quot;,
-           &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647a4f&quot;,
-           &quot;Gut&quot; = &quot;#EF5A9D&quot;,
-           &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
-           &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
-           &quot;Mesenchyme&quot; = &quot;#cc7818&quot;,
-           &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
-           &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
-           &quot;Neural crest&quot; = &quot;#C3C388&quot;,
-           &quot;NMP&quot; = &quot;#8EC792&quot;,
-           &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
-           &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
-           &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
-           &quot;PGC&quot; = &quot;#FACB12&quot;,
-           &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
-           &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
-           &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
-           &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
-           &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
-           &quot;Surface ectoderm&quot; = &quot;#f7f79e&quot;,
-           &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
-  )
-
-  return(col)
+  p &lt;- tableau_color_pal(palette = palette)(nlevels(x))
+  
+  p &lt;- setNames(p, levels(x))
 
 }
 
-ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours))
-
-options(iSEE.maxlevels = 37)
-
-iSEE(sce, appTitle = &quot;LPMP_EHF_B&quot;, colormap = ecm)</code></pre>
-<p>Deploy the iSEE application to the shiny server:</p>
-<pre class="r"><code>deployApp(appDir = &quot;shiny/v1&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Uploading bundle for application: 3002030...DONE
-Deploying bundle: 3734619 for application: 3002030 ...
-Waiting for task: 805823195
-  building: Processing bundle: 3734619
-  building: Parsing manifest
-  building: Building image: 4213850
-  building: Installing system dependencies
-  building: Fetching packages
-  building: Installing packages
-  building: Installing files
-  building: Pushing image: 4213850
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
-<p>Allocate more memory to the iSEE application:</p>
-<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/v1&quot;, size = &quot;xlarge&quot;)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Waiting for task: 805824287
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
+EmbryoCelltypeColors &lt;- MouseGastrulationData::EmbryoCelltypeColours</code></pre>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/14-atlas-markers.rds&quot;)</code></pre>
+<p>Make cell names unique:</p>
+<pre class="r"><code>colnames(sce) &lt;- paste0(&quot;cell_&quot;, seq_len(ncol(sce)))</code></pre>
+<p>Make feature names unique:</p>
+<pre class="r"><code>rownames(sce) &lt;- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)</code></pre>
+<p>Read markers for celltype exploration:</p>
+<pre class="r"><code>ids &lt;- read.csv(&quot;data/cell-exploration.csv&quot;)</code></pre>
 </div>
-<div id="integrated-data" class="section level3">
-<h3>Integrated data</h3>
-<p>Create iSEE directory for integrated data:</p>
-<pre class="r"><code>dir.create(&quot;shiny/v2&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
-<p>Copy integrated data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/14-atlas-markers.rds&quot;, &quot;shiny/v2/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<p>Write application code to file within iSEE directory:</p>
-<pre class="r r"><code>library(SingleCellExperiment)
+<div id="markers" class="section level2 tabset">
+<h2>Markers</h2>
+<p>Subset experiment object to required genes:</p>
+<pre class="r"><code>sce &lt;- sce[rowData(sce)$gene_name %in% ids$gene_name, ]</code></pre>
+<p>Create list of annotations to be displayed:</p>
+<pre class="r"><code>ann &lt;- list()</code></pre>
+<p>Define row annotations to be displayed:</p>
+<pre class="r"><code>ann$annotation_row &lt;- data.frame(
+  Marker = factor(ids$celltype),
+  row.names = ids$gene_name
+)</code></pre>
+<p>Define column annotations to be displayed:</p>
+<pre class="r"><code>ann$annotation_col &lt;- data.frame(
+  Stage = factor(sce$stage),
+  Celltype = factor(sce$celltype),
+  Data = factor(tools::toTitleCase(sce$source)),
+  row.names = colnames(sce)
+)</code></pre>
+<p>Define colour palette for row and column annotations:</p>
+<pre class="r"><code>ann$annotation_colors &lt;- list(
+  Marker = TableauColors(ann$annotation_row$Marker, palette = &quot;Nuriel Stone&quot;),
+  Stage = TableauColors(ann$annotation_col$Stage, palette = &quot;Tableau 10&quot;),
+  Celltype = EmbryoCelltypeColors[levels(ann$annotation_col$Celltype)],
+  Data = TableauColors(ann$annotation_col$Data, palette = &quot;Miller Stone&quot;)
+)</code></pre>
+<div id="lpmpatlas" class="section level3">
+<h3>LPMP/Atlas</h3>
+<pre class="r"><code>fit &lt;- coolmap(assay(sce, &quot;reconstructed&quot;))
 
-library(BiocSingular)
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/18-cell-exploration.Rmd/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="lpmp" class="section level3">
+<h3>LPMP</h3>
+<pre class="r"><code>fit &lt;- coolmap(assay(sce, &quot;logcounts&quot;)[, sce$source == &quot;test&quot;])
 
-library(scran)
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/18-cell-exploration.Rmd/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="atlas" class="section level3">
+<h3>Atlas</h3>
+<pre class="r"><code>fit &lt;- coolmap(assay(sce, &quot;logcounts&quot;)[, sce$source == &quot;reference&quot;])
 
-sce &lt;- readRDS(&quot;data.rds&quot;)
-
-library(iSEE)
-
-library(shiny)
-
-packageVersion(&quot;iSEE&quot;)
-
-celltype_colours = function(n) {
-
-  col &lt;- c(&quot;Allantois&quot; = &quot;#532C8A&quot;,
-           &quot;Anterior Primitive Streak&quot; = &quot;#c19f70&quot;,
-           &quot;Blood progenitors 1&quot; = &quot;#f9decf&quot;,
-           &quot;Blood progenitors 2&quot; = &quot;#c9a997&quot;,
-           &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
-           &quot;Caudal epiblast&quot; = &quot;#9e6762&quot;,
-           &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
-           &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
-           &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
-           &quot;Endothelium&quot; = &quot;#ff891c&quot;,
-           &quot;Epiblast&quot; = &quot;#635547&quot;,
-           &quot;Erythroid1&quot; = &quot;#C72228&quot;,
-           &quot;Erythroid2&quot; = &quot;#f79083&quot;,
-           &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
-           &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
-           &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
-           &quot;ExE mesoderm&quot; = &quot;#8870ad&quot;,
-           &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647a4f&quot;,
-           &quot;Gut&quot; = &quot;#EF5A9D&quot;,
-           &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
-           &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
-           &quot;Mesenchyme&quot; = &quot;#cc7818&quot;,
-           &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
-           &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
-           &quot;Neural crest&quot; = &quot;#C3C388&quot;,
-           &quot;NMP&quot; = &quot;#8EC792&quot;,
-           &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
-           &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
-           &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
-           &quot;PGC&quot; = &quot;#FACB12&quot;,
-           &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
-           &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
-           &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
-           &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
-           &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
-           &quot;Surface ectoderm&quot; = &quot;#f7f79e&quot;,
-           &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
-  )
-
-  return(col)
-
-}
-
-ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours))
-
-options(iSEE.maxlevels = 37)
-
-iSEE(sce, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, colormap = ecm)</code></pre>
-<p>Deploy the iSEE application to the shiny server:</p>
-<pre class="r"><code>deployApp(appDir = &quot;shiny/v2&quot;, appName = &quot;LPMP_EHF_B_ATLAS&quot;, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Uploading bundle for application: 3002299...DONE
-Deploying bundle: 3734646 for application: 3002299 ...
-Waiting for task: 805830874
-  building: Processing bundle: 3734646
-  building: Parsing manifest
-  building: Building image: 4213973
-  building: Installing system dependencies
-  building: Fetching packages
-  building: Installing packages
-  building: Installing files
-  building: Pushing image: 4213973
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
-<p>Allocate more memory to the iSEE application:</p>
-<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_ATLAS&quot;, appDir = &quot;shiny/v2&quot;, size = &quot;xlarge&quot;)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Waiting for task: 805832221
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
+pheatmap(
+  mat = fit$mat,
+  color = fit$color,
+  breaks = fit$breaks,
+  cluster_rows = fit$cluster_rows,
+  cluster_cols = fit$cluster_cols,
+  annotation_row = ann$annotation_row,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  show_colnames = FALSE
+)</code></pre>
+<p><img src="figure/18-cell-exploration.Rmd/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
-<div id="session" class="section level3">
-<h3>Session</h3>
+</div>
+<div id="session" class="section level2">
+<h2>Session</h2>
 <p>Print session information:</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.2 (2020-06-22)
@@ -957,26 +819,66 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
 
 other attached packages:
-[1] rsconnect_0.8.16 workflowr_1.6.2 
+ [1] pheatmap_1.0.12             ggthemes_4.2.0             
+ [3] scran_1.16.0                scater_1.16.2              
+ [5] ggplot2_3.3.2               SingleCellExperiment_1.10.1
+ [7] SummarizedExperiment_1.18.2 DelayedArray_0.14.1        
+ [9] matrixStats_0.57.0          Biobase_2.48.0             
+[11] GenomicRanges_1.40.0        GenomeInfoDb_1.24.2        
+[13] IRanges_2.22.2              S4Vectors_0.26.1           
+[15] BiocGenerics_0.34.0         workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5          rstudioapi_0.11     whisker_0.4        
- [4] knitr_1.30          magrittr_1.5        R6_2.4.1           
- [7] rlang_0.4.7         stringr_1.4.0       tools_4.0.2        
-[10] packrat_0.5.0       xfun_0.18           git2r_0.27.1       
-[13] askpass_1.1         htmltools_0.5.0     ellipsis_0.3.1     
-[16] openssl_1.4.3       rprojroot_1.3-2     yaml_2.2.1         
-[19] digest_0.6.25       tibble_3.0.3        lifecycle_0.2.0    
-[22] crayon_1.3.4        BiocManager_1.30.10 later_1.1.0.1      
-[25] vctrs_0.3.4         promises_1.1.1      fs_1.5.0           
-[28] curl_4.3            glue_1.4.2          evaluate_0.14      
-[31] rmarkdown_2.4       stringi_1.5.3       compiler_4.0.2     
-[34] pillar_1.4.6        backports_1.1.10    jsonlite_1.7.1     
-[37] httpuv_1.5.4        pkgconfig_2.0.3    </code></pre>
-</div>
+ [1] bitops_1.0-6                  fs_1.5.0                     
+ [3] bit64_4.0.5                   httr_1.4.2                   
+ [5] RColorBrewer_1.1-2            rprojroot_1.3-2              
+ [7] tools_4.0.2                   backports_1.1.10             
+ [9] R6_2.4.1                      irlba_2.3.3                  
+[11] vipor_0.4.5                   DBI_1.1.0                    
+[13] colorspace_1.4-1              withr_2.3.0                  
+[15] tidyselect_1.1.0              gridExtra_2.3                
+[17] curl_4.3                      bit_4.0.4                    
+[19] compiler_4.0.2                git2r_0.27.1                 
+[21] BiocNeighbors_1.6.0           scales_1.1.1                 
+[23] rappdirs_0.3.1                stringr_1.4.0                
+[25] digest_0.6.25                 rmarkdown_2.4                
+[27] XVector_0.28.0                pkgconfig_2.0.3              
+[29] htmltools_0.5.0               fastmap_1.0.1                
+[31] dbplyr_1.4.4                  limma_3.44.3                 
+[33] rlang_0.4.7                   rstudioapi_0.11              
+[35] RSQLite_2.2.1                 shiny_1.5.0                  
+[37] DelayedMatrixStats_1.10.1     farver_2.0.3                 
+[39] generics_0.0.2                BiocParallel_1.22.0          
+[41] dplyr_1.0.2                   RCurl_1.98-1.2               
+[43] magrittr_1.5                  BiocSingular_1.4.0           
+[45] GenomeInfoDbData_1.2.3        Matrix_1.2-18                
+[47] Rcpp_1.0.5                    ggbeeswarm_0.6.0             
+[49] munsell_0.5.0                 viridis_0.5.1                
+[51] lifecycle_0.2.0               stringi_1.5.3                
+[53] yaml_2.2.1                    edgeR_3.30.3                 
+[55] zlibbioc_1.34.0               BiocFileCache_1.12.1         
+[57] MouseGastrulationData_1.2.0   AnnotationHub_2.20.2         
+[59] grid_4.0.2                    blob_1.2.1                   
+[61] promises_1.1.1                dqrng_0.2.1                  
+[63] ExperimentHub_1.14.2          crayon_1.3.4                 
+[65] lattice_0.20-41               locfit_1.5-9.4               
+[67] knitr_1.30                    pillar_1.4.6                 
+[69] igraph_1.2.5                  codetools_0.2-16             
+[71] glue_1.4.2                    BiocVersion_3.11.1           
+[73] evaluate_0.14                 BiocManager_1.30.10          
+[75] vctrs_0.3.4                   httpuv_1.5.4                 
+[77] gtable_0.3.0                  purrr_0.3.4                  
+[79] assertthat_0.2.1              xfun_0.18                    
+[81] mime_0.9                      rsvd_1.0.3                   
+[83] xtable_1.8-4                  later_1.1.0.1                
+[85] viridisLite_0.3.0             tibble_3.0.3                 
+[87] AnnotationDbi_1.50.3          beeswarm_0.2.3               
+[89] memoise_1.1.0                 statmod_1.4.34               
+[91] interactiveDisplayBase_1.26.3 ellipsis_0.3.1               </code></pre>
 </div>
 
 
