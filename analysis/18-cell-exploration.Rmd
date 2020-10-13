@@ -96,6 +96,12 @@ Subset experiment object to required genes:
 sce <- sce[rowData(sce)$gene_name %in% ids$gene_name, ]
 ```
 
+Identify Sox2 and T positive cells:
+
+```{r}
+sce$double.positive <- (counts(sce)["Sox2", ] > 1) & (counts(sce)["T", ] > 1)
+```
+
 Create list of annotations to be displayed:
 
 ```{r}
@@ -118,7 +124,9 @@ ann$annotation_col <- data.frame(
   Stage = factor(sce$stage),
   Celltype = factor(sce$celltype),
   Data = factor(tools::toTitleCase(sce$source)),
-  row.names = colnames(sce)
+  `Sox2/T` = factor(ifelse(sce$double.positive == TRUE, "Yes", "No")),
+  row.names = colnames(sce),
+  check.names = FALSE
 )
 ```
 
@@ -129,7 +137,8 @@ ann$annotation_colors <- list(
   Marker = TableauColors(ann$annotation_row$Marker, palette = "Nuriel Stone"),
   Stage = TableauColors(ann$annotation_col$Stage, palette = "Tableau 10"),
   Celltype = EmbryoCelltypeColors[levels(ann$annotation_col$Celltype)],
-  Data = TableauColors(ann$annotation_col$Data, palette = "Miller Stone")
+  Data = TableauColors(ann$annotation_col$Data, palette = "Miller Stone"),
+  `Sox2/T` = TableauColors(ann$annotation_col$`Sox2/T`, palette = "Superfishel Stone")
 )
 ```
 
