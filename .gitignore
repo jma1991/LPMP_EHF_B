@@ -7,3 +7,5 @@
 analysis/figure
 analysis/cache
 analysis/site_libs
+data/*
+output/*
