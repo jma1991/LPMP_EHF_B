@@ -9,3 +9,4 @@ analysis/cache
 analysis/site_libs
 data/*
 output/*
+shiny/*

@@ -45,6 +45,8 @@ navbar:
       - href: 16-geneset-activity.html
       - text: Haystack analysis
       - href: 17-haystack-analysis.html
+  - text: Interactive
+    href: interactive.html
   right:
     - text: License
     - href: license.html
