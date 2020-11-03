@@ -121,6 +121,12 @@ unlink("output/18-cell-exploration.rds")
 unlink("docs/18-cell-exploration.html")
 wflow_build(files = "analysis/18-cell-exploration.Rmd")
 
+unlink("analysis/cache/19-cell-heterogeneity.Rmd", recursive = TRUE)
+unlink("docs/figure/19-cell-heterogeneity.Rmd", recursive = TRUE)
+unlink("output/19-cell-heterogeneity.rds")
+unlink("docs/19-cell-heterogeneity.html")
+wflow_build(files = "analysis/19-cell-heterogeneity.Rmd")
+
 unlink("analysis/cache/interactive.Rmd", recursive = TRUE)
 unlink("docs/figure/interactive.Rmd", recursive = TRUE)
 unlink("output/interactive.rds")
