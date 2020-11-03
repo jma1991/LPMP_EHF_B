@@ -1,6 +1,6 @@
 git add _workflowr.yml _workflowr.R _workflowr.sh
 
-git add analysis/_site.yml analysis/about.Rmd analysis/index.Rmd analysis/license.Rmd analysis/01-quality-control.Rmd analysis/02-normalization.Rmd analysis/03-feature-selection.Rmd analysis/04-reduced-dimensions.Rmd analysis/05-clustering.Rmd analysis/06-doublet-detection.Rmd analysis/07-cell-cycle.Rmd analysis/08-marker-detection.Rmd analysis/09-cell-annotation.Rmd analysis/10-atlas-integration.Rmd analysis/11-atlas-neighbors.Rmd analysis/12-atlas-trajectory.Rmd analysis/13-atlas-clustering.Rmd analysis/14-atlas-markers.Rmd analysis/15-scenic-analysis.Rmd analysis/16-geneset-activity.Rmd analysis/17-haystack-analysis.Rmd analysis/18-cell-exploration.Rmd 19-cell-heterogeneity.Rmd
+git add analysis/_site.yml analysis/about.Rmd analysis/index.Rmd analysis/license.Rmd analysis/01-quality-control.Rmd analysis/02-normalization.Rmd analysis/03-feature-selection.Rmd analysis/04-reduced-dimensions.Rmd analysis/05-clustering.Rmd analysis/06-doublet-detection.Rmd analysis/07-cell-cycle.Rmd analysis/08-marker-detection.Rmd analysis/09-cell-annotation.Rmd analysis/10-atlas-integration.Rmd analysis/11-atlas-neighbors.Rmd analysis/12-atlas-trajectory.Rmd analysis/13-atlas-clustering.Rmd analysis/14-atlas-markers.Rmd analysis/15-scenic-analysis.Rmd analysis/16-geneset-activity.Rmd analysis/17-haystack-analysis.Rmd analysis/18-cell-exploration.Rmd analysis/19-cell-heterogeneity.Rmd
 
 git commit -m "publish"
 

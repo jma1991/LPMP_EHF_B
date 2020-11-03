@@ -1,0 +1,315 @@
+---
+title: "Cell heterogeneity"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+The cells in this sample are quite homogenous, so they do not form distinct clusters. To identify subtle differences between the cells, we can use a pre-defined set of interesting genes to examine the biological heterogeneity.
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/19-cell-heterogeneity.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(BiocSingular)
+library(scater)
+library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(msigdbr)
+library(pheatmap)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+## Lineage pathways {.tabset}
+
+Retrieve all gene sets and their member genes:
+
+```{r}
+all <- msigdbr(species = "Mus musculus")
+```
+
+Select relevant ontology terms:
+
+```{r}
+key <- c(
+  "GO_ECTODERM_DEVELOPMENT",
+  "GO_EPITHELIAL_TO_MESENCHYMAL_TRANSITION",
+  "GO_PRIMITIVE_STREAK_FORMATION",
+  "GO_PARAXIAL_MESODERM_DEVELOPMENT",
+  "GO_PARAXIAL_MESODERM_FORMATION",
+  "GO_PARAXIAL_MESODERM_MORPHOGENESIS",
+  "GO_DETERMINATION_OF_LEFT_RIGHT_ASYMMETRY_IN_LATERAL_MESODERM",
+  "GO_LATERAL_MESODERM_DEVELOPMENT",
+  "GO_GASTRULATION",
+  "GO_ENDOTHELIUM_DEVELOPMENT"
+)
+```
+
+Subset gene sets by ontology terms:
+
+```{r}
+all <- subset(all, gs_name %in% key)
+```
+
+Plot heatmap of gene expression values:
+
+```{r, fig.width = 8, fig.height = 15, results = "asis"}
+for (k in key) {
+  
+  dat <- subset(all, gs_name == k)
+
+  cat("### ", k, "\n")
+  
+  plotHeatmap(sce, dat$gene_symbol, center = TRUE, symmetric = TRUE, colour_columns_by = "cluster", fontsize = 7)
+  
+  cat("\n\n")
+  
+}
+```
+
+## {.tabset}
+
+Perform PCA on expression data:
+
+```{r}
+for (k in key) {
+  
+  set.seed(802231141)
+  
+  lab <- paste("PCA", k, sep = "_")
+  
+  row <- subset(all, gs_name == k)
+  
+  dim <- calculatePCA(sce, subset_row = row$gene_symbol, BSPARAM = ExactParam())
+  
+  fit <- getClusteredPCs(dim, min.rank = 1, max.rank = ncol(dim))
+  
+  num <- metadata(fit)$chosen
+  
+  len <- seq_len(num)
+  
+  dim[, len]
+  
+  reducedDim(sce, lab) <- dim[, len]
+
+}
+```
+
+Perform TSNE on PCA matrix:
+
+```{r}
+for (k in key) {
+  
+  set.seed(545413716)
+  
+  id1 <- paste("TSNE", k, sep = "_")
+  
+  id2 <- paste("PCA", k, sep = "_")
+
+  reducedDim(sce, id1) <- calculateTSNE(sce, dimred = id2)
+
+}
+```
+
+Perform UMAP on PCA matrix:
+
+```{r}
+for (k in key) {
+  
+  set.seed(498830989)
+  
+  id1 <- paste("UMAP", k, sep = "_")
+  
+  id2 <- paste("PCA", k, sep = "_")
+
+  reducedDim(sce, id1) <- calculateUMAP(sce, dimred = id2)
+
+}
+```
+
+### PCA {.tabset}
+
+```{r, fig.width = 10, fig.height = 10, results = "asis"}
+for (k in key) {
+  
+  var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+  
+  dim <- paste("PCA", k, sep = "_")
+  
+  plt <- lapply(var, function(x) plotReducedDim(sce, dimred = dim, colour_by = x) + coord_fixed(1) + theme_no_axes())
+
+  cat("#### ", k, "\n")
+  
+  print(patchwork::wrap_plots(plt, ncol = 2))
+  
+  cat("\n\n")
+  
+}
+```
+
+### TSNE {.tabset}
+
+```{r, fig.width = 10, fig.height = 10, results = "asis"}
+for (k in key) {
+  
+  var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+  
+  dim <- paste("TSNE", k, sep = "_")
+  
+  plt <- lapply(var, function(x) plotReducedDim(sce, dimred = dim, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
+
+  cat("#### ", k, "\n")
+  
+  print(patchwork::wrap_plots(plt, ncol = 2))
+  
+  cat("\n\n")
+  
+}
+```
+
+### UMAP {.tabset}
+
+```{r, fig.width = 10, fig.height = 10, results = "asis"}
+for (k in key) {
+  
+  var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+  
+  dim <- paste("UMAP", k, sep = "_")
+  
+  plt <- lapply(var, function(x) plotReducedDim(sce, dimred = dim, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
+
+  cat("#### ", k, "\n")
+  
+  print(patchwork::wrap_plots(plt, ncol = 2))
+  
+  cat("\n\n")
+  
+}
+```
+
+## Lineage markers {.tabset}
+
+Read lineage markers:
+
+```{r}
+ids <- read.csv("data/lineage-markers.csv")
+```
+
+Plot heatmap of gene expression values:
+
+```{r}
+plotHeatmap(sce, ids$gene_id, center = TRUE, symmetric = TRUE, colour_columns_by = "cluster")
+```
+
+Perform PCA on logcounts matrix of lineage markers:
+
+```{r}
+set.seed(802231141)
+
+sce <- runPCA(sce, subset_row = ids$gene_id, BSPARAM = ExactParam())
+```
+
+Find the number of subpopulations in the data using clustering:
+
+```{r}
+dim <- reducedDim(sce, "PCA")
+
+fit <- getClusteredPCs(dim, min.rank = 1, max.rank = ncol(dim))
+
+num <- metadata(fit)$chosen
+```
+
+Choose number of PCs to retain:
+
+```{r}
+len <- seq_len(num)
+
+dim <- reducedDim(sce, "PCA")
+
+reducedDim(sce, "PCA") <- dim[, len]
+```
+
+Perform TSNE on PCA matrix:
+
+```{r}
+set.seed(545413716)
+
+sce <- runTSNE(sce, dimred = "PCA")
+```
+
+Perform UMAP on PCA matrix:
+
+```{r}
+set.seed(498830989)
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+### PCA
+
+```{r fig.width = 8, fig.height = 8}
+var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "PCA", colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+### TSNE
+
+```{r fig.width = 8, fig.height = 8}
+var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "TSNE", colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+### UMAP
+
+```{r fig.width = 8, fig.height = 8}
+var <- c("cluster", "phase", "celltype_aucell", "celltype_singler", "Etv2", "Kdr", "Sox2", "T")
+
+plt <- lapply(var, function(x) plotReducedDim(sce, dimred = "UMAP", colour_by = x))
+
+patchwork::wrap_plots(plt, ncol = 2)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

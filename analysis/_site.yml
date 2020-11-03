@@ -47,6 +47,8 @@ navbar:
       - href: 17-haystack-analysis.html
       - text: Cell type exploration
       - href: 18-cell-exploration.html
+      - text: Cell heterogeneity
+      - href: 19-cell-heterogeneity.html
   - text: Interactive
     href: interactive.html
   right:
