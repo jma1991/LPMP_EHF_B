@@ -467,7 +467,18 @@ div.tocify {
     <li>
       <a href="17-haystack-analysis.html"></a>
     </li>
+    <li class="dropdown-header">Cell type exploration</li>
+    <li>
+      <a href="18-cell-exploration.html"></a>
+    </li>
+    <li class="dropdown-header">Cell heterogeneity</li>
+    <li>
+      <a href="19-cell-heterogeneity.html"></a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="interactive.html">Interactive</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -492,14 +503,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">Atlas markers</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">09 October, 2020</h4>
+<h4 class="date">04 November, 2020</h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -508,7 +519,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -517,10 +528,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-09
+<strong>Last updated:</strong> 2020-11-04
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -536,12 +547,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -608,16 +619,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreefd0c2cc723cd4035295b4849ce6d6163ce34ac19targetblankfd0c2cca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/fd0c2cc723cd4035295b4849ce6d6163ce34ac19" target="_blank">fd0c2cc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreee311abced79ce15ee1f932659fd4b9916cf84802targetblanke311abca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/e311abced79ce15ee1f932659fd4b9916cf84802" target="_blank">e311abc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreefd0c2cc723cd4035295b4849ce6d6163ce34ac19targetblankfd0c2cca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreee311abced79ce15ee1f932659fd4b9916cf84802targetblanke311abca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/fd0c2cc723cd4035295b4849ce6d6163ce34ac19" target="_blank">fd0c2cc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/e311abced79ce15ee1f932659fd4b9916cf84802" target="_blank">e311abc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -627,36 +638,38 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/cache/
     Ignored:    analysis/figure/
+    Ignored:    data/cell-exploration.csv
+    Ignored:    data/cell-lineage.csv
+    Ignored:    data/gene-sets.csv
+    Ignored:    data/lineage-markers.csv
+    Ignored:    data/pyscenic-activity.csv
+    Ignored:    data/pyscenic-modules.csv
+    Ignored:    data/pyscenic-regulons.csv
+    Ignored:    data/salmon-quant.rds
+    Ignored:    output/01-quality-control.rds
+    Ignored:    output/02-normalization.rds
+    Ignored:    output/03-feature-selection.rds
+    Ignored:    output/04-reduced-dimensions.rds
+    Ignored:    output/05-clustering.rds
+    Ignored:    output/06-doublet-detection.rds
+    Ignored:    output/07-cell-cycle.rds
+    Ignored:    output/08-marker-detection.rds
+    Ignored:    output/09-cell-annotation.rds
+    Ignored:    output/10-atlas-integration.rds
+    Ignored:    output/11-atlas-neighbors.rds
+    Ignored:    output/12-atlas-trajectory.rds
+    Ignored:    output/13-atlas-clustering.rds
+    Ignored:    output/14-atlas-markers.rds
+    Ignored:    shiny/
 
 Untracked files:
-    Untracked:  LICENSE
-    Untracked:  analysis/cache/
-    Untracked:  code/EmbryoColourPalette.R
-    Untracked:  code/coolmap.R
-    Untracked:  code/reorder_within.R
-    Untracked:  data/cell-lineage.csv
-    Untracked:  data/gene-sets.csv
-    Untracked:  data/pyscenic-activity.csv
-    Untracked:  data/pyscenic-modules.csv
-    Untracked:  data/pyscenic-regulons.csv
-    Untracked:  data/salmon-quant.rds
-    Untracked:  output/01-quality-control.rds
-    Untracked:  output/02-normalization.rds
-    Untracked:  output/03-feature-selection.rds
-    Untracked:  output/04-reduced-dimensions.rds
-    Untracked:  output/05-clustering.rds
-    Untracked:  output/06-doublet-detection.rds
-    Untracked:  output/07-cell-cycle.rds
-    Untracked:  output/08-marker-detection.rds
-    Untracked:  output/09-cell-annotation.rds
-    Untracked:  output/10-atlas-integration.rds
-    Untracked:  output/11-atlas-neighbors.rds
-    Untracked:  output/12-atlas-trajectory.rds
-    Untracked:  output/13-atlas-clustering.rds
+    Untracked:  atlas-lineage.R
+    Untracked:  slides/
 
 Unstaged changes:
-    Deleted:    analysis/10-data-integration.Rmd
+    Modified:   analysis/14-atlas-markers.Rmd
 
 </code></pre>
 <p>
@@ -695,6 +708,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/14-atlas-markers.html" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+<td>
+publish
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -796,7 +826,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -804,22 +834,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-1" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-8-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-1" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-8-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-2">
+Past versions of unnamed-chunk-8-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-8-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-1" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-8-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-3">
+Past versions of unnamed-chunk-8-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-8-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-1" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-8-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-4">
+Past versions of unnamed-chunk-8-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-8-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-1" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-8-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-5">
+Past versions of unnamed-chunk-8-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-8-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="dimension" class="section level4 tabset">
@@ -833,7 +1048,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -845,22 +1060,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-2" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-9-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-2" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-9-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-2">
+Past versions of unnamed-chunk-9-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-9-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-2" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-9-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-3">
+Past versions of unnamed-chunk-9-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-9-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-2" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-9-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-4">
+Past versions of unnamed-chunk-9-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-9-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-2" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-9-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-5">
+Past versions of unnamed-chunk-9-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-9-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="expression" class="section level4 tabset">
@@ -874,7 +1274,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -886,22 +1286,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-3" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-10-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-10-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-3" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-10-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-2">
+Past versions of unnamed-chunk-10-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-10-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-3" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-10-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-3">
+Past versions of unnamed-chunk-10-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-10-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-3" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-10-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-4">
+Past versions of unnamed-chunk-10-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-10-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-3" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-10-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-5">
+Past versions of unnamed-chunk-10-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-10-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -950,7 +1535,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -958,18 +1543,166 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-2-5" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-13-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-5" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-13-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-2">
+Past versions of unnamed-chunk-13-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-13-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-5" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-13-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-3">
+Past versions of unnamed-chunk-13-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-13-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-5" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-13-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-4">
+Past versions of unnamed-chunk-13-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-13-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="dimension-1" class="section level4 tabset">
@@ -983,7 +1716,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -995,18 +1728,166 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-2-6" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-14-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-6" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-14-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-2">
+Past versions of unnamed-chunk-14-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-14-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-6" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-14-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-3">
+Past versions of unnamed-chunk-14-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-14-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-6" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-14-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-4">
+Past versions of unnamed-chunk-14-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-14-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="expression-1" class="section level4 tabset">
@@ -1020,7 +1901,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1032,18 +1913,166 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-2-7" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-15-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-7" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-15-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-2">
+Past versions of unnamed-chunk-15-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-15-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-7" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-15-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-3">
+Past versions of unnamed-chunk-15-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-15-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-7" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-15-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-4">
+Past versions of unnamed-chunk-15-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-15-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1100,7 +2129,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -1108,22 +2137,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-5" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-18-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-9" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-18-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-2">
+Past versions of unnamed-chunk-18-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-18-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-9" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-18-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-3">
+Past versions of unnamed-chunk-18-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-18-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-9" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-18-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-4">
+Past versions of unnamed-chunk-18-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-18-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-9" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-18-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-5">
+Past versions of unnamed-chunk-18-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-18-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="dimension-2" class="section level4 tabset">
@@ -1137,7 +2351,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1149,22 +2363,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-6" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-19-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-10" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-19-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-2">
+Past versions of unnamed-chunk-19-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-19-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-10" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-19-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-3">
+Past versions of unnamed-chunk-19-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-19-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-10" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-19-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-4">
+Past versions of unnamed-chunk-19-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-19-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-10" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-19-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-5">
+Past versions of unnamed-chunk-19-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-19-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="expression-2" class="section level4 tabset">
@@ -1178,7 +2577,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1190,22 +2589,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-7" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-20-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-11" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-20-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-2">
+Past versions of unnamed-chunk-20-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-20-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-11" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-20-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-3">
+Past versions of unnamed-chunk-20-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-20-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-11" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-20-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-4">
+Past versions of unnamed-chunk-20-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-20-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-11" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-20-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-5">
+Past versions of unnamed-chunk-20-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-20-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1244,7 +2828,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -1252,10 +2836,84 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-4-13" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-23-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-23-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-13" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-23-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-2">
+Past versions of unnamed-chunk-23-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-23-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="dimension-3" class="section level4 tabset">
@@ -1269,7 +2927,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1281,10 +2939,84 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-4-14" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-24-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
+Past versions of unnamed-chunk-24-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-24-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-14" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-24-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-2">
+Past versions of unnamed-chunk-24-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-24-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="expression-3" class="section level4 tabset">
@@ -1298,7 +3030,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1310,10 +3042,84 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-4-15" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-25-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
+Past versions of unnamed-chunk-25-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-25-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-25-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-15" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-25-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-2">
+Past versions of unnamed-chunk-25-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-25-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-25-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1370,7 +3176,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -1378,22 +3184,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-9" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-28-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-28-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-13" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-28-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-2">
+Past versions of unnamed-chunk-28-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-28-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-13" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-28-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-3">
+Past versions of unnamed-chunk-28-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-28-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-17" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-28-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-4">
+Past versions of unnamed-chunk-28-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-28-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-17" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-28-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-5">
+Past versions of unnamed-chunk-28-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-28-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="dimension-4" class="section level4 tabset">
@@ -1407,7 +3398,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1419,22 +3410,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-10" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
+Past versions of unnamed-chunk-29-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-29-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-14" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-29-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-2">
+Past versions of unnamed-chunk-29-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-29-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-14" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-29-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-3">
+Past versions of unnamed-chunk-29-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-29-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-18" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-29-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-4">
+Past versions of unnamed-chunk-29-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-29-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-18" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-29-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-5">
+Past versions of unnamed-chunk-29-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-29-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="expression-4" class="section level4 tabset">
@@ -1448,7 +3624,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1460,22 +3636,207 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 <div id="cluster-1-11" class="section level5">
 <h5>Cluster 1</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
+Past versions of unnamed-chunk-30-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-30-1.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-2-15" class="section level5">
 <h5>Cluster 2</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-30-2.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-2">
+Past versions of unnamed-chunk-30-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-30-2.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-3-15" class="section level5">
 <h5>Cluster 3</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-30-3.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-3">
+Past versions of unnamed-chunk-30-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-30-3.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-4-19" class="section level5">
 <h5>Cluster 4</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-30-4.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-4">
+Past versions of unnamed-chunk-30-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-30-4.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-5-19" class="section level5">
 <h5>Cluster 5</h5>
 <p><img src="figure/14-atlas-markers.Rmd/unnamed-chunk-30-5.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-5">
+Past versions of unnamed-chunk-30-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/506e0a26fd9ba3413ba54aabda801a6d96bb3893/docs/figure/14-atlas-markers.Rmd/unnamed-chunk-30-5.png" target="_blank">506e0a2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1504,7 +3865,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
   
-  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = &quot;cluster&quot;, order_columns_by = &quot;cluster&quot;, features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) &gt;= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = &quot;reconstructed&quot;)
   
   cat(&quot;\n\n&quot;)
   
@@ -1521,7 +3882,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt &lt;- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = &quot;reconstructed&quot;) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
@@ -1542,7 +3903,7 @@ sig &lt;- Filter(nrow, sig)</code></pre>
 
   ids &lt;- rownames(top)
 
-  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4)
+  plt &lt;- plotExpression(sce, features = ids, x = &quot;cluster&quot;, colour_by = &quot;cluster&quot;, scales = &quot;free&quot;, ncol = 4, by_exprs_values = &quot;reconstructed&quot;)
 
   cat(&quot;##### Cluster&quot;, n, &quot;\n&quot;)
 
