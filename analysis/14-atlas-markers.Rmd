@@ -98,7 +98,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -118,7 +118,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -142,7 +142,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
@@ -198,7 +198,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -218,7 +218,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -242,7 +242,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
@@ -300,7 +300,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -320,7 +320,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -344,7 +344,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
@@ -400,7 +400,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -420,7 +420,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -444,7 +444,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
@@ -502,7 +502,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -522,7 +522,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -546,7 +546,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
@@ -602,7 +602,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster", order_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE, by_exprs_values = "reconstructed")
   
   cat("\n\n")
   
@@ -622,7 +622,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x, by_exprs_values = "reconstructed") + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -646,7 +646,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4, by_exprs_values = "reconstructed")
 
   cat("##### Cluster", n, "\n")
 
