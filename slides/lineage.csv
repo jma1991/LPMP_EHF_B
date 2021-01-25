@@ -1,0 +1,34 @@
+gene_id,cell_id
+Cldn7,Ectoderm
+Tfap2c,Ectoderm
+Nkx1-2,Ectoderm
+Cdh1,Ectoderm
+Epcam,Ectoderm
+Vim,EMT
+Twist2,EMT
+Twist1,EMT
+Snai1,EMT
+T,Primitive streak
+Wnt3a,Primitive streak
+Fgf8,Primitive streak
+Tcf15,Paraxial mesoderm
+Msgn1,Paraxial mesoderm
+Pcdh19,Paraxial mesoderm
+Dll3,Paraxial mesoderm
+Dll1,Paraxial mesoderm
+Hand1,Lateral mesoderm
+Foxf1,Lateral mesoderm
+Pitx1,Lateral mesoderm
+Aldh1a2,Lateral mesoderm
+Tbx4,Extraembryonic mesoderm
+Hoxa11,Extraembryonic mesoderm
+Hoxa10,Extraembryonic mesoderm
+Etv2,Endothelia or Haematopoietic
+Kdr,Endothelia or Haematopoietic
+Flt1,Endothelia or Haematopoietic
+Fli1,Endothelia or Haematopoietic
+Plvap,Endothelia or Haematopoietic
+Rasip1,Endothelia or Haematopoietic
+Tal1,Endothelia or Haematopoietic
+Lmo2,Endothelia or Haematopoietic
+Runx1,Endothelia or Haematopoietic
