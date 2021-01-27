@@ -17,6 +17,7 @@ Setup chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
+  cache.lazy = FALSE,
   cache.path = "cache/10-atlas-integration.Rmd/",
   dev        = "png",
   error      = FALSE,
@@ -45,6 +46,14 @@ Load CRAN packages:
 library(msigdbr)
 ```
 
+Source custom functions:
+
+```{r}
+source("code/cleanSCE.R")
+source("code/cleanEmbryoAtlasData.R")
+source("code/splitByCol.R")
+```
+
 ## Data
 
 ### Test data
@@ -55,193 +64,42 @@ Read experiment object:
 sce <- readRDS("output/09-cell-annotation.rds")
 ```
 
-Clear metadata slot:
+Clean experiment object:
 
 ```{r}
-metadata(sce) <- list()
-```
-
-Make rownames compatible:
-
-```{r}
-rownames(sce) <- rowData(sce)$gene_id
-```
-
-Clear rowData slot:
-
-```{r}
-rowData(sce) <- NULL
-```
-
-Replace rowRanges slot:
-
-```{r}
-rowRanges(sce) <- relist(GRanges(), PartitioningByEnd(integer(length(sce)), names = rownames(sce)))
-```
-
-Clear colnames slot:
-
-```{r}
-colnames(sce) <- NULL
-```
-
-Make colData compatible:
-
-```{r}
-colData(sce) <- DataFrame(
-  cell = NA,
-  barcode = NA,
-  sample = 38, # reference data has 37 samples
-  pool = NA,
-  stage = NA,
-  sequencing.batch = NA,
-  theiler = NA,
-  doub.density = NA,
-  doublet = NA,
-  cluster = NA,
-  cluster.sub = NA,
-  cluster.stage = NA,
-  cluster.theiler = NA,
-  stripped = NA,
-  celltype = NA,
-  colour = NA,
-  sizeFactor = sizeFactors(sce),
-  source = "test" # identify source of data
-)
-```
-
-Clear reducedDims slot:
-
-```{r}
-reducedDims(sce) <- NULL
-```
-
-Clear altExp slot:
-
-```{r}
-altExp(sce) <- NULL
+sce <- cleanSCE(sce, sample = "LPMP_EHF")
 ```
 
 ### Reference data
 
 Load the mouse gastrulation data package:
 
-```{r cache = FALSE}
+```{r}
 library(MouseGastrulationData)
 ```
 
 Subset atlas sample metadata by embryonic stage:
 
-```{r cache = FALSE}
+```{r}
 AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
 ```
 
 Retrieve processed samples from embryo atlas data:
 
-```{r cache = FALSE}
+```{r}
 ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
 ```
 
-Append source label to colData:
+Clean processed samples from embryo atlas data:
 
-```{r cache = FALSE}
-ref$source <- "reference"
-```
-
-Compute log-normalized expression values:
-
-```{r cache = FALSE}
-ref <- logNormCounts(ref)
-```
-
-Remove cells without a celltype label:
-
-```{r cache = FALSE}
-use <- !is.na(ref$celltype)
-
-ref <- ref[, use]
-```
-
-Remove cells marked as stripped nuclei:
-
-```{r cache = FALSE}
-use <- !ref$stripped
-
-ref <- ref[, use]
-```
-
-Remove cells marked as doublets:
-
-```{r cache = FALSE}
-use <- !ref$doublet
-
-ref <- ref[, use]
-```
-
-Clear metadata slot:
-
-```{r cache = FALSE}
-metadata(ref) <- list()
-```
-
-Make rownames compatible:
-
-```{r cache = FALSE}
-rownames(ref) <- rowData(ref)$ENSEMBL
-```
-
-Clear rowData slot:
-
-```{r cache = FALSE}
-rowData(ref) <- NULL
-```
-
-Replace rowRanges slot:
-
-```{r cache = FALSE}
-rowRanges(ref) <- relist(GRanges(), PartitioningByEnd(integer(length(ref)), names = rownames(ref)))
-```
-
-Clear colnames slot:
-
-```{r cache = FALSE}
-colnames(ref) <- NULL
-```
-
-Clear reducedDims slot:
-
-```{r cache = FALSE}
-reducedDims(ref) <- NULL
-```
-
-Clear altExp slot:
-
-```{r cache = FALSE}
-altExp(ref) <- NULL
-```
-
-Split a SingleCellExperiment based on the column data:
-
-```{r cache = FALSE}
-splitColData <- function(x, f) {
-  
-  i <- split(seq_along(f), f)
-
-  v <- vector(mode = "list", length = length(i))
-  
-  names(v) <- names(i)
-  
-  for (n in names(i)) { v[[n]] <- x[, i[[n]]] }
-  
-  return(v)
-
-}
+```{r}
+ref <- cleanEmbryoAtlasData(ref)
 ```
 
 Split experiment data by the sample column:
 
-```{r cache = FALSE}
-ref <- splitColData(ref, ref$sample)
+```{r}
+ref <- splitByCol(ref, ref$sample)
 ```
 
 ## Integration
@@ -250,8 +108,8 @@ ref <- splitColData(ref, ref$sample)
 
 Create list of experiment data:
 
-```{r cache = FALSE}
-all <- c(ref, "38" = sce)
+```{r}
+all <- c(ref, "LPMP_EHF" = sce)
 ```
 
 Delete large objects and trigger garbage collection:
@@ -262,7 +120,7 @@ rm(sce, ref); gc()
 
 Subset data to common features:
 
-```{r cache = FALSE}
+```{r}
 ids <- Reduce(intersect, lapply(all, rownames))
 
 all <- lapply(all, "[", i = ids)
@@ -272,7 +130,7 @@ all <- lapply(all, "[", i = ids)
 
 Model the per-gene variance:
 
-```{r cache = FALSE}
+```{r}
 dec <- lapply(all, modelGeneVar)
 ```
 
@@ -280,66 +138,24 @@ Combine variance decompositions:
 
 ```{r}
 dec <- do.call(combineVar, dec)
-
-rownames(dec) <- Reduce(intersect, lapply(all, rownames))
 ```
 
 ### Feature selection
 
-Create a blacklist of genes to ignore for feature selection:
+Read blacklist genes and subset by category:
+
+```{r}
+nan <- read.csv("data/blacklist.csv")
+
+nan <- subset(nan, CATEGORY %in% c("XIST", "Y", "MT", "CC", "RP"))
+```
+
+genes to ignore for feature selection:
 
 ```{r}
 dec$blacklist <- FALSE
-```
 
-Append Xist gene to blacklist:
-
-```{r}
-idx <- which(rownames(dec) == "ENSMUSG00000086503")
-
-dec$blacklist[idx] <- TRUE
-```
-
-Append Y chromosome genes to blacklist:
-
-```{r}
-key <- keys(EnsDb.Mmusculus.v79, keytype = "GENEID", filter = SeqNameFilter("Y"))
-
-idx <- which(rownames(dec) %in% key)
-
-dec$blacklist[idx] <- TRUE
-```
-
-Append MT chromosome genes to blacklist:
-
-```{r}
-key <- keys(EnsDb.Mmusculus.v79, keytype = "GENEID", filter = SeqNameFilter("MT"))
-
-idx <- which(rownames(dec) %in% key)
-
-dec$blacklist[idx] <- TRUE
-```
-
-Append cell-cycle genes to blacklist:
-
-```{r}
-sel <- select(org.Mm.eg.db, keys = "GO:0007049", keytype = "GOALL", column = "ENSEMBL")
-
-idx <- which(rownames(dec) %in% sel$ENSEMBL)
-
-dec$blacklist[idx] <- TRUE
-```
-
-Append ribosomal genes to blacklist:
-
-```{r}
-msd <- msigdbr(species = "Mus musculus", category = "C2")
-
-msd <- subset(msd, gs_name == "KEGG_RIBOSOME")
-
-sel <- select(org.Mm.eg.db, keys = msd$gene_symbol, keytype = "SYMBOL", column = "ENSEMBL")
-
-idx <- which(rownames(dec) %in% sel$ENSEMBL)
+idx <- which(rownames(dec) %in% nan$ENSEMBL)
 
 dec$blacklist[idx] <- TRUE
 ```
@@ -356,14 +172,8 @@ hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "p.valu
 
 Perform scaling normalization:
 
-```{r cache = FALSE}
-all <- do.call(multiBatchNorm, all)
-```
-
-Combine objects from experiments:
-
-```{r cache = FALSE}
-all <- do.call(cbind, all)
+```{r}
+all <- multiBatchNorm(all)
 ```
 
 ### Batch integration
@@ -371,25 +181,24 @@ all <- do.call(cbind, all)
 Create sequential merge order:
 
 ```{r}
-dat <- subset(AtlasSampleMetadata, stage %in% all$stage)
+idx <- AtlasSampleMetadata
 
 lvl <- c("E6.5", "E6.75", "E7.0", "mixed_gastrulation", "E7.25", "E7.5", "E7.75", "E8.0", "E8.25", "E8.5")
 
-dat$stage <- factor(dat$stage, levels = intersect(lvl, all$stage))
+idx$stage <- factor(idx$stage, levels = lvl)
 
-dat <- dat[order(dat$stage, dat$ncells, decreasing = TRUE), ]
-  
-idx <- c(as.character(dat$sample), "38")
+idx <- idx[order(idx$stage, idx$ncells, decreasing = TRUE), ]
+
+idx <- c(idx$sample, "LPMP_EHF")
 ```
 
 Correct experiments using nearest neighbours:
 
-```{r cache = FALSE}
+```{r}
 set.seed(692066530)
 
 mnn <- correctExperiments(
   all,
-  batch = all$sample,
   subset.row = hvg,
   correct.all = TRUE,
   PARAM = FastMnnParam(merge.order = idx)
@@ -404,7 +213,7 @@ rm(all); gc()
 
 Replace rowData slot:
 
-```{r cache = FALSE}
+```{r}
 rowData(mnn) <- DataFrame(
   gene_id = rownames(mnn),
   gene_name = mapIds(EnsDb.Mmusculus.v79, keys = rownames(mnn), column = "GENENAME", keytype = "GENEID"),
@@ -414,15 +223,13 @@ rowData(mnn) <- DataFrame(
 
 Store combined variance model:
 
-```{r cache = FALSE}
-rownames(dec) <- rownames(mnn)
-
+```{r}
 metadata(mnn)$combineVar <- dec
 ```
 
 Store highly variable genes:
 
-```{r cache = FALSE}
+```{r}
 metadata(mnn)$getTopHVGs <- hvg
 ```
 
@@ -430,7 +237,7 @@ metadata(mnn)$getTopHVGs <- hvg
 
 Check proportion of lost variance:
 
-```{r cache = FALSE}
+```{r}
 var <- metadata(mnn)$merge.info$lost.var
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
@@ -442,7 +249,7 @@ pheatmap(var[, idx], color = col, display_numbers = TRUE, number_format = "%.2f"
 
 Cluster on the corrected PCA to obtain a partitioning of the cells:
 
-```{r cache = FALSE}
+```{r}
 snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
 
 com <- igraph::cluster_louvain(snn)
@@ -450,7 +257,7 @@ com <- igraph::cluster_louvain(snn)
 
 Tabulate number of cells from multiple batches within each cluster:
 
-```{r cache = FALSE}
+```{r}
 tab <- table(Cluster = com$membership, Batch = mnn$batch)
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
@@ -462,7 +269,7 @@ pheatmap(tab[, idx], color = col, display_numbers = TRUE, number_format = "%d", 
 
 Perform TSNE on the corrected PCA matrix:
 
-```{r cache = FALSE}
+```{r}
 set.seed(42)
 
 mnn <- runTSNE(mnn, dimred = "corrected", perplexity = 120) # same settings as reference analysis
@@ -470,11 +277,11 @@ mnn <- runTSNE(mnn, dimred = "corrected", perplexity = 120) # same settings as r
 
 Visualize the corrected PCA using a TSNE plot:
 
-```{r cache = FALSE, fig.width = 9, fig.height = 9}
+```{r fig.width = 9, fig.height = 9}
 ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) + 
   geom_point(size = 0.1, show.legend = FALSE) + 
   scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
-  labs(x = "UMAP 1", y = "UMAP 2") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
   facet_wrap(~ sample) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
@@ -482,7 +289,7 @@ ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) +
 
 Perform UMAP on the corrected PCA matrix:
 
-```{r cache = FALSE}
+```{r}
 set.seed(42)
 
 mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 20, min_dist = 0.7) # same settings as reference analysis
@@ -490,7 +297,7 @@ mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 20, min_dist = 0.7) # sa
 
 Visualize the corrected PCA using a UMAP plot:
 
-```{r cache = FALSE, fig.width = 9, fig.height = 9}
+```{r fig.width = 9, fig.height = 9}
 ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) + 
   geom_point(size = 0.1, show.legend = FALSE) + 
   scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
@@ -506,7 +313,7 @@ ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) +
 
 Save integrated experiment object to disk:
 
-```{r cache = FALSE}
+```{r}
 saveRDS(mnn, file = "output/10-atlas-integration.rds")
 ```
 
