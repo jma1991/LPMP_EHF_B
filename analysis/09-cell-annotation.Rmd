@@ -19,6 +19,7 @@ Define chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
+  cache.lazy = FALSE,
   cache.path = "cache/09-cell-annotation.Rmd/",
   dev        = "png",
   error      = FALSE,
@@ -39,6 +40,12 @@ library(scran)
 library(scater)
 library(patchwork)
 library(pheatmap)
+```
+
+Source custom functions:
+
+```{r}
+source("code/cleanEmbryoAtlasData.R")
 ```
 
 Import experiment data:
@@ -117,55 +124,31 @@ plotScoreDistribution(dat, show = "delta.med", ncol = 3, show.nmads = 3)
 
 Load the mouse gastrulation data package:
 
-```{r cache = FALSE}
+```{r}
 library(MouseGastrulationData)
 ```
 
 Subset atlas sample metadata by embryonic stage:
 
-```{r cache = FALSE}
+```{r}
 AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
 ```
 
 Retrieve processed samples from embryo atlas data:
 
-```{r cache = FALSE}
+```{r}
 ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
 ```
 
-Compute log-normalized expression values:
+Clean processed samples from embryo atlas data:
 
-```{r cache = FALSE}
-ref <- logNormCounts(ref)
-```
-
-Remove cells without a celltype label:
-
-```{r cache = FALSE}
-use <- !is.na(ref$celltype)
-
-ref <- ref[, use]
-```
-
-Remove cells marked as stripped nuclei:
-
-```{r cache = FALSE}
-use <- !ref$stripped
-
-ref <- ref[, use]
-```
-
-Remove cells marked as doublets:
-
-```{r cache = FALSE}
-use <- !ref$doublet
-
-ref <- ref[, use]
+```{r}
+ref <- cleanEmbryoAtlasData(ref)
 ```
 
 Identify marker genes for each cell type whilst blocking on sample:
 
-```{r cache = FALSE}
+```{r}
 res <- pairwiseWilcox(logcounts(ref), groups = ref$celltype, block = ref$sample)
 
 sig <- getTopMarkers(res$statistics, res$pairs)
@@ -173,7 +156,7 @@ sig <- getTopMarkers(res$statistics, res$pairs)
 
 Aggregate references within each celltype and sample combination:
 
-```{r cache = FALSE}
+```{r}
 lab <- paste(ref$celltype, ref$sample, sep = "-")
 
 ref <- aggregateReference(ref, labels = lab)
@@ -181,13 +164,13 @@ ref <- aggregateReference(ref, labels = lab)
 
 Remove sample label from aggregated reference names:
 
-```{r cache = FALSE}
+```{r}
 lab <- sapply(strsplit(colnames(ref), "-"), '[', 1)
 ```
 
 Return the best annotation for each cell in the test dataset:
 
-```{r cache = FALSE}
+```{r}
 ids <- rownames(sce) # save original feature names
 
 rownames(sce) <- rowData(sce)$gene_id # make feature names compatible
