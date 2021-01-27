@@ -14,6 +14,7 @@
 
 <title>Cell type annotation</title>
 
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -38,6 +39,17 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -83,6 +95,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 
 
@@ -422,7 +435,46 @@ div.tocify {
     <li>
       <a href="10-atlas-integration.html"></a>
     </li>
+    <li class="dropdown-header">Atlas neighbors</li>
+    <li>
+      <a href="11-atlas-neighbors.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas trajectory</li>
+    <li>
+      <a href="12-atlas-trajectory.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas clustering</li>
+    <li>
+      <a href="13-atlas-clustering.html"></a>
+    </li>
+    <li class="dropdown-header">Atlas markers</li>
+    <li>
+      <a href="14-atlas-markers.html"></a>
+    </li>
+    <li class="dropdown-header">Scenic analysis</li>
+    <li>
+      <a href="15-scenic-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Geneset activity</li>
+    <li>
+      <a href="16-geneset-activity.html"></a>
+    </li>
+    <li class="dropdown-header">Haystack analysis</li>
+    <li>
+      <a href="17-haystack-analysis.html"></a>
+    </li>
+    <li class="dropdown-header">Cell type exploration</li>
+    <li>
+      <a href="18-cell-exploration.html"></a>
+    </li>
+    <li class="dropdown-header">Cell heterogeneity</li>
+    <li>
+      <a href="19-cell-heterogeneity.html"></a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="interactive.html">Interactive</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -432,7 +484,7 @@ div.tocify {
 </li>
 <li>
   <a href="https://github.com/jma1991/LPMP_EHF_B">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -447,14 +499,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">Cell type annotation</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">25 September, 2020</h4>
+<h4 class="date">27 January, 2021</h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -463,7 +515,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -472,10 +524,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-09-25
+<strong>Last updated:</strong> 2021-01-27
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -491,12 +543,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -520,7 +572,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -563,64 +615,38 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreea2d0ae078d778f375b5ea1f51dd7f0e2a71248actargetblanka2d0ae0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/a2d0ae078d778f375b5ea1f51dd7f0e2a71248ac" target="_blank">a2d0ae0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5af95d320199428478faa972cbfbd54d75364d11targetblank5af95d3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreea2d0ae078d778f375b5ea1f51dd7f0e2a71248actargetblanka2d0ae0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5af95d320199428478faa972cbfbd54d75364d11" target="_blank">5af95d3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/a2d0ae078d778f375b5ea1f51dd7f0e2a71248ac" target="_blank">a2d0ae0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/cache/
+    Ignored:    data/
+    Ignored:    output/
+    Ignored:    shiny/
+    Ignored:    slides/
 
 Untracked files:
-    Untracked:  LICENSE
-    Untracked:  _workflowr.R
-    Untracked:  _workflowr.sh
-    Untracked:  analysis/11-scenic-analysis.Rmd
-    Untracked:  analysis/12-haystack-analysis.Rmd
-    Untracked:  analysis/13-geneset-activity.Rmd
-    Untracked:  analysis/Untitled.Rmd
-    Untracked:  analysis/cache/
-    Untracked:  analysis/temp.Rmd
-    Untracked:  data/cell-lineage.csv
-    Untracked:  data/gene-sets.csv
-    Untracked:  data/pyscenic-activity.csv
-    Untracked:  data/pyscenic-modules.csv
-    Untracked:  data/pyscenic-regulons.csv
-    Untracked:  data/salmon-quant.rds
-    Untracked:  output/01-quality-control.rds
-    Untracked:  output/02-normalization.rds
-    Untracked:  output/03-feature-selection.rds
-    Untracked:  output/04-reduced-dimensions.rds
-    Untracked:  output/05-clustering.rds
-    Untracked:  output/06-doublet-detection.rds
-    Untracked:  output/07-cell-cycle.rds
-    Untracked:  output/08-marker-detection.rds
+    Untracked:  code/cleanEmbryoAtlasData.R
+    Untracked:  code/cleanSCE.R
+    Untracked:  code/dist_clusters_diag.R
+    Untracked:  code/splitByCol.R
 
 Unstaged changes:
-    Modified:   analysis/01-quality-control.Rmd
-    Modified:   analysis/02-normalization.Rmd
-    Modified:   analysis/03-feature-selection.Rmd
-    Modified:   analysis/04-reduced-dimensions.Rmd
-    Modified:   analysis/05-clustering.Rmd
-    Modified:   analysis/06-doublet-detection.Rmd
-    Modified:   analysis/07-cell-cycle.Rmd
-    Modified:   analysis/08-marker-detection.Rmd
-    Modified:   analysis/09-cell-annotation.Rmd
-    Modified:   analysis/10-atlas-integration.Rmd
-    Deleted:    analysis/10-data-integration.Rmd
-    Modified:   analysis/_site.yml
+    Modified:   _workflowr.R
 
 </code></pre>
 <p>
@@ -659,6 +685,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a2d0ae078d778f375b5ea1f51dd7f0e2a71248ac/analysis/09-cell-annotation.Rmd" target="_blank">a2d0ae0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+<td>
+wflow_publish(files = “analysis/09-cell-annotation.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/38618515fdb32bac450b5e31cad7a6b2e0812472/docs/09-cell-annotation.html" target="_blank">3861851</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+<td>
+publish
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/18fbbcde45f8a05a3c2c25cf508d775c68f5ebad/analysis/09-cell-annotation.Rmd" target="_blank">18fbbcd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+<td>
+publish
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -744,6 +821,7 @@ publish
 <pre class="r"><code>knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
+  cache.lazy = FALSE,
   cache.path = &quot;cache/09-cell-annotation.Rmd/&quot;,
   dev        = &quot;png&quot;,
   error      = FALSE,
@@ -760,6 +838,8 @@ library(scran)
 library(scater)
 library(patchwork)
 library(pheatmap)</code></pre>
+<p>Source custom functions:</p>
+<pre class="r"><code>source(&quot;code/cleanEmbryoAtlasData.R&quot;)</code></pre>
 <p>Import experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;output/08-marker-detection.rds&quot;)</code></pre>
 </div>
@@ -795,9 +875,6 @@ lab &lt;- colnames(res)[max.col(res)]</code></pre>
 <pre class="r"><code>dat &lt;- DataFrame(scores = I(res), labels = lab, pruned.labels = lab, row.names = rownames(res))</code></pre>
 <p>Create a heatmap of the AUCell assignment scores:</p>
 <pre class="r"><code>plotScoreHeatmap(dat, clusters = sce$cluster,  fontsize = 8)</code></pre>
-<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>Plot score distributions of labels:</p>
-<pre class="r"><code>plotScoreDistribution(dat, show = &quot;delta.med&quot;, ncol = 3, show.nmads = 3)</code></pre>
 <p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
@@ -823,7 +900,69 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/38618515fdb32bac450b5e31cad7a6b2e0812472/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-11-1.png" target="_blank">3861851</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-11-1.png" target="_blank">10d37f2</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-09-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Plot score distributions of labels:</p>
+<pre class="r"><code>plotScoreDistribution(dat, show = &quot;delta.med&quot;, ncol = 3, show.nmads = 3)</code></pre>
+<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/38618515fdb32bac450b5e31cad7a6b2e0812472/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-12-1.png" target="_blank">3861851</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-09
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-12-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
@@ -845,20 +984,8 @@ James Ashmore
 <pre class="r"><code>AtlasSampleMetadata &lt;- subset(AtlasSampleMetadata, stage %in% c(&quot;E7.25&quot;, &quot;E7.5&quot;, &quot;E7.75&quot;, &quot;E8.0&quot;))</code></pre>
 <p>Retrieve processed samples from embryo atlas data:</p>
 <pre class="r"><code>ref &lt;- EmbryoAtlasData(type = &quot;processed&quot;, samples = AtlasSampleMetadata$sample)</code></pre>
-<p>Compute log-normalized expression values:</p>
-<pre class="r"><code>ref &lt;- logNormCounts(ref)</code></pre>
-<p>Remove cells without a celltype label:</p>
-<pre class="r"><code>use &lt;- !is.na(ref$celltype)
-
-ref &lt;- ref[, use]</code></pre>
-<p>Remove cells marked as stripped nuclei:</p>
-<pre class="r"><code>use &lt;- !ref$stripped
-
-ref &lt;- ref[, use]</code></pre>
-<p>Remove cells marked as doublets:</p>
-<pre class="r"><code>use &lt;- !ref$doublet
-
-ref &lt;- ref[, use]</code></pre>
+<p>Clean processed samples from embryo atlas data:</p>
+<pre class="r"><code>ref &lt;- cleanEmbryoAtlasData(ref)</code></pre>
 <p>Identify marker genes for each cell type whilst blocking on sample:</p>
 <pre class="r"><code>res &lt;- pairwiseWilcox(logcounts(ref), groups = ref$celltype, block = ref$sample)
 
@@ -881,13 +1008,16 @@ rownames(sce) &lt;- ids # return original feature names</code></pre>
 <pre class="r"><code>sce$celltype_singler &lt;- fit$labels</code></pre>
 <p>Create a heatmap of the average SingleR assignment scores:</p>
 <pre class="r"><code>plotScoreHeatmap(fit, clusters = sce$cluster, fontsize = 8)</code></pre>
-<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-22-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot score distributions of labels:</p>
+<pre class="r"><code>plotScoreDistribution(fit, show = &quot;delta.med&quot;, ncol = 3, show.nmads = 3)</code></pre>
+<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
-Past versions of unnamed-chunk-24-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div id="fig-unnamed-chunk-23-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -906,7 +1036,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/5af95d320199428478faa972cbfbd54d75364d11/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-24-1.png" target="_blank">5af95d3</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/5af95d320199428478faa972cbfbd54d75364d11/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-23-1.png" target="_blank">5af95d3</a>
 </td>
 <td>
 James Ashmore
@@ -917,53 +1047,13 @@ James Ashmore
 </tr>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-24-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-23-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
 2020-09-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Plot score distributions of labels:</p>
-<pre class="r"><code>plotScoreDistribution(fit, show = &quot;delta.med&quot;, ncol = 3, show.nmads = 3)</code></pre>
-<p><img src="figure/09-cell-annotation.Rmd/unnamed-chunk-25-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
-Past versions of unnamed-chunk-25-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-25-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/5af95d320199428478faa972cbfbd54d75364d11/docs/figure/09-cell-annotation.Rmd/unnamed-chunk-25-1.png" target="_blank">5af95d3</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-09-24
 </td>
 </tr>
 </tbody>
@@ -990,7 +1080,7 @@ James Ashmore
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.2 (2020-06-22)
 Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Catalina 10.15.6
+Running under: macOS Catalina 10.15.7
 
 Matrix products: default
 BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
@@ -1004,68 +1094,71 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] MouseGastrulationData_1.2.0 pheatmap_1.0.12            
- [3] patchwork_1.0.1             scater_1.16.2              
- [5] ggplot2_3.3.2               scran_1.16.0               
- [7] SingleCellExperiment_1.10.1 GSEABase_1.50.1            
- [9] graph_1.66.0                annotate_1.66.0            
-[11] XML_3.99-0.5                AnnotationDbi_1.50.3       
-[13] SingleR_1.2.4               SummarizedExperiment_1.18.2
-[15] DelayedArray_0.14.1         matrixStats_0.56.0         
-[17] Biobase_2.48.0              GenomicRanges_1.40.0       
-[19] GenomeInfoDb_1.24.2         IRanges_2.22.2             
-[21] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-[23] AUCell_1.10.0               workflowr_1.6.2            
+ [1] MouseGastrulationData_1.4.0 pheatmap_1.0.12            
+ [3] patchwork_1.1.1             scater_1.18.3              
+ [5] ggplot2_3.3.3               scran_1.18.3               
+ [7] SingleCellExperiment_1.12.0 GSEABase_1.52.1            
+ [9] graph_1.68.0                annotate_1.68.0            
+[11] XML_3.99-0.5                AnnotationDbi_1.52.0       
+[13] SingleR_1.4.0               SummarizedExperiment_1.20.0
+[15] Biobase_2.50.0              GenomicRanges_1.42.0       
+[17] GenomeInfoDb_1.26.2         IRanges_2.24.1             
+[19] S4Vectors_0.28.1            BiocGenerics_0.36.0        
+[21] MatrixGenerics_1.2.0        matrixStats_0.57.0         
+[23] AUCell_1.12.0               workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
- [1] ggbeeswarm_0.6.0              colorspace_1.4-1             
- [3] ellipsis_0.3.1                rprojroot_1.3-2              
- [5] XVector_0.28.0                BiocNeighbors_1.6.0          
- [7] fs_1.5.0                      rstudioapi_0.11              
- [9] farver_2.0.3                  bit64_4.0.5                  
-[11] interactiveDisplayBase_1.26.3 codetools_0.2-16             
-[13] R.methodsS3_1.8.1             knitr_1.30                   
-[15] dbplyr_1.4.4                  R.oo_1.24.0                  
-[17] shiny_1.5.0                   BiocManager_1.30.10          
-[19] compiler_4.0.2                httr_1.4.2                   
-[21] dqrng_0.2.1                   backports_1.1.10             
-[23] assertthat_0.2.1              Matrix_1.2-18                
-[25] fastmap_1.0.1                 limma_3.44.3                 
-[27] later_1.1.0.1                 BiocSingular_1.4.0           
-[29] htmltools_0.5.0               tools_4.0.2                  
-[31] rsvd_1.0.3                    igraph_1.2.5                 
-[33] gtable_0.3.0                  glue_1.4.2                   
-[35] GenomeInfoDbData_1.2.3        dplyr_1.0.2                  
-[37] rappdirs_0.3.1                Rcpp_1.0.5                   
-[39] vctrs_0.3.4                   ExperimentHub_1.14.2         
-[41] DelayedMatrixStats_1.10.1     xfun_0.17                    
-[43] stringr_1.4.0                 mime_0.9                     
-[45] lifecycle_0.2.0               irlba_2.3.3                  
-[47] statmod_1.4.34                AnnotationHub_2.20.2         
-[49] edgeR_3.30.3                  zlibbioc_1.34.0              
-[51] scales_1.1.1                  promises_1.1.1               
-[53] RColorBrewer_1.1-2            yaml_2.2.1                   
-[55] curl_4.3                      memoise_1.1.0                
-[57] gridExtra_2.3                 stringi_1.5.3                
-[59] RSQLite_2.2.0                 BiocVersion_3.11.1           
-[61] BiocParallel_1.22.0           rlang_0.4.7                  
-[63] pkgconfig_2.0.3               bitops_1.0-6                 
-[65] evaluate_0.14                 lattice_0.20-41              
-[67] purrr_0.3.4                   labeling_0.3                 
-[69] bit_4.0.4                     tidyselect_1.1.0             
-[71] magrittr_1.5                  R6_2.4.1                     
-[73] generics_0.0.2                DBI_1.1.0                    
-[75] pillar_1.4.6                  whisker_0.4                  
-[77] withr_2.3.0                   RCurl_1.98-1.2               
-[79] tibble_3.0.3                  crayon_1.3.4                 
-[81] BiocFileCache_1.12.1          rmarkdown_2.3                
-[83] viridis_0.5.1                 locfit_1.5-9.4               
-[85] grid_4.0.2                    data.table_1.13.0            
-[87] blob_1.2.1                    git2r_0.27.1                 
-[89] digest_0.6.25                 xtable_1.8-4                 
-[91] httpuv_1.5.4                  R.utils_2.10.1               
-[93] munsell_0.5.0                 beeswarm_0.2.3               
-[95] viridisLite_0.3.0             vipor_0.4.5                  </code></pre>
+  [1] ggbeeswarm_0.6.0              colorspace_2.0-0             
+  [3] ellipsis_0.3.1                rprojroot_2.0.2              
+  [5] scuttle_1.0.4                 bluster_1.0.0                
+  [7] XVector_0.30.0                BiocNeighbors_1.8.2          
+  [9] fs_1.5.0                      rstudioapi_0.13              
+ [11] farver_2.0.3                  bit64_4.0.5                  
+ [13] interactiveDisplayBase_1.28.0 codetools_0.2-18             
+ [15] R.methodsS3_1.8.1             sparseMatrixStats_1.2.0      
+ [17] cachem_1.0.1                  knitr_1.30                   
+ [19] dbplyr_2.0.0                  R.oo_1.24.0                  
+ [21] shiny_1.6.0                   BiocManager_1.30.10          
+ [23] compiler_4.0.2                httr_1.4.2                   
+ [25] dqrng_0.2.1                   assertthat_0.2.1             
+ [27] Matrix_1.3-2                  fastmap_1.1.0                
+ [29] limma_3.46.0                  later_1.1.0.1                
+ [31] BiocSingular_1.6.0            htmltools_0.5.1.1            
+ [33] tools_4.0.2                   rsvd_1.0.3                   
+ [35] igraph_1.2.6                  gtable_0.3.0                 
+ [37] glue_1.4.2                    GenomeInfoDbData_1.2.4       
+ [39] dplyr_1.0.3                   rappdirs_0.3.1               
+ [41] Rcpp_1.0.6                    vctrs_0.3.6                  
+ [43] ExperimentHub_1.16.0          DelayedMatrixStats_1.12.2    
+ [45] xfun_0.20                     stringr_1.4.0                
+ [47] beachmat_2.6.4                mime_0.9                     
+ [49] lifecycle_0.2.0               irlba_2.3.3                  
+ [51] statmod_1.4.35                AnnotationHub_2.22.0         
+ [53] edgeR_3.32.1                  zlibbioc_1.36.0              
+ [55] scales_1.1.1                  promises_1.1.1               
+ [57] RColorBrewer_1.1-2            curl_4.3                     
+ [59] yaml_2.2.1                    memoise_2.0.0                
+ [61] gridExtra_2.3                 stringi_1.5.3                
+ [63] RSQLite_2.2.3                 BiocVersion_3.12.0           
+ [65] BiocParallel_1.24.1           rlang_0.4.10                 
+ [67] pkgconfig_2.0.3               bitops_1.0-6                 
+ [69] evaluate_0.14                 lattice_0.20-41              
+ [71] purrr_0.3.4                   labeling_0.4.2               
+ [73] bit_4.0.4                     tidyselect_1.1.0             
+ [75] magrittr_2.0.1                R6_2.5.0                     
+ [77] generics_0.1.0                DelayedArray_0.16.1          
+ [79] DBI_1.1.1                     pillar_1.4.7                 
+ [81] whisker_0.4                   withr_2.4.1                  
+ [83] RCurl_1.98-1.2                tibble_3.0.5                 
+ [85] crayon_1.3.4                  BiocFileCache_1.14.0         
+ [87] rmarkdown_2.6                 viridis_0.5.1                
+ [89] locfit_1.5-9.4                grid_4.0.2                   
+ [91] data.table_1.13.6             blob_1.2.1                   
+ [93] git2r_0.28.0                  digest_0.6.27                
+ [95] xtable_1.8-4                  httpuv_1.5.5                 
+ [97] R.utils_2.10.1                munsell_0.5.0                
+ [99] beeswarm_0.2.3                viridisLite_0.3.0            
+[101] vipor_0.4.5                  </code></pre>
 </div>
 </div>
 
@@ -1083,6 +1176,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -1092,7 +1187,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
