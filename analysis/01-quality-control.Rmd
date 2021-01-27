@@ -30,13 +30,12 @@ knitr::opts_chunk$set(
 Load required packages:
 
 ```{r}
-library(BiocSingular)
-library(SingleCellExperiment)
 library(eulerr)
 library(patchwork)
 library(robustbase)
 library(scater)
 library(scran)
+library(scuttle)
 ```
 
 Read experiment data:
@@ -96,7 +95,7 @@ Calculate dimenionality reduction data:
 set.seed(804329113)
 sce <- computeLibraryFactors(sce)
 sce <- logNormCounts(sce)
-sce <- runPCA(sce, BSPARAM = ExactParam())
+sce <- runPCA(sce, BSPARAM = BiocSingular::ExactParam())
 sce <- runTSNE(sce, dimred = "PCA")
 sce <- runUMAP(sce, dimred = "PCA")
 ```
@@ -212,7 +211,9 @@ patchwork::wrap_plots(
 The next approach is to identify cells that are outliers based on the median absolute deviation for the QC metrics:
 
 ```{r}
-dat <- quickPerCellQC(sce, percent_subsets = c("subsets_MT_percent", "altexps_ERCC_percent"))
+dat <- as.data.frame(colData(sce))
+
+dat <- quickPerCellQC(dat, sub.fields = c("subsets_MT_percent", "altexps_ERCC_percent"))
 
 sce$adaptive_discard <- dat$discard
 ```
