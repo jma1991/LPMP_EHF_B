@@ -13,20 +13,6 @@ In this document we are going to perform quality control on the cells.
 
 ## Setup
 
-Set chunk options:
-
-```{r}
-knitr::opts_chunk$set(
-  autodep    = TRUE,
-  cache      = TRUE,
-  cache.path = "cache/01-quality-control.Rmd/",
-  dev        = "png",
-  error      = FALSE,
-  message    = FALSE,
-  warning    = FALSE
-)
-```
-
 Load required packages:
 
 ```{r}
