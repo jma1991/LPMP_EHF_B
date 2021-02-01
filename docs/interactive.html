@@ -579,16 +579,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5targetblank073c7fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5" target="_blank">073c7fd</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3ba37fd33c7b212bbf189ee60b4de50fbf7918a2targetblank3ba37fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3ba37fd33c7b212bbf189ee60b4de50fbf7918a2" target="_blank">3ba37fd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5targetblank073c7fda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3ba37fd33c7b212bbf189ee60b4de50fbf7918a2targetblank3ba37fda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5" target="_blank">073c7fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3ba37fd33c7b212bbf189ee60b4de50fbf7918a2" target="_blank">3ba37fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -646,6 +646,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3ba37fd33c7b212bbf189ee60b4de50fbf7918a2/analysis/interactive.Rmd" target="_blank">3ba37fd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+wflow_publish(files = “analysis/interactive.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/49fa0835d25ccb804b8d23bc5fe2facd51b4eee9/docs/interactive.html" target="_blank">49fa083</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -872,15 +906,15 @@ iSEE(sce, appTitle = &quot;LPMP_EHF_B&quot;, colormap = ecm)</code></pre>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/annotated&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 3002030...DONE
-Deploying bundle: 4166590 for application: 3002030 ...
-Waiting for task: 863393965
+Deploying bundle: 4166660 for application: 3002030 ...
+Waiting for task: 863403053
   building: Parsing manifest
-  building: Building image: 4744244
+  building: Building image: 4744313
   building: Installing system dependencies
   building: Fetching packages
   building: Installing packages
   building: Installing files
-  building: Pushing image: 4744244
+  building: Pushing image: 4744313
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
@@ -888,93 +922,125 @@ Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/annotated&quot;, size = &quot;xlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 863394962
+Waiting for task: 863403995
   deploying: Starting instances
+  rollforward: Activating new instances
   terminating: Stopping old instances
 Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
-<!-- ### Integrated data -->
-<!-- Create iSEE directory for integrated data: -->
-<!-- ```{r} -->
-<!-- dir.create("shiny/integrated", showWarnings = FALSE, mode = "0755") -->
-<!-- ``` -->
-<!-- Copy integrated data to iSEE directory: -->
-<!-- ```{r} -->
-<!-- file.copy("output/10-atlas-integration.rds", "shiny/integrated/data.rds", overwrite = TRUE) -->
-<!-- ``` -->
-<!-- Write code to iSEE application file: -->
-<!-- ```{cat, engine.opts = list(file = "shiny/integrated/app.R"), class.source = "r"} -->
-<!-- # Load required packages -->
-<!-- library(iSEE) -->
-<!-- library(SingleCellExperiment) -->
-<!-- # Load experiment object -->
-<!-- sce <- readRDS("data.rds") -->
-<!-- # Make feature names unique -->
-<!-- rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name) -->
-<!-- # Define column data variables -->
-<!-- sce$Etv2 <- counts(sce)["Etv2", ] > 0 -->
-<!-- sce$Kdr <- counts(sce)["Kdr", ] > 0 -->
-<!-- sce$Runx1 <- counts(sce)["Runx1", ] > 0 -->
-<!-- sce$Ednrb <- counts(sce)["Ednrb", ] > 0 -->
-<!-- sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr -->
-<!-- sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1 -->
-<!-- sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb -->
-<!-- # Define column data colours -->
-<!-- celltype_colours <- function(n) { -->
-<!--   c( -->
-<!--     "Allantois" = "#532C8A", -->
-<!--     "Anterior Primitive Streak" = "#C19F70", -->
-<!--     "Blood progenitors 1" = "#D9DECF", -->
-<!--     "Blood progenitors 2" = "#C9A997", -->
-<!--     "Cardiomyocytes" = "#B51D8D", -->
-<!--     "Caudal epiblast" = "#9E6762", -->
-<!--     "Caudal Mesoderm" = "#3F84AA", -->
-<!--     "Caudal neurectoderm" = "#354E23", -->
-<!--     "Def. endoderm" = "#F397C0", -->
-<!--     "Endothelium" = "#FF891C", -->
-<!--     "Epiblast" = "#635547", -->
-<!--     "Erythroid1" = "#C72228", -->
-<!--     "Erythroid2" = "#F79083", -->
-<!--     "Erythroid3" = "#EF4E22", -->
-<!--     "ExE ectoderm" = "#989898", -->
-<!--     "ExE endoderm" = "#7F6874", -->
-<!--     "ExE mesoderm" = "#8870AD", -->
-<!--     "Forebrain/Midbrain/Hindbrain" = "#647A4F", -->
-<!--     "Gut" = "#EF5A9D", -->
-<!--     "Haematoendothelial progenitors" = "#FBBE92", -->
-<!--     "Intermediate mesoderm" = "#139992", -->
-<!--     "Mesenchyme" = "#CC7818", -->
-<!--     "Mixed mesoderm" = "#DFCDE4", -->
-<!--     "Nascent mesoderm" = "#C594BF", -->
-<!--     "Neural crest" = "#C3C388", -->
-<!--     "NMP" = "#8EC792", -->
-<!--     "Notochord" = "#0F4A9C", -->
-<!--     "Paraxial mesoderm" = "#8DB5CE", -->
-<!--     "Parietal endoderm" = "#1A1A1A", -->
-<!--     "PGC" = "#FACB12", -->
-<!--     "Pharyngeal mesoderm" = "#C9EBFB", -->
-<!--     "Primitive Streak" = "#DABE99", -->
-<!--     "Rostral neurectoderm" = "#65A83E", -->
-<!--     "Somitic mesoderm" = "#005579", -->
-<!--     "Spinal cord" = "#CDE088", -->
-<!--     "Surface ectoderm" = "#F7F79E", -->
-<!--     "Visceral endoderm" = "#F6BFCB" -->
-<!--   ) -->
-<!-- } -->
-<!-- # Set iSEE options -->
-<!-- iSEEOptions$set(downsample = TRUE) -->
-<!-- iSEEOptions$set(color.maxlevels = 37) -->
-<!-- # Create iSEE object -->
-<!-- ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours)) -->
-<!-- iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm) -->
-<!-- ``` -->
-<!-- Deploy the iSEE application to the shiny server: -->
-<!-- ```{r} -->
-<!-- deployApp(appDir = "shiny/integrated", appName = "LPMP_EHF_B_ATLAS", appTitle = "LPMP_EHF_B_ATLAS", launch.browser = FALSE, forceUpdate = TRUE) -->
-<!-- ``` -->
-<!-- Allocate more memory to the iSEE application: -->
-<!-- ```{r} -->
-<!-- configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xlarge") -->
-<!-- ``` -->
+</div>
+<div id="integrated-data" class="section level3">
+<h3>Integrated data</h3>
+<p>Create iSEE directory for integrated data:</p>
+<pre class="r"><code>dir.create(&quot;shiny/integrated&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
+<p>Copy integrated data to iSEE directory:</p>
+<pre class="r"><code>file.copy(&quot;output/10-atlas-integration.rds&quot;, &quot;shiny/integrated/data.rds&quot;, overwrite = TRUE)</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<p>Write code to iSEE application file:</p>
+<pre class="r r"><code># Load required packages
+library(iSEE)
+library(SingleCellExperiment)
+
+# Load experiment object
+sce &lt;- readRDS(&quot;data.rds&quot;)
+
+# Make feature names unique
+rownames(sce) &lt;- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+
+# Define column data variables
+sce$Etv2 &lt;- counts(sce)[&quot;Etv2&quot;, ] &gt; 0
+sce$Kdr &lt;- counts(sce)[&quot;Kdr&quot;, ] &gt; 0
+sce$Runx1 &lt;- counts(sce)[&quot;Runx1&quot;, ] &gt; 0
+sce$Ednrb &lt;- counts(sce)[&quot;Ednrb&quot;, ] &gt; 0
+sce$Etv2_AND_Kdr &lt;- sce$Etv2 &amp; sce$Kdr
+sce$Etv2_AND_Kdr_AND_Runx1 &lt;- sce$Etv2_AND_Kdr &amp; sce$Runx1
+sce$Etv2_AND_Ednrb &lt;- sce$Etv2 &amp; sce$Ednrb
+sce$source &lt;- &quot;ATLAS&quot;
+sce$source[sce$batch == &quot;LPMP_EHF&quot;] &lt;- &quot;LPMP_EHF_B&quot;
+
+# Define column data colours
+celltype_colours &lt;- function(n) {
+  c(
+    &quot;Allantois&quot; = &quot;#532C8A&quot;,
+    &quot;Anterior Primitive Streak&quot; = &quot;#C19F70&quot;,
+    &quot;Blood progenitors 1&quot; = &quot;#D9DECF&quot;,
+    &quot;Blood progenitors 2&quot; = &quot;#C9A997&quot;,
+    &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
+    &quot;Caudal epiblast&quot; = &quot;#9E6762&quot;,
+    &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
+    &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
+    &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
+    &quot;Endothelium&quot; = &quot;#FF891C&quot;,
+    &quot;Epiblast&quot; = &quot;#635547&quot;,
+    &quot;Erythroid1&quot; = &quot;#C72228&quot;,
+    &quot;Erythroid2&quot; = &quot;#F79083&quot;,
+    &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
+    &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
+    &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
+    &quot;ExE mesoderm&quot; = &quot;#8870AD&quot;,
+    &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647A4F&quot;,
+    &quot;Gut&quot; = &quot;#EF5A9D&quot;,
+    &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
+    &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
+    &quot;Mesenchyme&quot; = &quot;#CC7818&quot;,
+    &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
+    &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
+    &quot;Neural crest&quot; = &quot;#C3C388&quot;,
+    &quot;NMP&quot; = &quot;#8EC792&quot;,
+    &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
+    &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
+    &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
+    &quot;PGC&quot; = &quot;#FACB12&quot;,
+    &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
+    &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
+    &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
+    &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
+    &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
+    &quot;Surface ectoderm&quot; = &quot;#F7F79E&quot;,
+    &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
+  )
+}
+
+source_colours &lt;- function(x) {
+  c(&quot;LPMP_EHF_B&quot; = &quot;#4E79A7&quot;, &quot;ATLAS&quot; = &quot;#BAB0AC&quot;)
+}
+
+boolean_colours &lt;- function(n) {
+  c(&quot;TRUE&quot; = &quot;#E15759&quot;, &quot;FALSE&quot; = &quot;#BAB0AC&quot;)
+}
+
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
+
+# Create iSEE object
+ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours, source = source_colours), global_discrete = boolean_colours)
+iSEE(sce, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, colormap = ecm)</code></pre>
+<p>Deploy the iSEE application to the shiny server:</p>
+<pre class="r"><code>deployApp(appDir = &quot;shiny/integrated&quot;, appName = &quot;LPMP_EHF_B_ATLAS&quot;, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
+<pre><code>Preparing to deploy application...DONE
+Uploading bundle for application: 3002299...DONE
+Deploying bundle: 4166693 for application: 3002299 ...
+Waiting for task: 863466047
+  building: Processing bundle: 4166693
+  building: Parsing manifest
+  building: Building image: 4744829
+  building: Installing system dependencies
+  building: Fetching packages
+  building: Installing packages
+  building: Installing files
+  building: Pushing image: 4744829
+  deploying: Starting instances
+  rollforward: Activating new instances
+  terminating: Stopping old instances
+Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
+<p>Allocate more memory to the iSEE application:</p>
+<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_ATLAS&quot;, appDir = &quot;shiny/integrated&quot;, size = &quot;xlarge&quot;)</code></pre>
+<pre><code>Preparing to deploy application...DONE
+Waiting for task: 863468043
+  deploying: Starting instances
+  rollforward: Activating new instances
+  terminating: Stopping old instances
+Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
 </div>
 </div>
 <div id="summary" class="section level2">
