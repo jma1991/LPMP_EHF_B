@@ -145,105 +145,115 @@ Allocate more memory to the iSEE application:
 configureApp(appName = "LPMP_EHF_B", appDir = "shiny/annotated", size = "xlarge")
 ```
 
-<!-- ### Integrated data -->
+### Integrated data
 
-<!-- Create iSEE directory for integrated data: -->
+Create iSEE directory for integrated data:
 
-<!-- ```{r} -->
-<!-- dir.create("shiny/integrated", showWarnings = FALSE, mode = "0755") -->
-<!-- ``` -->
+```{r}
+dir.create("shiny/integrated", showWarnings = FALSE, mode = "0755")
+```
 
-<!-- Copy integrated data to iSEE directory: -->
+Copy integrated data to iSEE directory:
 
-<!-- ```{r} -->
-<!-- file.copy("output/10-atlas-integration.rds", "shiny/integrated/data.rds", overwrite = TRUE) -->
-<!-- ``` -->
+```{r}
+file.copy("output/10-atlas-integration.rds", "shiny/integrated/data.rds", overwrite = TRUE)
+```
 
-<!-- Write code to iSEE application file: -->
+Write code to iSEE application file:
 
-<!-- ```{cat, engine.opts = list(file = "shiny/integrated/app.R"), class.source = "r"} -->
-<!-- # Load required packages -->
-<!-- library(iSEE) -->
-<!-- library(SingleCellExperiment) -->
+```{cat, engine.opts = list(file = "shiny/integrated/app.R"), class.source = "r"}
+# Load required packages
+library(iSEE)
+library(SingleCellExperiment)
 
-<!-- # Load experiment object -->
-<!-- sce <- readRDS("data.rds") -->
+# Load experiment object
+sce <- readRDS("data.rds")
 
-<!-- # Make feature names unique -->
-<!-- rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name) -->
+# Make feature names unique
+rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
 
-<!-- # Define column data variables -->
-<!-- sce$Etv2 <- counts(sce)["Etv2", ] > 0 -->
-<!-- sce$Kdr <- counts(sce)["Kdr", ] > 0 -->
-<!-- sce$Runx1 <- counts(sce)["Runx1", ] > 0 -->
-<!-- sce$Ednrb <- counts(sce)["Ednrb", ] > 0 -->
-<!-- sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr -->
-<!-- sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1 -->
-<!-- sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb -->
+# Define column data variables
+sce$Etv2 <- counts(sce)["Etv2", ] > 0
+sce$Kdr <- counts(sce)["Kdr", ] > 0
+sce$Runx1 <- counts(sce)["Runx1", ] > 0
+sce$Ednrb <- counts(sce)["Ednrb", ] > 0
+sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr
+sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1
+sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb
+sce$source <- "ATLAS"
+sce$source[sce$batch == "LPMP_EHF"] <- "LPMP_EHF_B"
 
-<!-- # Define column data colours -->
-<!-- celltype_colours <- function(n) { -->
-<!--   c( -->
-<!--     "Allantois" = "#532C8A", -->
-<!--     "Anterior Primitive Streak" = "#C19F70", -->
-<!--     "Blood progenitors 1" = "#D9DECF", -->
-<!--     "Blood progenitors 2" = "#C9A997", -->
-<!--     "Cardiomyocytes" = "#B51D8D", -->
-<!--     "Caudal epiblast" = "#9E6762", -->
-<!--     "Caudal Mesoderm" = "#3F84AA", -->
-<!--     "Caudal neurectoderm" = "#354E23", -->
-<!--     "Def. endoderm" = "#F397C0", -->
-<!--     "Endothelium" = "#FF891C", -->
-<!--     "Epiblast" = "#635547", -->
-<!--     "Erythroid1" = "#C72228", -->
-<!--     "Erythroid2" = "#F79083", -->
-<!--     "Erythroid3" = "#EF4E22", -->
-<!--     "ExE ectoderm" = "#989898", -->
-<!--     "ExE endoderm" = "#7F6874", -->
-<!--     "ExE mesoderm" = "#8870AD", -->
-<!--     "Forebrain/Midbrain/Hindbrain" = "#647A4F", -->
-<!--     "Gut" = "#EF5A9D", -->
-<!--     "Haematoendothelial progenitors" = "#FBBE92", -->
-<!--     "Intermediate mesoderm" = "#139992", -->
-<!--     "Mesenchyme" = "#CC7818", -->
-<!--     "Mixed mesoderm" = "#DFCDE4", -->
-<!--     "Nascent mesoderm" = "#C594BF", -->
-<!--     "Neural crest" = "#C3C388", -->
-<!--     "NMP" = "#8EC792", -->
-<!--     "Notochord" = "#0F4A9C", -->
-<!--     "Paraxial mesoderm" = "#8DB5CE", -->
-<!--     "Parietal endoderm" = "#1A1A1A", -->
-<!--     "PGC" = "#FACB12", -->
-<!--     "Pharyngeal mesoderm" = "#C9EBFB", -->
-<!--     "Primitive Streak" = "#DABE99", -->
-<!--     "Rostral neurectoderm" = "#65A83E", -->
-<!--     "Somitic mesoderm" = "#005579", -->
-<!--     "Spinal cord" = "#CDE088", -->
-<!--     "Surface ectoderm" = "#F7F79E", -->
-<!--     "Visceral endoderm" = "#F6BFCB" -->
-<!--   ) -->
-<!-- } -->
+# Define column data colours
+celltype_colours <- function(n) {
+  c(
+    "Allantois" = "#532C8A",
+    "Anterior Primitive Streak" = "#C19F70",
+    "Blood progenitors 1" = "#D9DECF",
+    "Blood progenitors 2" = "#C9A997",
+    "Cardiomyocytes" = "#B51D8D",
+    "Caudal epiblast" = "#9E6762",
+    "Caudal Mesoderm" = "#3F84AA",
+    "Caudal neurectoderm" = "#354E23",
+    "Def. endoderm" = "#F397C0",
+    "Endothelium" = "#FF891C",
+    "Epiblast" = "#635547",
+    "Erythroid1" = "#C72228",
+    "Erythroid2" = "#F79083",
+    "Erythroid3" = "#EF4E22",
+    "ExE ectoderm" = "#989898",
+    "ExE endoderm" = "#7F6874",
+    "ExE mesoderm" = "#8870AD",
+    "Forebrain/Midbrain/Hindbrain" = "#647A4F",
+    "Gut" = "#EF5A9D",
+    "Haematoendothelial progenitors" = "#FBBE92",
+    "Intermediate mesoderm" = "#139992",
+    "Mesenchyme" = "#CC7818",
+    "Mixed mesoderm" = "#DFCDE4",
+    "Nascent mesoderm" = "#C594BF",
+    "Neural crest" = "#C3C388",
+    "NMP" = "#8EC792",
+    "Notochord" = "#0F4A9C",
+    "Paraxial mesoderm" = "#8DB5CE",
+    "Parietal endoderm" = "#1A1A1A",
+    "PGC" = "#FACB12",
+    "Pharyngeal mesoderm" = "#C9EBFB",
+    "Primitive Streak" = "#DABE99",
+    "Rostral neurectoderm" = "#65A83E",
+    "Somitic mesoderm" = "#005579",
+    "Spinal cord" = "#CDE088",
+    "Surface ectoderm" = "#F7F79E",
+    "Visceral endoderm" = "#F6BFCB"
+  )
+}
 
-<!-- # Set iSEE options -->
-<!-- iSEEOptions$set(downsample = TRUE) -->
-<!-- iSEEOptions$set(color.maxlevels = 37) -->
+source_colours <- function(x) {
+  c("LPMP_EHF_B" = "#4E79A7", "ATLAS" = "#BAB0AC")
+}
 
-<!-- # Create iSEE object -->
-<!-- ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours)) -->
-<!-- iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm) -->
-<!-- ``` -->
+boolean_colours <- function(n) {
+  c("TRUE" = "#E15759", "FALSE" = "#BAB0AC")
+}
 
-<!-- Deploy the iSEE application to the shiny server: -->
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
 
-<!-- ```{r} -->
-<!-- deployApp(appDir = "shiny/integrated", appName = "LPMP_EHF_B_ATLAS", appTitle = "LPMP_EHF_B_ATLAS", launch.browser = FALSE, forceUpdate = TRUE) -->
-<!-- ``` -->
+# Create iSEE object
+ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours, source = source_colours), global_discrete = boolean_colours)
+iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm)
+```
 
-<!-- Allocate more memory to the iSEE application: -->
+Deploy the iSEE application to the shiny server:
 
-<!-- ```{r} -->
-<!-- configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xlarge") -->
-<!-- ``` -->
+```{r}
+deployApp(appDir = "shiny/integrated", appName = "LPMP_EHF_B_ATLAS", appTitle = "LPMP_EHF_B_ATLAS", launch.browser = FALSE, forceUpdate = TRUE)
+```
+
+Allocate more memory to the iSEE application:
+
+```{r}
+configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xlarge")
+```
 
 ## Summary
 
