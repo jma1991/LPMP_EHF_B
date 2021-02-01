@@ -129,7 +129,7 @@ iSEEOptions$set(downsample = TRUE)
 iSEEOptions$set(color.maxlevels = 37)
 
 # Create iSEE object
-ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours), all_discrete = boolean_colours)
+ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours), global_discrete = boolean_colours)
 iSEE(sce, appTitle = "LPMP_EHF_B", colormap = ecm)
 ```
 
