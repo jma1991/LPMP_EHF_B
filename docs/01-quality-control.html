@@ -435,42 +435,6 @@ div.tocify {
     <li>
       <a href="10-atlas-integration.html"></a>
     </li>
-    <li class="dropdown-header">Atlas neighbors</li>
-    <li>
-      <a href="11-atlas-neighbors.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas trajectory</li>
-    <li>
-      <a href="12-atlas-trajectory.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas clustering</li>
-    <li>
-      <a href="13-atlas-clustering.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas markers</li>
-    <li>
-      <a href="14-atlas-markers.html"></a>
-    </li>
-    <li class="dropdown-header">Scenic analysis</li>
-    <li>
-      <a href="15-scenic-analysis.html"></a>
-    </li>
-    <li class="dropdown-header">Geneset activity</li>
-    <li>
-      <a href="16-geneset-activity.html"></a>
-    </li>
-    <li class="dropdown-header">Haystack analysis</li>
-    <li>
-      <a href="17-haystack-analysis.html"></a>
-    </li>
-    <li class="dropdown-header">Cell type exploration</li>
-    <li>
-      <a href="18-cell-exploration.html"></a>
-    </li>
-    <li class="dropdown-header">Cell heterogeneity</li>
-    <li>
-      <a href="19-cell-heterogeneity.html"></a>
-    </li>
   </ul>
 </li>
 <li>
@@ -499,7 +463,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Quality control</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">27 January, 2021</h4>
+<h4 class="date">01 February, 2021</h4>
 
 </div>
 
@@ -524,7 +488,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-01-27
+<strong>Last updated:</strong> 2021-02-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -615,16 +579,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree7663ce38ee1477b0cb0afd3154214b8fbe135185targetblank7663ce3a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/7663ce38ee1477b0cb0afd3154214b8fbe135185" target="_blank">7663ce3</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree10a3188304c5a8c077e13b5dada38c52e52a9ed9targetblank10a3188a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/10a3188304c5a8c077e13b5dada38c52e52a9ed9" target="_blank">10a3188</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree7663ce38ee1477b0cb0afd3154214b8fbe135185targetblank7663ce3a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree10a3188304c5a8c077e13b5dada38c52e52a9ed9targetblank10a3188a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/7663ce38ee1477b0cb0afd3154214b8fbe135185" target="_blank">7663ce3</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/10a3188304c5a8c077e13b5dada38c52e52a9ed9" target="_blank">10a3188</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -636,19 +600,14 @@ Ignored files:
     Ignored:    analysis/cache/
     Ignored:    data/
     Ignored:    output/
-    Ignored:    shiny/
     Ignored:    slides/
 
-Untracked files:
-    Untracked:  code/Mode.R
-    Untracked:  code/cleanEmbryoAtlasData.R
-    Untracked:  code/cleanSCE.R
-    Untracked:  code/dist_clusters_diag.R
-    Untracked:  code/splitByCol.R
-    Untracked:  code/subsetPointsByGrid.R
-
 Unstaged changes:
-    Modified:   _workflowr.R
+    Modified:   analysis/11-atlas-neighbors.Rmd
+    Modified:   analysis/12-atlas-trajectory.Rmd
+    Modified:   analysis/18-cell-exploration.Rmd
+    Modified:   analysis/_site.yml
+    Modified:   analysis/interactive.Rmd
 
 </code></pre>
 <p>
@@ -687,6 +646,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10a3188304c5a8c077e13b5dada38c52e52a9ed9/analysis/01-quality-control.Rmd" target="_blank">10a3188</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+wflow_publish(files = “analysis/01-quality-control.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/01-quality-control.html" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -819,23 +812,104 @@ publish
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<p>Set chunk options:</p>
-<pre class="r"><code>knitr::opts_chunk$set(
-  autodep    = TRUE,
-  cache      = TRUE,
-  cache.path = &quot;cache/01-quality-control.Rmd/&quot;,
-  dev        = &quot;png&quot;,
-  error      = FALSE,
-  message    = FALSE,
-  warning    = FALSE
-)</code></pre>
 <p>Load required packages:</p>
 <pre class="r"><code>library(eulerr)
 library(patchwork)
 library(robustbase)
-library(scater)
-library(scran)
-library(scuttle)</code></pre>
+library(scater)</code></pre>
+<pre><code>Warning: package &#39;scater&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: SingleCellExperiment</code></pre>
+<pre><code>Warning: package &#39;SingleCellExperiment&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: SummarizedExperiment</code></pre>
+<pre><code>Warning: package &#39;SummarizedExperiment&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: MatrixGenerics</code></pre>
+<pre><code>Warning: package &#39;MatrixGenerics&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: matrixStats</code></pre>
+<pre><code>
+Attaching package: &#39;matrixStats&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:robustbase&#39;:
+
+    colMedians, rowMedians</code></pre>
+<pre><code>
+Attaching package: &#39;MatrixGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:matrixStats&#39;:
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars</code></pre>
+<pre><code>The following objects are masked from &#39;package:robustbase&#39;:
+
+    colMedians, rowMedians</code></pre>
+<pre><code>Loading required package: GenomicRanges</code></pre>
+<pre><code>Warning: package &#39;GenomicRanges&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: stats4</code></pre>
+<pre><code>Loading required package: BiocGenerics</code></pre>
+<pre><code>Warning: package &#39;BiocGenerics&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code>
+Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which.max, which.min</code></pre>
+<pre><code>Loading required package: S4Vectors</code></pre>
+<pre><code>Warning: package &#39;S4Vectors&#39; was built under R version 4.0.3</code></pre>
+<pre><code>
+Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    expand.grid</code></pre>
+<pre><code>Loading required package: IRanges</code></pre>
+<pre><code>Warning: package &#39;IRanges&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: GenomeInfoDb</code></pre>
+<pre><code>Warning: package &#39;GenomeInfoDb&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Loading required package: Biobase</code></pre>
+<pre><code>Warning: package &#39;Biobase&#39; was built under R version 4.0.3</code></pre>
+<pre><code>Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.</code></pre>
+<pre><code>
+Attaching package: &#39;Biobase&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:MatrixGenerics&#39;:
+
+    rowMedians</code></pre>
+<pre><code>The following objects are masked from &#39;package:matrixStats&#39;:
+
+    anyMissing, rowMedians</code></pre>
+<pre><code>The following object is masked from &#39;package:robustbase&#39;:
+
+    rowMedians</code></pre>
+<pre><code>Loading required package: ggplot2</code></pre>
+<pre class="r"><code>library(scran)</code></pre>
+<pre><code>Warning: package &#39;scran&#39; was built under R version 4.0.3</code></pre>
+<pre class="r"><code>library(scuttle)</code></pre>
+<pre><code>Warning: package &#39;scuttle&#39; was built under R version 4.0.3</code></pre>
 <p>Read experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;data/salmon-quant.rds&quot;)</code></pre>
 <p>Make feature names unique:</p>
@@ -845,7 +919,7 @@ library(scuttle)</code></pre>
 </div>
 <div id="exploration" class="section level2">
 <h2>Exploration</h2>
-<p>We begin by exploring the dataset which contains cells and 55471 genes.</p>
+<p>We begin by exploring the dataset which contains 96 cells and 55471 genes.</p>
 </div>
 <div id="metrics" class="section level2">
 <h2>Metrics</h2>
@@ -862,44 +936,7 @@ dat &lt;- as.data.frame(colData(sce))</code></pre>
   plotColData(sce, &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-8-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
-Past versions of unnamed-chunk-8-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-8-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-8-1.png" target="_blank">10d37f2</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-09-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div id="dimensionality-reduction" class="section level3 tabset">
 <h3 class="tabset">Dimensionality reduction</h3>
 <p>Calculate dimenionality reduction data:</p>
@@ -917,6 +954,17 @@ sce &lt;- runUMAP(sce, dimred = &quot;PCA&quot;)</code></pre>
   plotPCA(sce, colour_by = &quot;detected&quot;) + ggtitle(&quot;Detected features&quot;),
   plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
   plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  ncol = 2
+)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tsne" class="section level4">
+<h4>TSNE</h4>
+<pre class="r"><code>patchwork::wrap_plots(
+  plotTSNE(sce, colour_by = &quot;sum&quot;) + ggtitle(&quot;Total count&quot;),
+  plotTSNE(sce, colour_by = &quot;detected&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -944,6 +992,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -958,13 +1017,13 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="tsne" class="section level4">
-<h4>TSNE</h4>
+<div id="umap" class="section level4">
+<h4>UMAP</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotTSNE(sce, colour_by = &quot;sum&quot;) + ggtitle(&quot;Total count&quot;),
-  plotTSNE(sce, colour_by = &quot;detected&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotUMAP(sce, colour_by = &quot;sum&quot;) + ggtitle(&quot;Total count&quot;),
+  plotUMAP(sce, colour_by = &quot;detected&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -992,55 +1051,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">e8119f4</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2020-09-22
+2021-01-27
 </td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="umap" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>patchwork::wrap_plots(
-  plotUMAP(sce, colour_by = &quot;sum&quot;) + ggtitle(&quot;Total count&quot;),
-  plotUMAP(sce, colour_by = &quot;detected&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;) + ggtitle(&quot;ERCC percent&quot;),
-  ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
-Past versions of unnamed-chunk-12-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
@@ -1077,7 +1099,18 @@ sce$manual_discard &lt;- dat$low_lib_size | dat$low_n_features | dat$high_subset
   plotColData(sce, &quot;subsets_MT_percent&quot;, colour_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, &quot;altexps_ERCC_percent&quot;, colour_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Inspect dimensionality reduction plots:</p>
+<div id="pca-1" class="section level4">
+<h4>PCA</h4>
+<pre class="r"><code>patchwork::wrap_plots(
+  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  ncol = 2
+)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
 Past versions of unnamed-chunk-14-1.png
@@ -1102,6 +1135,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1115,14 +1159,14 @@ James Ashmore
 </table>
 </div>
 </div>
-<p>Inspect dimensionality reduction plots:</p>
-<div id="pca-1" class="section level4">
-<h4>PCA</h4>
+</div>
+<div id="tsne-1" class="section level4">
+<h4>TSNE</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1150,6 +1194,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1164,13 +1219,13 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="tsne-1" class="section level4">
-<h4>TSNE</h4>
+<div id="umap-1" class="section level4">
+<h4>UMAP</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1198,55 +1253,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">e8119f4</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2020-09-22
+2021-01-27
 </td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="umap-1" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>patchwork::wrap_plots(
-  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;manual_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
-  ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
@@ -1276,7 +1294,18 @@ sce$adaptive_discard &lt;- dat$discard</code></pre>
   plotColData(sce, &quot;subsets_MT_percent&quot;, colour_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, &quot;altexps_ERCC_percent&quot;, colour_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Inspect dimensionality reduction plots:</p>
+<div id="pca-2" class="section level4">
+<h4>PCA</h4>
+<pre class="r"><code>patchwork::wrap_plots(
+  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  ncol = 2
+)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
 Past versions of unnamed-chunk-19-1.png
@@ -1301,6 +1330,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1314,14 +1354,14 @@ James Ashmore
 </table>
 </div>
 </div>
-<p>Inspect dimensionality reduction plots:</p>
-<div id="pca-2" class="section level4">
-<h4>PCA</h4>
+</div>
+<div id="tsne-2" class="section level4">
+<h4>TSNE</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1349,6 +1389,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1363,13 +1414,13 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="tsne-2" class="section level4">
-<h4>TSNE</h4>
+<div id="umap-2" class="section level4">
+<h4>UMAP</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1397,55 +1448,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">e8119f4</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2020-09-22
+2021-01-27
 </td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="umap-2" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>patchwork::wrap_plots(
-  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;adaptive_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
-  ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
-Past versions of unnamed-chunk-22-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-22-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
@@ -1474,7 +1488,18 @@ sce$outlier_discard &lt;- out</code></pre>
   plotColData(sce, &quot;subsets_MT_percent&quot;, colour_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
   plotColData(sce, &quot;altexps_ERCC_percent&quot;, colour_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;)
 )</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Inspect dimensionality reduction plots:</p>
+<div id="pca-3" class="section level4">
+<h4>PCA</h4>
+<pre class="r"><code>patchwork::wrap_plots(
+  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  ncol = 2
+)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
 Past versions of unnamed-chunk-24-1.png
@@ -1499,6 +1524,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1512,14 +1548,14 @@ James Ashmore
 </table>
 </div>
 </div>
-<p>Inspect dimensionality reduction plots:</p>
-<div id="pca-3" class="section level4">
-<h4>PCA</h4>
+</div>
+<div id="tsne-3" class="section level4">
+<h4>TSNE</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotPCA(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotPCA(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotPCA(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotPCA(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1547,6 +1583,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1561,13 +1608,13 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="tsne-3" class="section level4">
-<h4>TSNE</h4>
+<div id="umap-3" class="section level4">
+<h4>UMAP</h4>
 <pre class="r"><code>patchwork::wrap_plots(
-  plotTSNE(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotTSNE(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotTSNE(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotTSNE(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
+  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
+  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
+  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
+  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
   ncol = 2
 )</code></pre>
 <p><img src="figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" width="960" style="display: block; margin: auto;" /></p>
@@ -1595,6 +1642,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1609,16 +1667,15 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="umap-3" class="section level4">
-<h4>UMAP</h4>
-<pre class="r"><code>patchwork::wrap_plots(
-  plotUMAP(sce, colour_by = &quot;sum&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Total count&quot;),
-  plotUMAP(sce, colour_by = &quot;detected&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;Detected features&quot;),
-  plotUMAP(sce, colour_by = &quot;subsets_MT_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;MT percent&quot;),
-  plotUMAP(sce, colour_by = &quot;altexps_ERCC_percent&quot;, shape_by = &quot;outlier_discard&quot;) + ggtitle(&quot;ERCC percent&quot;),
-  ncol = 2
-)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="comparison" class="section level3">
+<h3>Comparison</h3>
+<p>Compare the number of cells selected between methods using an Euler diagram:</p>
+<pre class="r"><code>mat &lt;- cbind(Keep = TRUE, Manual = sce$manual_discard, Adaptive = sce$adaptive_discard, Outlier = sce$outlier_discard)
+fit &lt;- euler(mat, shape = &quot;circle&quot;)
+col &lt;- RColorBrewer::brewer.pal(n = 4, name = &quot;Pastel2&quot;)
+plot(fit, fill = col, quantities = TRUE)</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
 Past versions of unnamed-chunk-27-1.png
@@ -1643,54 +1700,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">e8119f4</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2020-09-22
+2021-01-27
 </td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div id="comparison" class="section level3">
-<h3>Comparison</h3>
-<p>Compare the number of cells selected between methods using an Euler diagram:</p>
-<pre class="r"><code>mat &lt;- cbind(Keep = TRUE, Manual = sce$manual_discard, Adaptive = sce$adaptive_discard, Outlier = sce$outlier_discard)
-fit &lt;- euler(mat, shape = &quot;circle&quot;)
-col &lt;- RColorBrewer::brewer.pal(n = 4, name = &quot;Pastel2&quot;)
-plot(fit, fill = col, quantities = TRUE)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
-Past versions of unnamed-chunk-28-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-28-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" target="_blank">10d37f2</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
 James Ashmore
@@ -1723,44 +1744,9 @@ dat &lt;- as.data.frame(rowData(sce))</code></pre>
   geom_histogram(bins = 100, colour = &quot;black&quot;, fill = &quot;grey&quot;) + 
   scale_x_log10(n.breaks = 10) +
   theme_bw()</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-1">
-Past versions of unnamed-chunk-31-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-31-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-31-1.png" target="_blank">10d37f2</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-09-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+<pre><code>Warning: Removed 30761 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Define lowly expressed genes using a mean threshold:</p>
 <pre class="r"><code>dat$low_mean &lt;- dat$mean &lt; 1</code></pre>
 <p>Tabulate the number of lowly expressed genes:</p>
@@ -1792,44 +1778,12 @@ James Ashmore
   geom_smooth(colour = &quot;black&quot;, se = FALSE) +
   scale_x_log10(n.breaks = 10) +
   theme_bw()</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
-Past versions of unnamed-chunk-34-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-34-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-34-1.png" target="_blank">10d37f2</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-09-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<pre><code>Warning: Transformation introduced infinite values in continuous x-axis
+
+Warning: Transformation introduced infinite values in continuous x-axis</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<pre><code>Warning: Removed 30761 rows containing non-finite values (stat_smooth).</code></pre>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Define lowly detected genes as having a minimum of 1 read in at least 1 percent of cells:</p>
 <pre class="r"><code>dat$low_detected &lt;- !rowSums(counts(sce) &gt;= 1) &gt;= (ncol(sce) * 0.01)</code></pre>
 <p>Tabulate the number of lowly detected genes:</p>
@@ -1860,44 +1814,7 @@ James Ashmore
 fit &lt;- euler(mat, shape = &quot;circle&quot;)
 col &lt;- RColorBrewer::brewer.pal(n = 3, name = &quot;Pastel2&quot;)
 plot(fit, fill = col, quantities = TRUE)</code></pre>
-<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-37-1">
-Past versions of unnamed-chunk-37-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-37-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-37-1.png" target="_blank">10d37f2</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-09-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/01-quality-control.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="selection-1" class="section level3">
 <h3>Selection</h3>
@@ -1978,16 +1895,16 @@ loaded via a namespace (and not attached):
 [63] cowplot_1.1.1             beachmat_2.6.4           
 [65] polylabelr_0.2.0          locfit_1.5-9.4           
 [67] knitr_1.30                pillar_1.4.7             
-[69] igraph_1.2.6              codetools_0.2-18         
-[71] glue_1.4.2                evaluate_0.14            
-[73] vctrs_0.3.6               httpuv_1.5.5             
-[75] polyclip_1.10-0           gtable_0.3.0             
-[77] purrr_0.3.4               assertthat_0.2.1         
-[79] xfun_0.20                 rsvd_1.0.3               
-[81] RSpectra_0.16-0           later_1.1.0.1            
-[83] viridisLite_0.3.0         tibble_3.0.5             
-[85] beeswarm_0.2.3            bluster_1.0.0            
-[87] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
+[69] igraph_1.2.6              glue_1.4.2               
+[71] evaluate_0.14             vctrs_0.3.6              
+[73] httpuv_1.5.5              polyclip_1.10-0          
+[75] gtable_0.3.0              purrr_0.3.4              
+[77] assertthat_0.2.1          xfun_0.20                
+[79] rsvd_1.0.3                RSpectra_0.16-0          
+[81] later_1.1.0.1             viridisLite_0.3.0        
+[83] tibble_3.0.5              beeswarm_0.2.3           
+[85] bluster_1.0.0             statmod_1.4.35           
+[87] ellipsis_0.3.1           </code></pre>
 </div>
 </div>
 
