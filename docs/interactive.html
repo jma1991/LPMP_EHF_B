@@ -579,16 +579,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeeef8c7ced9c2c6c175c3a829242dab5642c68bbatargetblankeef8c7ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/eef8c7ced9c2c6c175c3a829242dab5642c68bba" target="_blank">eef8c7c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5targetblank073c7fda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5" target="_blank">073c7fd</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeeef8c7ced9c2c6c175c3a829242dab5642c68bbatargetblankeef8c7ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5targetblank073c7fda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/eef8c7ced9c2c6c175c3a829242dab5642c68bba" target="_blank">eef8c7c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5" target="_blank">073c7fd</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -646,6 +646,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/073c7fd96361ec4ea09a17afc8f33d34bb1bb1e5/analysis/interactive.Rmd" target="_blank">073c7fd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+wflow_publish(files = “analysis/interactive.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/fba32981377c45ad0be32ef97708c70bdf596707/docs/interactive.html" target="_blank">fba3298</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -832,26 +866,21 @@ iSEEOptions$set(downsample = TRUE)
 iSEEOptions$set(color.maxlevels = 37)
 
 # Create iSEE object
-ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours), all_discrete = boolean_colours)
+ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours), global_discrete = boolean_colours)
 iSEE(sce, appTitle = &quot;LPMP_EHF_B&quot;, colormap = ecm)</code></pre>
 <p>Deploy the iSEE application to the shiny server:</p>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/annotated&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 3002030...DONE
-Deploying bundle: 4166551 for application: 3002030 ...
-Waiting for task: 863389590
+Deploying bundle: 4166590 for application: 3002030 ...
+Waiting for task: 863393965
   building: Parsing manifest
-  building: Building image: 4744192
+  building: Building image: 4744244
   building: Installing system dependencies
   building: Fetching packages
-  building: Building package: sparseMatrixStats
-  building: Building package: beachmat
-  building: Building package: HDF5Array
-  building: Building package: DelayedMatrixStats
-  building: Building package: scuttle
   building: Installing packages
   building: Installing files
-  building: Pushing image: 4744192
+  building: Pushing image: 4744244
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
@@ -859,9 +888,8 @@ Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/annotated&quot;, size = &quot;xlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 863390961
+Waiting for task: 863394962
   deploying: Starting instances
-  rollforward: Activating new instances
   terminating: Stopping old instances
 Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
 <!-- ### Integrated data -->
