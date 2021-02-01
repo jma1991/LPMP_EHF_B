@@ -15,8 +15,8 @@ Setup chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = "cache/11-atlas-neighbors.Rmd/",
   cache.lazy = FALSE,
+  cache.path = "cache/11-atlas-neighbors.Rmd/",
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -39,41 +39,37 @@ library(scran)
 Load CRAN packages:
 
 ```{r}
-library(ggbeeswarm)
-library(ggthemes)
+library(ggforce)
 library(pheatmap)
+```
+
+Source user functions:
+
+```{r}
+source("code/splitByCol.R")
+source("code/Mode.R")
 ```
 
 ## Neighbors
 
 Read experiment object:
 
-```{r cache = FALSE}
+```{r}
 sce <- readRDS("output/10-atlas-integration.rds")
 ```
 
-Function to split experiment object by column data:
+Define source annotation:
 
 ```{r}
-splitColData <- function(x, f) {
-  
-  i <- split(seq_along(f), f)
+sce$source <- "reference"
 
-  v <- vector(mode = "list", length = length(i))
-  
-  names(v) <- names(i)
-  
-  for (n in names(i)) { v[[n]] <- x[, i[[n]]] }
-  
-  return(v)
-
-}
+sce$source[sce$batch == "LPMP_EHF"] <- "test"
 ```
 
-Split experiment object by source column:
+Split experiment object by source:
 
-```{r cache = FALSE}
-sce <- splitColData(sce, sce$source)
+```{r}
+sce <- splitByCol(sce, sce$source)
 ```
 
 Extract corrected PCA matrix for reference and test data:
@@ -85,34 +81,44 @@ dim <- list(
 )
 ```
 
-Find the 10 nearest neighbors in the reference data for each point in the test data:
+Find k nearest neighbors in the reference data for each point in the test data:
 
 ```{r}
 set.seed(984529644)
 
-knn <- queryKNN(X = dim$reference, query = dim$test, k = 10)
+knn <- queryKNN(X = dim$reference, query = dim$test, k = 20)
 ```
 
 Annotate test data using majority nearest neighbors: 
 
-```{r cache = FALSE}
-sce$test$stage <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$stage[x]))))
+```{r}
+sce$reference$cell.mapped <- sce$reference$cell
 
-sce$test$celltype <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$celltype[x]))))
+sce$test$cell.mapped <- apply(knn$index, 1, function(x) head(sce$reference$cell[x], n = 1))
 
-sce$test$theiler <- apply(knn$index, 1, function(x) names(which.max(table(sce$reference$theiler[x]))))
+sce$reference$stage.mapped <- sce$reference$stage
+
+sce$test$stage.mapped <- apply(knn$index, 1, function(x) Mode(sce$reference$stage[x]))
+
+sce$reference$celltype.mapped <- sce$reference$celltype
+
+sce$test$celltype.mapped <- apply(knn$index, 1, function(x) Mode(sce$reference$celltype[x]))
 ```
 
-Create vector of nearest neighbor indexes:
+Create index of cells from all mapped celltypes and stages:
 
 ```{r}
-idx.neighbors <- unique(as.vector(knn$index))
+id1 <- sce$reference$celltype %in% unique(sce$test$celltype.mapped)
+
+id2 <- sce$reference$stage %in% unique(sce$test$stage.mapped)
+
+idx <- id1 & id2
 ```
 
-Subset experiment object to test data and nearest neighbors:
+Subset experiment object to test data and mapped celltype and stage:
 
 ```{r}
-sce <- cbind(sce$reference[, idx.neighbors], sce$test)
+sce <- cbind(sce$reference[, idx], sce$test)
 ```
 
 ## Integration
@@ -123,7 +129,7 @@ Model the per-gene variance:
 dec <- modelGeneVar(sce, block = sce$sample)
 ```
 
-Create a blacklist of genes to ignore for feature selection:
+Extract blacklist genes used for feature selection:
 
 ```{r}
 var <- metadata(sce)$combineVar
@@ -139,6 +145,24 @@ hvg <- subset(dec, blacklist == FALSE)
 hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
 ```
 
+Create sequential merge order:
+
+```{r}
+idx <- as.data.frame(table(sce$sample, sce$stage.mapped), stringsAsFactors = FALSE)
+
+colnames(idx) <- c("sample", "stage", "ncells")
+
+idx <- subset(idx, (sample %in% AtlasSampleMetadata$sample) & (ncells > 0))
+
+lvl <- c("E6.5", "E6.75", "E7.0", "mixed_gastrulation", "E7.25", "E7.5", "E7.75", "E8.0", "E8.25", "E8.5")
+
+idx$stage <- factor(idx$stage, levels = lvl)
+
+idx <- idx[order(idx$stage, idx$ncells, decreasing = TRUE), ]
+
+idx <- c(idx$sample, "LPMP_EHF")
+```
+
 Correct experiments using nearest neighbours:
 
 ```{r}
@@ -149,7 +173,7 @@ mnn <- correctExperiments(
   batch = sce$sample,
   subset.row = hvg,
   correct.all = TRUE,
-  PARAM = FastMnnParam(auto.merge = TRUE, weights = FALSE)
+  PARAM = FastMnnParam(merge.order = idx)
 )
 ```
 
@@ -174,9 +198,9 @@ var <- metadata(mnn)$merge.info$lost.var
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
 
-brk <- seq(0, max(var, na.rm = TRUE), length.out = 101)
+brk <- seq(0, max(var), length.out = 101)
 
-pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+pheatmap(var[, idx], color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
 ```
 
 Cluster on the corrected PCA to obtain a partitioning of the cells:
@@ -189,106 +213,54 @@ com <- igraph::cluster_louvain(snn)
 
 Tabulate number of cells from multiple batches within each cluster:
 
-```{r fig.width = 8, fig.height = 6}
+```{r}
 tab <- table(Cluster = com$membership, Batch = mnn$batch)
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
 
-brk <- seq(0, max(tab, na.rm = TRUE), length.out = 101)
+brk <- seq(0, max(tab), length.out = 101)
 
-pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+pheatmap(tab[, idx], color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
 ```
 
-Perform TSNE on corrected data:
+Perform TSNE on the corrected PCA matrix:
 
 ```{r}
-set.seed(928262044)
+set.seed(42)
 
-mnn <- runTSNE(mnn, dimred = "corrected")
+mnn <- runTSNE(mnn, dimred = "corrected", perplexity = 120) # same settings as reference analysis
 ```
 
-Define annotation labels for visualisation:
+Visualize the corrected PCA using a TSNE plot:
 
-```{r}
-source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP EHF")
-```
-
-Visualise TSNE of cells coloured by source data:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(TSNE.1, TSNE.2, colour = source)) + 
-  geom_point() + 
-  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
   labs(x = "TSNE 1", y = "TSNE 2") + 
-  theme_bw() + theme(aspect.ratio = 1)
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
 ```
 
-Visualise TSNE of cells coloured by embryonic stage:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(TSNE.1, TSNE.2, colour = stage)) + 
-  geom_point() + 
-  scale_colour_tableau(name = "Stage", palette = "Tableau 10", na.value = "#000000") + 
-  labs(x = "TSNE 1", y = "TSNE 2") + 
-  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
-  theme_bw() + theme(aspect.ratio = 1)
-```
-
-Visualise TSNE of cells coloured by celltype annotation:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) + 
-  geom_point() + 
-  scale_colour_manual(values = EmbryoCelltypeColours) + 
-  labs(x = "TSNE 1", y = "TSNE 2") + 
-  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
-  theme_bw() + theme(aspect.ratio = 1)
-```
-
-Perform UMAP on corrected data:
+Perform UMAP on the corrected PCA matrix:
 
 ```{r}
-set.seed(107520292)
+set.seed(42)
 
-mnn <- runUMAP(mnn, dimred = "corrected")
+mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 20, min_dist = 0.7) # same settings as reference analysis
 ```
 
-Define annotation labels for visualisation:
+Visualize the corrected PCA using a UMAP plot:
 
-```{r}
-source.labels <- c("reference" = "Mouse Embryo Atlas", "test" = "Mouse LPMP EHF")
-```
-
-Visualise UMAP of cells coloured by source data:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(UMAP.1, UMAP.2, colour = source)) + 
-  geom_point() + 
-  scale_colour_tableau(name = "Source", labels = source.labels, palette = "Tableau 10") + 
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
   labs(x = "UMAP 1", y = "UMAP 2") + 
-  theme_bw() + theme(aspect.ratio = 1)
-```
-
-Visualise UMAP of cells coloured by embryonic stage:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(UMAP.1, UMAP.2, colour = stage)) + 
-  geom_point() + 
-  scale_colour_tableau(name = "Stage", palette = "Tableau 10", na.value = "#000000") + 
-  labs(x = "UMAP 1", y = "UMAP 2") + 
-  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
-  theme_bw() + theme(aspect.ratio = 1)
-```
-
-Visualise UMAP of cells coloured by celltype annotation:
-
-```{r fig.width = 8, fig.height = 6}
-ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) + 
-  geom_point() + 
-  scale_colour_manual(values = EmbryoCelltypeColours) + 
-  labs(x = "UMAP 1", y = "UMAP 2") + 
-  facet_wrap(~ source, labeller = labeller(source = source.labels)) + 
-  theme_bw() + theme(aspect.ratio = 1)
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
 ```
 
 ## Summary

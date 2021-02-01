@@ -31,24 +31,24 @@ navbar:
     menu:
       - text: Atlas integration
       - href: 10-atlas-integration.html
-      - text: Atlas neighbors
-      - href: 11-atlas-neighbors.html
-      - text: Atlas trajectory
-      - href: 12-atlas-trajectory.html
-      - text: Atlas clustering
-      - href: 13-atlas-clustering.html
-      - text: Atlas markers
-      - href: 14-atlas-markers.html
-      - text: Scenic analysis
-      - href: 15-scenic-analysis.html
-      - text: Geneset activity
-      - href: 16-geneset-activity.html
-      - text: Haystack analysis
-      - href: 17-haystack-analysis.html
-      - text: Cell type exploration
-      - href: 18-cell-exploration.html
-      - text: Cell heterogeneity
-      - href: 19-cell-heterogeneity.html
+#      - text: Atlas neighbors
+#      - href: 11-atlas-neighbors.html
+#      - text: Atlas trajectory
+#      - href: 12-atlas-trajectory.html
+#      - text: Atlas clustering
+#      - href: 13-atlas-clustering.html
+#      - text: Atlas markers
+#      - href: 14-atlas-markers.html
+#      - text: Scenic analysis
+#      - href: 15-scenic-analysis.html
+#      - text: Geneset activity
+#      - href: 16-geneset-activity.html
+#      - text: Haystack analysis
+#      - href: 17-haystack-analysis.html
+#      - text: Cell type exploration
+#      - href: 18-cell-exploration.html
+#      - text: Cell heterogeneity
+#      - href: 19-cell-heterogeneity.html
   - text: Interactive
     href: interactive.html
   right:

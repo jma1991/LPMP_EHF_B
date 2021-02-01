@@ -1,7 +1,7 @@
 ---
 title: "Atlas trajectory"
 author: "James Ashmore"
-date: "2020-10-02"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console

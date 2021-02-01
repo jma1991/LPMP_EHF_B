@@ -159,12 +159,19 @@ Copy integrated data to iSEE directory:
 file.copy("output/10-atlas-integration.rds", "shiny/integrated/data.rds", overwrite = TRUE)
 ```
 
+Copy integrated data to iSEE directory:
+
+```{r}
+file.copy("output/10-atlas-integration", "shiny/integrated/data.rds", overwrite = TRUE)
+```
+
 Write code to iSEE application file:
 
 ```{cat, engine.opts = list(file = "shiny/integrated/app.R"), class.source = "r"}
 # Load required packages
 library(iSEE)
 library(SingleCellExperiment)
+library(BiocSingular)
 
 # Load experiment object
 sce <- readRDS("data.rds")
@@ -252,7 +259,7 @@ deployApp(appDir = "shiny/integrated", appName = "LPMP_EHF_B_ATLAS", appTitle = 
 Allocate more memory to the iSEE application:
 
 ```{r}
-configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xlarge")
+configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xxxlarge")
 ```
 
 ## Summary
