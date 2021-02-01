@@ -11,10 +11,10 @@
 
 <meta name="author" content="James Ashmore" />
 
-<meta name="date" content="2020-10-13" />
 
 <title>Interactive data exploration</title>
 
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -40,6 +40,8 @@ div.section {
 }
 </style>
 
+
+
 <style type="text/css">
   code{white-space: pre-wrap;}
   span.smallcaps{font-variant: small-caps;}
@@ -47,7 +49,7 @@ div.section {
   div.column{display: inline-block; vertical-align: top; width: 50%;}
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
   ul.task-list{list-style: none;}
-      </style>
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -93,6 +95,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 
 
@@ -432,34 +435,6 @@ div.tocify {
     <li>
       <a href="10-atlas-integration.html"></a>
     </li>
-    <li class="dropdown-header">Atlas neighbors</li>
-    <li>
-      <a href="11-atlas-neighbors.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas trajectory</li>
-    <li>
-      <a href="12-atlas-trajectory.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas clustering</li>
-    <li>
-      <a href="13-atlas-clustering.html"></a>
-    </li>
-    <li class="dropdown-header">Atlas markers</li>
-    <li>
-      <a href="14-atlas-markers.html"></a>
-    </li>
-    <li class="dropdown-header">Scenic analysis</li>
-    <li>
-      <a href="15-scenic-analysis.html"></a>
-    </li>
-    <li class="dropdown-header">Geneset activity</li>
-    <li>
-      <a href="16-geneset-activity.html"></a>
-    </li>
-    <li class="dropdown-header">Haystack analysis</li>
-    <li>
-      <a href="17-haystack-analysis.html"></a>
-    </li>
   </ul>
 </li>
 <li>
@@ -473,7 +448,7 @@ div.tocify {
 </li>
 <li>
   <a href="https://github.com/jma1991/LPMP_EHF_B">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -488,14 +463,14 @@ div.tocify {
 
 <h1 class="title toc-ignore">Interactive data exploration</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">2020-10-13</h4>
+<h4 class="date">01 February, 2021</h4>
 
 </div>
 
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -504,7 +479,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -513,10 +488,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-10-13
+<strong>Last updated:</strong> 2021-02-01
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -532,12 +507,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -561,7 +536,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -604,50 +579,35 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8bfdc29f140ac08aa706d90e4b388072553cc25etargetblank8bfdc29a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8bfdc29f140ac08aa706d90e4b388072553cc25e" target="_blank">8bfdc29</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeeef8c7ced9c2c6c175c3a829242dab5642c68bbatargetblankeef8c7ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/eef8c7ced9c2c6c175c3a829242dab5642c68bba" target="_blank">eef8c7c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8bfdc29f140ac08aa706d90e4b388072553cc25etargetblank8bfdc29a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeeef8c7ced9c2c6c175c3a829242dab5642c68bbatargetblankeef8c7ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8bfdc29f140ac08aa706d90e4b388072553cc25e" target="_blank">8bfdc29</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/eef8c7ced9c2c6c175c3a829242dab5642c68bba" target="_blank">eef8c7c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/cache/
-    Ignored:    data/cell-lineage.csv
-    Ignored:    data/gene-sets.csv
-    Ignored:    data/pyscenic-activity.csv
-    Ignored:    data/pyscenic-modules.csv
-    Ignored:    data/pyscenic-regulons.csv
-    Ignored:    data/salmon-quant.rds
-    Ignored:    output/01-quality-control.rds
-    Ignored:    output/02-normalization.rds
-    Ignored:    output/03-feature-selection.rds
-    Ignored:    output/04-reduced-dimensions.rds
-    Ignored:    output/05-clustering.rds
-    Ignored:    output/06-doublet-detection.rds
-    Ignored:    output/07-cell-cycle.rds
-    Ignored:    output/08-marker-detection.rds
-    Ignored:    output/09-cell-annotation.rds
-    Ignored:    output/10-atlas-integration.rds
-    Ignored:    output/11-atlas-neighbors.rds
-    Ignored:    output/12-atlas-trajectory.rds
-    Ignored:    output/13-atlas-clustering.rds
-    Ignored:    output/14-atlas-markers.rds
+    Ignored:    data/
+    Ignored:    output/
     Ignored:    shiny/
+    Ignored:    slides/
 
 Unstaged changes:
-    Modified:   analysis/interactive.Rmd
+    Modified:   analysis/11-atlas-neighbors.Rmd
+    Modified:   analysis/12-atlas-trajectory.Rmd
+    Modified:   analysis/18-cell-exploration.Rmd
+    Modified:   analysis/_site.yml
 
 </code></pre>
 <p>
@@ -686,6 +646,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/eef8c7ced9c2c6c175c3a829242dab5642c68bba/analysis/interactive.Rmd" target="_blank">eef8c7c</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+<td>
+wflow_publish(files = “analysis/interactive.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/453b8e88f80d8181a3e829414912113bb07f2bb6/analysis/interactive.Rmd" target="_blank">453b8e8</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-13
+</td>
+<td>
+publish
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/453b8e88f80d8181a3e829414912113bb07f2bb6/docs/interactive.html" target="_blank">453b8e8</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2020-10-13
+</td>
+<td>
+publish
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -735,208 +746,207 @@ publish
 <pre class="r"><code>options(repos = BiocManager::repositories())</code></pre>
 <p>Automatically answer yes to any user prompt:</p>
 <pre class="r"><code>options(needs.promptUser = FALSE)</code></pre>
+<p>Delete existing shiny directory:</p>
+<pre class="r"><code>unlink(&quot;shiny&quot;, recursive = TRUE)</code></pre>
 <p>Create shiny directory for interactive data exploration:</p>
 <pre class="r"><code>dir.create(&quot;shiny&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
 </div>
-<div id="applications" class="section level2">
-<h2>Applications</h2>
-<div id="processed-data" class="section level3">
-<h3>Processed data</h3>
-<p>Create iSEE directory for processed data:</p>
-<pre class="r"><code>dir.create(&quot;shiny/v1&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
-<p>Copy processed data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/v1/data.rds&quot;, overwrite = TRUE)</code></pre>
+<div id="applications" class="section level2 tabset">
+<h2 class="tabset">Applications</h2>
+<div id="annotated-data" class="section level3">
+<h3>Annotated data</h3>
+<p>Create iSEE directory for annotated data:</p>
+<pre class="r"><code>dir.create(&quot;shiny/annotated&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
+<p>Copy annotated data to iSEE directory:</p>
+<pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/annotated/data.rds&quot;, overwrite = TRUE)</code></pre>
 <pre><code>[1] TRUE</code></pre>
-<p>Write application code to file within iSEE directory:</p>
-<pre class="r r"><code>library(SingleCellExperiment)
+<p>Write code to iSEE application file:</p>
+<pre class="r r"><code># Load required packages
+library(iSEE)
+library(SingleCellExperiment)
 
-library(BiocSingular)
-
-library(scran)
-
+# Load experiment object
 sce &lt;- readRDS(&quot;data.rds&quot;)
 
-library(iSEE)
+# Make feature names unique
+rownames(sce) &lt;- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
 
-library(shiny)
+# Define column data variables
+sce$Etv2 &lt;- counts(sce)[&quot;Etv2&quot;, ] &gt; 0
+sce$Kdr &lt;- counts(sce)[&quot;Kdr&quot;, ] &gt; 0
+sce$Runx1 &lt;- counts(sce)[&quot;Runx1&quot;, ] &gt; 0
+sce$Ednrb &lt;- counts(sce)[&quot;Ednrb&quot;, ] &gt; 0
+sce$Etv2_AND_Kdr &lt;- sce$Etv2 &amp; sce$Kdr
+sce$Etv2_AND_Kdr_AND_Runx1 &lt;- sce$Etv2_AND_Kdr &amp; sce$Runx1
+sce$Etv2_AND_Ednrb &lt;- sce$Etv2 &amp; sce$Ednrb
 
-packageVersion(&quot;iSEE&quot;)
-
-celltype_colours = function(n) {
-
-  col &lt;- c(&quot;Allantois&quot; = &quot;#532C8A&quot;,
-           &quot;Anterior Primitive Streak&quot; = &quot;#c19f70&quot;,
-           &quot;Blood progenitors 1&quot; = &quot;#f9decf&quot;,
-           &quot;Blood progenitors 2&quot; = &quot;#c9a997&quot;,
-           &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
-           &quot;Caudal epiblast&quot; = &quot;#9e6762&quot;,
-           &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
-           &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
-           &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
-           &quot;Endothelium&quot; = &quot;#ff891c&quot;,
-           &quot;Epiblast&quot; = &quot;#635547&quot;,
-           &quot;Erythroid1&quot; = &quot;#C72228&quot;,
-           &quot;Erythroid2&quot; = &quot;#f79083&quot;,
-           &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
-           &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
-           &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
-           &quot;ExE mesoderm&quot; = &quot;#8870ad&quot;,
-           &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647a4f&quot;,
-           &quot;Gut&quot; = &quot;#EF5A9D&quot;,
-           &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
-           &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
-           &quot;Mesenchyme&quot; = &quot;#cc7818&quot;,
-           &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
-           &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
-           &quot;Neural crest&quot; = &quot;#C3C388&quot;,
-           &quot;NMP&quot; = &quot;#8EC792&quot;,
-           &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
-           &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
-           &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
-           &quot;PGC&quot; = &quot;#FACB12&quot;,
-           &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
-           &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
-           &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
-           &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
-           &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
-           &quot;Surface ectoderm&quot; = &quot;#f7f79e&quot;,
-           &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
+# Define column data colours
+celltype_colours &lt;- function(n) {
+  c(
+    &quot;Allantois&quot; = &quot;#532C8A&quot;,
+    &quot;Anterior Primitive Streak&quot; = &quot;#C19F70&quot;,
+    &quot;Blood progenitors 1&quot; = &quot;#D9DECF&quot;,
+    &quot;Blood progenitors 2&quot; = &quot;#C9A997&quot;,
+    &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
+    &quot;Caudal epiblast&quot; = &quot;#9E6762&quot;,
+    &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
+    &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
+    &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
+    &quot;Endothelium&quot; = &quot;#FF891C&quot;,
+    &quot;Epiblast&quot; = &quot;#635547&quot;,
+    &quot;Erythroid1&quot; = &quot;#C72228&quot;,
+    &quot;Erythroid2&quot; = &quot;#F79083&quot;,
+    &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
+    &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
+    &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
+    &quot;ExE mesoderm&quot; = &quot;#8870AD&quot;,
+    &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647A4F&quot;,
+    &quot;Gut&quot; = &quot;#EF5A9D&quot;,
+    &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
+    &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
+    &quot;Mesenchyme&quot; = &quot;#CC7818&quot;,
+    &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
+    &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
+    &quot;Neural crest&quot; = &quot;#C3C388&quot;,
+    &quot;NMP&quot; = &quot;#8EC792&quot;,
+    &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
+    &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
+    &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
+    &quot;PGC&quot; = &quot;#FACB12&quot;,
+    &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
+    &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
+    &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
+    &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
+    &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
+    &quot;Surface ectoderm&quot; = &quot;#F7F79E&quot;,
+    &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
   )
-
-  return(col)
-
 }
 
-ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours))
+boolean_colours &lt;- function(n) {
+  c(&quot;TRUE&quot; = &quot;#E15759&quot;, &quot;FALSE&quot; = &quot;#BAB0AC&quot;)
+}
 
-options(iSEE.maxlevels = 37)
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
 
+# Create iSEE object
+ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours), all_discrete = boolean_colours)
 iSEE(sce, appTitle = &quot;LPMP_EHF_B&quot;, colormap = ecm)</code></pre>
 <p>Deploy the iSEE application to the shiny server:</p>
-<pre class="r"><code>deployApp(appDir = &quot;shiny/v1&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
+<pre class="r"><code>deployApp(appDir = &quot;shiny/annotated&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 3002030...DONE
-Deploying bundle: 3734619 for application: 3002030 ...
-Waiting for task: 805823195
-  building: Processing bundle: 3734619
+Deploying bundle: 4166551 for application: 3002030 ...
+Waiting for task: 863389590
   building: Parsing manifest
-  building: Building image: 4213850
+  building: Building image: 4744192
   building: Installing system dependencies
   building: Fetching packages
+  building: Building package: sparseMatrixStats
+  building: Building package: beachmat
+  building: Building package: HDF5Array
+  building: Building package: DelayedMatrixStats
+  building: Building package: scuttle
   building: Installing packages
   building: Installing files
-  building: Pushing image: 4213850
+  building: Pushing image: 4744192
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
 Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
-<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/v1&quot;, size = &quot;xlarge&quot;)</code></pre>
+<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/annotated&quot;, size = &quot;xlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 805824287
+Waiting for task: 863390961
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
 Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
-</div>
-<div id="integrated-data" class="section level3">
-<h3>Integrated data</h3>
-<p>Create iSEE directory for integrated data:</p>
-<pre class="r"><code>dir.create(&quot;shiny/v2&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
-<p>Copy integrated data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/14-atlas-markers.rds&quot;, &quot;shiny/v2/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] TRUE</code></pre>
-<p>Write application code to file within iSEE directory:</p>
-<pre class="r r"><code>library(SingleCellExperiment)
-
-library(BiocSingular)
-
-library(scran)
-
-sce &lt;- readRDS(&quot;data.rds&quot;)
-
-library(iSEE)
-
-library(shiny)
-
-packageVersion(&quot;iSEE&quot;)
-
-celltype_colours = function(n) {
-
-  col &lt;- c(&quot;Allantois&quot; = &quot;#532C8A&quot;,
-           &quot;Anterior Primitive Streak&quot; = &quot;#c19f70&quot;,
-           &quot;Blood progenitors 1&quot; = &quot;#f9decf&quot;,
-           &quot;Blood progenitors 2&quot; = &quot;#c9a997&quot;,
-           &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
-           &quot;Caudal epiblast&quot; = &quot;#9e6762&quot;,
-           &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
-           &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
-           &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
-           &quot;Endothelium&quot; = &quot;#ff891c&quot;,
-           &quot;Epiblast&quot; = &quot;#635547&quot;,
-           &quot;Erythroid1&quot; = &quot;#C72228&quot;,
-           &quot;Erythroid2&quot; = &quot;#f79083&quot;,
-           &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
-           &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
-           &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
-           &quot;ExE mesoderm&quot; = &quot;#8870ad&quot;,
-           &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647a4f&quot;,
-           &quot;Gut&quot; = &quot;#EF5A9D&quot;,
-           &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
-           &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
-           &quot;Mesenchyme&quot; = &quot;#cc7818&quot;,
-           &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
-           &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
-           &quot;Neural crest&quot; = &quot;#C3C388&quot;,
-           &quot;NMP&quot; = &quot;#8EC792&quot;,
-           &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
-           &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
-           &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
-           &quot;PGC&quot; = &quot;#FACB12&quot;,
-           &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
-           &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
-           &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
-           &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
-           &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
-           &quot;Surface ectoderm&quot; = &quot;#f7f79e&quot;,
-           &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
-  )
-
-  return(col)
-
-}
-
-ecm &lt;- ExperimentColorMap(colData = list(celltype = celltype_colours))
-
-options(iSEE.maxlevels = 37)
-
-iSEE(sce, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, colormap = ecm)</code></pre>
-<p>Deploy the iSEE application to the shiny server:</p>
-<pre class="r"><code>deployApp(appDir = &quot;shiny/v2&quot;, appName = &quot;LPMP_EHF_B_ATLAS&quot;, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Uploading bundle for application: 3002299...DONE
-Deploying bundle: 3734646 for application: 3002299 ...
-Waiting for task: 805830874
-  building: Processing bundle: 3734646
-  building: Parsing manifest
-  building: Building image: 4213973
-  building: Installing system dependencies
-  building: Fetching packages
-  building: Installing packages
-  building: Installing files
-  building: Pushing image: 4213973
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
-<p>Allocate more memory to the iSEE application:</p>
-<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_ATLAS&quot;, appDir = &quot;shiny/v2&quot;, size = &quot;xlarge&quot;)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Waiting for task: 805832221
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
+<!-- ### Integrated data -->
+<!-- Create iSEE directory for integrated data: -->
+<!-- ```{r} -->
+<!-- dir.create("shiny/integrated", showWarnings = FALSE, mode = "0755") -->
+<!-- ``` -->
+<!-- Copy integrated data to iSEE directory: -->
+<!-- ```{r} -->
+<!-- file.copy("output/10-atlas-integration.rds", "shiny/integrated/data.rds", overwrite = TRUE) -->
+<!-- ``` -->
+<!-- Write code to iSEE application file: -->
+<!-- ```{cat, engine.opts = list(file = "shiny/integrated/app.R"), class.source = "r"} -->
+<!-- # Load required packages -->
+<!-- library(iSEE) -->
+<!-- library(SingleCellExperiment) -->
+<!-- # Load experiment object -->
+<!-- sce <- readRDS("data.rds") -->
+<!-- # Make feature names unique -->
+<!-- rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name) -->
+<!-- # Define column data variables -->
+<!-- sce$Etv2 <- counts(sce)["Etv2", ] > 0 -->
+<!-- sce$Kdr <- counts(sce)["Kdr", ] > 0 -->
+<!-- sce$Runx1 <- counts(sce)["Runx1", ] > 0 -->
+<!-- sce$Ednrb <- counts(sce)["Ednrb", ] > 0 -->
+<!-- sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr -->
+<!-- sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1 -->
+<!-- sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb -->
+<!-- # Define column data colours -->
+<!-- celltype_colours <- function(n) { -->
+<!--   c( -->
+<!--     "Allantois" = "#532C8A", -->
+<!--     "Anterior Primitive Streak" = "#C19F70", -->
+<!--     "Blood progenitors 1" = "#D9DECF", -->
+<!--     "Blood progenitors 2" = "#C9A997", -->
+<!--     "Cardiomyocytes" = "#B51D8D", -->
+<!--     "Caudal epiblast" = "#9E6762", -->
+<!--     "Caudal Mesoderm" = "#3F84AA", -->
+<!--     "Caudal neurectoderm" = "#354E23", -->
+<!--     "Def. endoderm" = "#F397C0", -->
+<!--     "Endothelium" = "#FF891C", -->
+<!--     "Epiblast" = "#635547", -->
+<!--     "Erythroid1" = "#C72228", -->
+<!--     "Erythroid2" = "#F79083", -->
+<!--     "Erythroid3" = "#EF4E22", -->
+<!--     "ExE ectoderm" = "#989898", -->
+<!--     "ExE endoderm" = "#7F6874", -->
+<!--     "ExE mesoderm" = "#8870AD", -->
+<!--     "Forebrain/Midbrain/Hindbrain" = "#647A4F", -->
+<!--     "Gut" = "#EF5A9D", -->
+<!--     "Haematoendothelial progenitors" = "#FBBE92", -->
+<!--     "Intermediate mesoderm" = "#139992", -->
+<!--     "Mesenchyme" = "#CC7818", -->
+<!--     "Mixed mesoderm" = "#DFCDE4", -->
+<!--     "Nascent mesoderm" = "#C594BF", -->
+<!--     "Neural crest" = "#C3C388", -->
+<!--     "NMP" = "#8EC792", -->
+<!--     "Notochord" = "#0F4A9C", -->
+<!--     "Paraxial mesoderm" = "#8DB5CE", -->
+<!--     "Parietal endoderm" = "#1A1A1A", -->
+<!--     "PGC" = "#FACB12", -->
+<!--     "Pharyngeal mesoderm" = "#C9EBFB", -->
+<!--     "Primitive Streak" = "#DABE99", -->
+<!--     "Rostral neurectoderm" = "#65A83E", -->
+<!--     "Somitic mesoderm" = "#005579", -->
+<!--     "Spinal cord" = "#CDE088", -->
+<!--     "Surface ectoderm" = "#F7F79E", -->
+<!--     "Visceral endoderm" = "#F6BFCB" -->
+<!--   ) -->
+<!-- } -->
+<!-- # Set iSEE options -->
+<!-- iSEEOptions$set(downsample = TRUE) -->
+<!-- iSEEOptions$set(color.maxlevels = 37) -->
+<!-- # Create iSEE object -->
+<!-- ecm <- ExperimentColorMap(colData = list(celltype = celltype_colours)) -->
+<!-- iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm) -->
+<!-- ``` -->
+<!-- Deploy the iSEE application to the shiny server: -->
+<!-- ```{r} -->
+<!-- deployApp(appDir = "shiny/integrated", appName = "LPMP_EHF_B_ATLAS", appTitle = "LPMP_EHF_B_ATLAS", launch.browser = FALSE, forceUpdate = TRUE) -->
+<!-- ``` -->
+<!-- Allocate more memory to the iSEE application: -->
+<!-- ```{r} -->
+<!-- configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "xlarge") -->
+<!-- ``` -->
 </div>
 </div>
 <div id="summary" class="section level2">
@@ -947,7 +957,7 @@ Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_AT
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.2 (2020-06-22)
 Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Catalina 10.15.6
+Running under: macOS Catalina 10.15.7
 
 Matrix products: default
 BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
@@ -963,19 +973,19 @@ other attached packages:
 [1] rsconnect_0.8.16 workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.5          rstudioapi_0.11     whisker_0.4        
- [4] knitr_1.30          magrittr_1.5        R6_2.4.1           
- [7] rlang_0.4.7         stringr_1.4.0       tools_4.0.2        
-[10] packrat_0.5.0       xfun_0.18           git2r_0.27.1       
-[13] askpass_1.1         htmltools_0.5.0     ellipsis_0.3.1     
-[16] openssl_1.4.3       rprojroot_1.3-2     yaml_2.2.1         
-[19] digest_0.6.25       tibble_3.0.3        lifecycle_0.2.0    
+ [1] Rcpp_1.0.6          rstudioapi_0.13     whisker_0.4        
+ [4] knitr_1.30          magrittr_2.0.1      R6_2.5.0           
+ [7] rlang_0.4.10        stringr_1.4.0       tools_4.0.2        
+[10] packrat_0.5.0       xfun_0.20           git2r_0.28.0       
+[13] askpass_1.1         htmltools_0.5.1.1   ellipsis_0.3.1     
+[16] openssl_1.4.3       rprojroot_2.0.2     yaml_2.2.1         
+[19] digest_0.6.27       tibble_3.0.5        lifecycle_0.2.0    
 [22] crayon_1.3.4        BiocManager_1.30.10 later_1.1.0.1      
-[25] vctrs_0.3.4         promises_1.1.1      fs_1.5.0           
+[25] vctrs_0.3.6         promises_1.1.1      fs_1.5.0           
 [28] curl_4.3            glue_1.4.2          evaluate_0.14      
-[31] rmarkdown_2.4       stringi_1.5.3       compiler_4.0.2     
-[34] pillar_1.4.6        backports_1.1.10    jsonlite_1.7.1     
-[37] httpuv_1.5.4        pkgconfig_2.0.3    </code></pre>
+[31] rmarkdown_2.6       stringi_1.5.3       compiler_4.0.2     
+[34] pillar_1.4.7        jsonlite_1.7.2      httpuv_1.5.5       
+[37] pkgconfig_2.0.3    </code></pre>
 </div>
 </div>
 
@@ -993,6 +1003,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -1002,7 +1014,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
