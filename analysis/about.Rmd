@@ -6,5 +6,3 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-
-Welcome to the LPMP-EHF analysis website.
