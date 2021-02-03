@@ -7,9 +7,15 @@
 analysis/figure
 analysis/cache
 analysis/site_libs
+data
 data/*
+output
 output/*
 renv
+!renv
 renv/**
+!renv/activate.R
+shiny
 shiny/*
+slides/
 slides/*
