@@ -579,16 +579,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreefdb92caa2710b268d198b11bd5ba62fbed1cb274targetblankfdb92caa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/fdb92caa2710b268d198b11bd5ba62fbed1cb274" target="_blank">fdb92ca</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3e1db49e1783332233027f17822335d9221533cftargetblank3e1db49a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3e1db49e1783332233027f17822335d9221533cf" target="_blank">3e1db49</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreefdb92caa2710b268d198b11bd5ba62fbed1cb274targetblankfdb92caa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3e1db49e1783332233027f17822335d9221533cftargetblank3e1db49a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/fdb92caa2710b268d198b11bd5ba62fbed1cb274" target="_blank">fdb92ca</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3e1db49e1783332233027f17822335d9221533cf" target="_blank">3e1db49</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -649,6 +649,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/b0fe187e5ecc50644e528f17e6631f86e5333225/docs/10-atlas-integration.html" target="_blank">b0fe187</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -840,8 +857,8 @@ source(&quot;code/splitByCol.R&quot;)</code></pre>
 <p>Delete large objects and trigger garbage collection:</p>
 <pre class="r"><code>rm(sce, ref); gc()</code></pre>
 <pre><code>            used   (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells  10019120  535.1   17733768   947.1         NA   17733768   947.1
-Vcells 600637940 4582.6 1881506710 14354.8      16384 1876384728 14315.7</code></pre>
+Ncells  10059542  537.3   19807731  1057.9         NA   19807731  1057.9
+Vcells 600702224 4583.0 1806526797 13782.8      32768 2019384239 15406.7</code></pre>
 <p>Subset data to common features:</p>
 <pre class="r"><code>ids &lt;- Reduce(intersect, lapply(all, rownames))
 
@@ -900,8 +917,8 @@ mnn &lt;- correctExperiments(
 <p>Delete large objects and trigger garbage collection:</p>
 <pre class="r"><code>rm(all); gc()</code></pre>
 <pre><code>            used   (Mb) gc trigger    (Mb) limit (Mb)   max used    (Mb)
-Ncells  10014184  534.9   17733768   947.1         NA   17733768   947.1
-Vcells 611915312 4668.6 1881506710 14354.8      16384 1881493831 14354.7</code></pre>
+Ncells  10054501  537.0   19807731  1057.9         NA   19807731  1057.9
+Vcells 611979431 4669.1 2081259670 15878.8      32768 2594345838 19793.3</code></pre>
 <p>Replace rowData slot:</p>
 <pre class="r"><code>rowData(mnn) &lt;- DataFrame(
   gene_id = rownames(mnn),
@@ -988,7 +1005,7 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
@@ -1054,16 +1071,17 @@ loaded via a namespace (and not attached):
  [91] BiocNeighbors_1.8.2           bitops_1.0-6                 
  [93] irlba_2.3.3                   httpuv_1.5.5                 
  [95] rtracklayer_1.50.0            R6_2.5.0                     
- [97] promises_1.1.1                gridExtra_2.3                
- [99] vipor_0.4.5                   codetools_0.2-18             
-[101] assertthat_0.2.1              openssl_1.4.3                
-[103] rprojroot_2.0.2               withr_2.4.1                  
-[105] GenomicAlignments_1.26.0      Rsamtools_2.6.0              
-[107] GenomeInfoDbData_1.2.4        hms_1.0.0                    
-[109] grid_4.0.2                    beachmat_2.6.4               
-[111] rmarkdown_2.6                 DelayedMatrixStats_1.12.2    
-[113] Rtsne_0.15                    git2r_0.28.0                 
-[115] shiny_1.6.0                   ggbeeswarm_0.6.0             </code></pre>
+ [97] promises_1.1.1                renv_0.12.5                  
+ [99] gridExtra_2.3                 vipor_0.4.5                  
+[101] codetools_0.2-18              assertthat_0.2.1             
+[103] openssl_1.4.3                 rprojroot_2.0.2              
+[105] withr_2.4.1                   GenomicAlignments_1.26.0     
+[107] Rsamtools_2.6.0               GenomeInfoDbData_1.2.4       
+[109] hms_1.0.0                     grid_4.0.2                   
+[111] beachmat_2.6.4                rmarkdown_2.6                
+[113] DelayedMatrixStats_1.12.2     Rtsne_0.15                   
+[115] git2r_0.28.0                  shiny_1.6.0                  
+[117] ggbeeswarm_0.6.0             </code></pre>
 </div>
 </div>
 

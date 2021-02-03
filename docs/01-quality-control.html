@@ -470,7 +470,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -479,7 +479,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -491,7 +491,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-02-03
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -507,12 +507,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -579,16 +579,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5c634f419946327829ae29592f606074f4b20ed0targetblank5c634f4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5c634f419946327829ae29592f606074f4b20ed0" target="_blank">5c634f4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3e1db49e1783332233027f17822335d9221533cftargetblank3e1db49a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3e1db49e1783332233027f17822335d9221533cf" target="_blank">3e1db49</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree5c634f419946327829ae29592f606074f4b20ed0targetblank5c634f4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3e1db49e1783332233027f17822335d9221533cftargetblank3e1db49a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/5c634f419946327829ae29592f606074f4b20ed0" target="_blank">5c634f4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3e1db49e1783332233027f17822335d9221533cf" target="_blank">3e1db49</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -609,6 +609,7 @@ Ignored files:
 
 Unstaged changes:
     Modified:   _workflowr.R
+    Modified:   analysis/01-quality-control.Rmd
     Modified:   analysis/11-atlas-neighbors.Rmd
 
 </code></pre>
@@ -648,6 +649,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/3e1db49e1783332233027f17822335d9221533cf/docs/01-quality-control.html" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -891,7 +909,7 @@ library(scuttle)</code></pre>
 </div>
 <div id="exploration" class="section level2">
 <h2>Exploration</h2>
-<p>We begin by exploring the dataset which contains cells and 55471 genes.</p>
+<p>We begin by exploring the dataset which contains 96 cells and 55471 genes.</p>
 </div>
 <div id="metrics" class="section level2">
 <h2>Metrics</h2>
@@ -931,6 +949,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-8-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-8-1.png" target="_blank">10d37f2</a>
@@ -990,6 +1019,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-10-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1038,6 +1100,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-11-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1084,6 +1179,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-12-1.png" target="_blank">10d37f2</a>
@@ -1148,6 +1254,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-14-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1194,6 +1333,39 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-15-1.png" target="_blank">10d37f2</a>
@@ -1244,6 +1416,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-16-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1292,6 +1497,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-17-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1310,9 +1526,7 @@ James Ashmore
 <div id="adaptive-threshold" class="section level3 tabset">
 <h3 class="tabset">Adaptive threshold</h3>
 <p>The next approach is to identify cells that are outliers based on the median absolute deviation for the QC metrics:</p>
-<pre class="r"><code>dat &lt;- as.data.frame(colData(sce))
-
-dat &lt;- quickPerCellQC(dat, sub.fields = c(&quot;subsets_MT_percent&quot;, &quot;altexps_ERCC_percent&quot;))
+<pre class="r"><code>dat &lt;- quickPerCellQC(colData(sce), sub.fields = c(&quot;subsets_MT_percent&quot;, &quot;altexps_ERCC_percent&quot;))
 
 sce$adaptive_discard &lt;- dat$discard</code></pre>
 <p>Inspect distribution of QC metrics:</p>
@@ -1345,6 +1559,39 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-19-1.png" target="_blank">10d37f2</a>
@@ -1395,6 +1642,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-20-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1443,6 +1723,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-21-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1489,6 +1802,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-22-1.png" target="_blank">10d37f2</a>
@@ -1545,6 +1869,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-24-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1591,6 +1948,39 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-25-1.png" target="_blank">10d37f2</a>
@@ -1641,6 +2031,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-26-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1689,6 +2112,39 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3e1db49e1783332233027f17822335d9221533cf/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">3e1db49</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-03
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/34d911f23d538d21ce98c1a288b3eb11d023ea04/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">34d911f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-27-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1734,6 +2190,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-28-1.png" target="_blank">10d37f2</a>
@@ -1792,6 +2259,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-31-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-31-1.png" target="_blank">10d37f2</a>
@@ -1863,6 +2341,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-34-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-34-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1931,6 +2420,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e8119f4c135cc264e59f20ca4f5a423936f0ed88/docs/figure/01-quality-control.Rmd/unnamed-chunk-37-1.png" target="_blank">e8119f4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-01-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/10d37f20fa1fc13485cc5174c0e402057234caf1/docs/figure/01-quality-control.Rmd/unnamed-chunk-37-1.png" target="_blank">10d37f2</a>
 </td>
 <td>
@@ -1975,7 +2475,7 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices utils     datasets 
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
@@ -2026,14 +2526,15 @@ loaded via a namespace (and not attached):
 [67] knitr_1.30                pillar_1.4.7             
 [69] igraph_1.2.6              codetools_0.2-18         
 [71] glue_1.4.2                evaluate_0.14            
-[73] vctrs_0.3.6               httpuv_1.5.5             
-[75] polyclip_1.10-0           gtable_0.3.0             
-[77] purrr_0.3.4               assertthat_0.2.1         
-[79] xfun_0.20                 rsvd_1.0.3               
-[81] RSpectra_0.16-0           later_1.1.0.1            
-[83] viridisLite_0.3.0         tibble_3.0.5             
-[85] beeswarm_0.2.3            bluster_1.0.0            
-[87] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
+[73] renv_0.12.5               vctrs_0.3.6              
+[75] httpuv_1.5.5              polyclip_1.10-0          
+[77] gtable_0.3.0              purrr_0.3.4              
+[79] assertthat_0.2.1          xfun_0.20                
+[81] rsvd_1.0.3                RSpectra_0.16-0          
+[83] later_1.1.0.1             viridisLite_0.3.0        
+[85] tibble_3.0.5              beeswarm_0.2.3           
+[87] bluster_1.0.0             statmod_1.4.35           
+[89] ellipsis_0.3.1           </code></pre>
 </div>
 </div>
 
