@@ -15,7 +15,8 @@ git add analysis/_site.yml \
 		    analysis/07-cell-cycle.Rmd \
 		    analysis/08-marker-detection.Rmd \
 		    analysis/09-cell-annotation.Rmd \
-		    analysis/10-atlas-integration.Rmd
+		    analysis/10-atlas-integration.Rmd \
+		    analysis/interactive.Rmd
 
 git add docs/about.html \
 		    docs/index.html \
@@ -29,7 +30,8 @@ git add docs/about.html \
 		    docs/07-cell-cycle.html \
 		    docs/08-marker-detection.html \
 		    docs/09-cell-annotation.html \
-		    docs/10-atlas-integration.html
+		    docs/10-atlas-integration.html \
+		    docs/interactive.Rmd
 
 git add docs/figure/01-quality-control.Rmd \
 		    docs/figure/02-normalization.Rmd \
