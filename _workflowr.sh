@@ -31,7 +31,7 @@ git add docs/about.html \
 		    docs/08-marker-detection.html \
 		    docs/09-cell-annotation.html \
 		    docs/10-atlas-integration.html \
-		    docs/interactive.Rmd
+		    docs/interactive.html
 
 git add docs/figure/01-quality-control.Rmd \
 		    docs/figure/02-normalization.Rmd \
