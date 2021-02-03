@@ -1,65 +1,47 @@
-name: "LPMP-EHF Analysis"
-output_dir: ../docs
+name: "LPMP EHF Analysis"
+output_dir: "../docs"
 navbar:
-  title: "LPMP-EHF Analysis"
+  title: "LPMP EHF Analysis"
   left:
-  - text: Home
-    href: index.html
-  - text: About
-    href: about.html
-  - text: Processing
-    menu:
-      - text: Quality control
-      - href: 01-quality-control.html
-      - text: Normalization
-      - href: 02-normalization.html
-      - text: Feature selection
-      - href: 03-feature-selection.html
-      - text: Dimensionality reduction
-      - href: 04-reduced-dimensions.html
-      - text: Clustering
-      - href: 05-clustering.html
-      - text: Doublet detection
-      - href: 06-doublet-detection
-      - text: Cell cycle assignment
-      - href: 07-cell-cycle.html
-      - text: Marker gene detection
-      - href: 08-marker-detection.html
-      - text: Cell type annotation
-      - href: 09-cell-annotation.html
-  - text: Analysis
-    menu:
-      - text: Atlas integration
-      - href: 10-atlas-integration.html
-#      - text: Atlas neighbors
-#      - href: 11-atlas-neighbors.html
-#      - text: Atlas trajectory
-#      - href: 12-atlas-trajectory.html
-#      - text: Atlas clustering
-#      - href: 13-atlas-clustering.html
-#      - text: Atlas markers
-#      - href: 14-atlas-markers.html
-#      - text: Scenic analysis
-#      - href: 15-scenic-analysis.html
-#      - text: Geneset activity
-#      - href: 16-geneset-activity.html
-#      - text: Haystack analysis
-#      - href: 17-haystack-analysis.html
-#      - text: Cell type exploration
-#      - href: 18-cell-exploration.html
-#      - text: Cell heterogeneity
-#      - href: 19-cell-heterogeneity.html
-  - text: Interactive
-    href: interactive.html
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Processing"
+      menu:
+        - text: "Quality control"
+          href: 01-quality-control.html
+        - text: "Normalization"
+          href: 02-normalization.html
+        - text: "Feature selection"
+          href: 03-feature-selection.html
+        - text: "Dimensionality reduction"
+          href: 04-reduced-dimensions.html
+        - text: "Clustering"
+          href: 05-clustering.html
+        - text: "Doublet detection"
+          href: 06-doublet-detection.html
+        - text: "Cell cycle assignment"
+          href: 07-cell-cycle.html
+        - text: "Marker gene detection"
+          href: 08-marker-detection.html
+        - text: "Cell type annotation"
+          href: 09-cell-annotation.html
+    - text: "Analysis"
+      menu:
+        - text: "Atlas integration"
+          href: 10-atlas-integration.html
+    - text: "Interactive"
+      href: interactive.html
   right:
-    - text: License
-    - href: license.html
-    - icon: fa-github
+    - text: "License"
+      href: license.html
+    - icon: fab fa-github
       href: https://github.com/jma1991/LPMP_EHF_B
 output:
   workflowr::wflow_html:
-    toc: yes
-    toc_float: yes
+    toc: true
+    toc_float: true
     theme: cosmo
     highlight: textmate
     df_print: paged
