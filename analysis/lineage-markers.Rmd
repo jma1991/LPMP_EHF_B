@@ -1,0 +1,187 @@
+---
+title: "Lineage markers"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/lineage-markers.Rmd/",
+  dev        = "png",
+  echo       = TRUE,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(pheatmap)
+```
+
+Read experiment data:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+
+sce <- sce[, order(sce$cluster)]
+```
+
+Read marker data:
+
+```{r}
+ids <- read.csv("data/lineage-markers.csv")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Define colour palettes:
+
+```{r}
+cluster.palette <- c(
+  "1" = "#4E79A7",
+  "2" = "#F28E2B",
+  "3" = "#E15759"
+)
+
+marker.palette <- c(
+  "Ectoderm" = "#b49041",
+  "EMT" = "#b460bd",
+  "Endothelia or Haematopoietic" = "#70a845",
+  "Extraembryonic mesoderm" = "#6980ce",
+  "Lateral mesoderm" = "#cd5d39",
+  "Paraxial mesoderm" = "#4aac8d",
+  "Primitive streak" = "#c85979"
+)
+
+stage.palette <- c(
+  "EHF" = "#B07AA1"
+)
+```
+
+Define helper functions:
+
+```{r}
+pheatmap.mat <- function(x) {
+
+    # Scale rows by 'variance-aware' Z-transformation
+
+    M <- rowMeans(x, na.rm = TRUE)
+
+    DF <- ncol(x) - 1
+
+    isNA <- is.na(x)
+
+    if ( any(isNA) ) {
+
+        mode(isNA) <- "integer"
+
+        DF <-  DF - rowSums(isNA)
+
+        DF[DF == 0] <- 1
+
+    }
+
+    x <- x - M
+
+    V <- rowSums(x^2, na.rm = TRUE) / DF
+
+    x <- x / sqrt(V + 0.01)
+
+}
+
+pheatmap.color <- function(x) {
+
+    # Return color vector
+
+    colorRampPalette(rev(RColorBrewer::brewer.pal(n = 5, name = x)))(100)
+
+}
+
+pheatmap.breaks <- function(x) {
+
+    # Return breaks vector
+
+    abs <- max(abs(x))
+
+    abs <- min(abs, 5)
+
+    seq(-abs, +abs, length.out = 101)
+
+}
+```
+
+## Expression {.tabset}
+
+### Log-counts assay
+
+Retrieve assay:
+
+```{r}
+mat.x <- assay(sce, "logcounts")[ids$gene_id, ]
+
+mat.z <- pheatmap.mat(mat.x)
+```
+
+Create annotation:
+
+```{r}
+ann <- list(
+  row = data.frame(Marker = ids$lineage, row.names = ids$gene_id),
+  col = data.frame(Cluster = sce$cluster, Stage = sce$stage, row.names = colnames(sce)),
+  colors = list(Cluster = cluster.palette, Stage = stage.palette, Marker = marker.palette)
+)
+```
+
+Plot expression heatmap:
+
+```{r fig.width = 10, fig.height = 6}
+pheatmap(
+  mat = mat.z,
+  color = pheatmap.color("RdBu"),
+  breaks = pheatmap.breaks(mat.z),
+  cluster_rows = FALSE,
+  cluster_cols = FALSE,
+  gaps_row = cumsum(table(ids$lineage)[unique(ids$lineage)]),
+  gaps_col = cumsum(table(sce$cluster)[unique(sce$cluster)]),
+  cutree_rows = 5,
+  annotation_row = ann$row,
+  annotation_col = ann$col,
+  annotation_colors = ann$colors,
+  annotation_legend = TRUE,
+  border = NA,
+  show_colnames = FALSE
+)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
