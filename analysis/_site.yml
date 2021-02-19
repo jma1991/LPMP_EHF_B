@@ -33,6 +33,8 @@ navbar:
           href: 10-atlas-integration.html
         - text: "Lineage markers"
           href: lineage-markers.html
+        - text: "Cell signalling"
+          href: cell-signalling.html
     - text: "Interactive"
       href: interactive.html
   right:
