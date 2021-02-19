@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+
+<title>Cell signalling</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP EHF Analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-quality-control.html">Quality control</a>
+    </li>
+    <li>
+      <a href="02-normalization.html">Normalization</a>
+    </li>
+    <li>
+      <a href="03-feature-selection.html">Feature selection</a>
+    </li>
+    <li>
+      <a href="04-reduced-dimensions.html">Dimensionality reduction</a>
+    </li>
+    <li>
+      <a href="05-clustering.html">Clustering</a>
+    </li>
+    <li>
+      <a href="06-doublet-detection.html">Doublet detection</a>
+    </li>
+    <li>
+      <a href="07-cell-cycle.html">Cell cycle assignment</a>
+    </li>
+    <li>
+      <a href="08-marker-detection.html">Marker gene detection</a>
+    </li>
+    <li>
+      <a href="09-cell-annotation.html">Cell type annotation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="10-atlas-integration.html">Atlas integration</a>
+    </li>
+    <li>
+      <a href="lineage-markers.html">Lineage markers</a>
+    </li>
+    <li>
+      <a href="cell-signalling.html">Cell signalling</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="interactive.html">Interactive</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Cell signalling</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">19 February, 2021</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-02-19
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree37bf8a0040102369a9dd4328e21279231eccbe3ftargetblank37bf8a0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/37bf8a0040102369a9dd4328e21279231eccbe3f" target="_blank">37bf8a0</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree37bf8a0040102369a9dd4328e21279231eccbe3ftargetblank37bf8a0a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/37bf8a0040102369a9dd4328e21279231eccbe3f" target="_blank">37bf8a0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/cache/
+    Ignored:    data/
+    Ignored:    output/
+    Ignored:    renv/.gitignore
+    Ignored:    renv/library/
+    Ignored:    renv/settings.dcf
+    Ignored:    shiny/
+    Ignored:    slides/
+
+Unstaged changes:
+    Modified:   _workflowr.R
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/cell-signalling.Rmd</code>) and HTML (<code>docs/cell-signalling.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/37bf8a0040102369a9dd4328e21279231eccbe3f/analysis/cell-signalling.Rmd" target="_blank">37bf8a0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/b61ca54655027d2ac02e38d0f3476cb8c2860042/analysis/cell-signalling.Rmd" target="_blank">b61ca54</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/59a52f61f21af19852e5ec6d6e097d4e609ea5ff/analysis/cell-signalling.Rmd" target="_blank">59a52f6</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-19
+</td>
+<td>
+Build
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/cell-signalling.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+</div>
+<div id="packages" class="section level2">
+<h2>Packages</h2>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scater)
+library(scran)
+library(scuttle)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(ggforce)
+library(ggplot2)</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/09-cell-annotation.rds&quot;)</code></pre>
+<p>Read human to mouse annotation table:</p>
+<pre class="r"><code>ann &lt;- read.csv(&quot;data/hsapiens_mmusculus.csv&quot;)</code></pre>
+<p>Subset annotation table to orthologous genes:</p>
+<pre class="r"><code>ann &lt;- subset(ann, mmusculus_homology_type == &quot;ortholog_one2one&quot;)</code></pre>
+<p>Identify genes present in experiment object and annotation table:</p>
+<pre class="r"><code>ids &lt;- intersect(rowData(sce)$gene_id, ann$mmusculus_gene_id)</code></pre>
+<p>Subset experiment object to shared genes:</p>
+<pre class="r"><code>sce &lt;- sce[match(ids, rowData(sce)$gene_id), ]</code></pre>
+<p>Subset annotation table to shared genes:</p>
+<pre class="r"><code>ann &lt;- ann[match(ids, ann$mmusculus_gene_id), ]</code></pre>
+<p>Replace row names with human gene identifier:</p>
+<pre class="r"><code>rownames(sce) &lt;- ann$hsapiens_gene_id</code></pre>
+<p>Create output directory:</p>
+<pre class="r"><code>unlink(&quot;output/cellphonedb&quot;, recursive = TRUE); dir.create(&quot;output/cellphonedb&quot;)</code></pre>
+<p>Write normalized counts matrix to disk:</p>
+<pre class="r"><code>mat &lt;- normalizeCounts(sce, log = FALSE)
+
+mat &lt;- data.frame(Gene = rownames(mat), mat)
+
+write.csv(mat, file = &quot;output/cellphonedb/counts.csv&quot;, quote = FALSE, row.names = FALSE)</code></pre>
+<p>Write column data frame to disk:</p>
+<pre class="r"><code>dat &lt;- data.frame(Cell = colnames(sce), cell_type = sce$cluster)
+
+write.csv(dat, file = &quot;output/cellphonedb/meta.csv&quot;, quote = FALSE, row.names = FALSE)</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Run CellPhoneDB analysis:</p>
+<pre class="bash"><code>conda activate cellphonedb
+
+cellphonedb method statistical_analysis \
+  --counts-data ensembl \
+  --threshold 0.1 \
+  --output-path output/cellphonedb \
+  --output-format csv \
+  --threads 4 \
+  output/cellphonedb/meta.csv \
+  output/cellphonedb/counts.csv</code></pre>
+<pre><code>[ ][APP][19/02/21-16:21:19][WARNING] Latest local available version is `v2.0.0`, using it
+[ ][APP][19/02/21-16:21:19][WARNING] User selected downloaded database `v2.0.0` is available, using it
+[ ][CORE][19/02/21-16:21:19][INFO] Initializing SqlAlchemy CellPhoneDB Core
+[ ][CORE][19/02/21-16:21:19][INFO] Using custom database at /Users/james/.cpdb/releases/v2.0.0/cellphone.db
+[ ][APP][19/02/21-16:21:19][INFO] Launching Method cpdb_statistical_analysis_local_method_launcher
+[ ][APP][19/02/21-16:21:19][INFO] Launching Method _set_paths
+[ ][APP][19/02/21-16:21:19][WARNING] Output directory (output/cellphonedb) exist and is not empty. Result can overwrite old results
+[ ][APP][19/02/21-16:21:19][INFO] Launching Method _load_meta_counts
+[ ][CORE][19/02/21-16:21:19][INFO] Launching Method cpdb_statistical_analysis_launcher
+[ ][CORE][19/02/21-16:21:19][INFO] Launching Method _counts_validations
+[ ][CORE][19/02/21-16:21:19][INFO] [Cluster Statistical Analysis] Threshold:0.1 Iterations:1000 Debug-seed:-1 Threads:4 Precision:3
+[ ][CORE][19/02/21-16:21:20][INFO] Running Real Analysis
+[ ][CORE][19/02/21-16:21:22][INFO] Running Statistical Analysis
+/opt/miniconda3/envs/cellphonedb/lib/python3.7/site-packages/sklearn/utils/deprecation.py:144: FutureWarning: The sklearn.cluster.k_means_ module is  deprecated in version 0.22 and will be removed in version 0.24. The corresponding classes / functions should instead be imported from sklearn.cluster. Anything that cannot be imported from sklearn.cluster is now part of the private API.
+  warnings.warn(message, FutureWarning)
+/opt/miniconda3/envs/cellphonedb/lib/python3.7/site-packages/cellphonedb/src/core/methods/cpdb_statistical_analysis_helper.py:88: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  lambda protein: clusters[&#39;means&#39;].at[protein, cluster_name])
+[ ][CORE][19/02/21-16:28:39][INFO] Building Pvalues result
+[ ][CORE][19/02/21-16:28:54][INFO] Building results</code></pre>
+<p>Read output files:</p>
+<pre class="r"><code>res &lt;- list(
+  pvalues = read.csv(&quot;output/cellphonedb/pvalues.csv&quot;, header = TRUE),
+  means = read.csv(&quot;output/cellphonedb/means.csv&quot;, header = TRUE)
+)</code></pre>
+<p>Make interaction names in pvalues unique:</p>
+<pre class="r"><code>res$pvalues$id_cp_interaction &lt;- make.unique(res$pvalues$id_cp_interaction)
+
+res$pvalues$interacting_pair &lt;- make.unique(res$pvalues$interacting_pair)</code></pre>
+<p>Make interaction names in means unique:</p>
+<pre class="r"><code>res$means$id_cp_interaction &lt;- make.unique(res$means$id_cp_interaction)
+
+res$mean$interacting_pair &lt;- make.unique(res$means$interacting_pair)</code></pre>
+<p>Reshape pvalues to long format:</p>
+<pre class="r"><code>ind &lt;- seq(from = which(colnames(res$pvalues) == &quot;is_integrin&quot;) + 1, to = ncol(res$pvalues))
+
+res$pvalues &lt;- reshape2::melt(res$pvalues, measure.vars = ind, variable.name = &quot;comparison&quot;, value.name = &quot;pvalue&quot;)</code></pre>
+<p>Reshape means to long format:</p>
+<pre class="r"><code>ind &lt;- seq(from = which(colnames(res$means) == &quot;is_integrin&quot;) + 1, to = ncol(res$means))
+
+res$means &lt;- reshape2::melt(res$means, measure.vars = ind, variable.name = &quot;comparison&quot;, value.name = &quot;mean&quot;)</code></pre>
+<p>Join pvalues and means results:</p>
+<pre class="r"><code>res &lt;- dplyr::inner_join(res$pvalues, res$means)</code></pre>
+<p>Define comparison variable:</p>
+<pre class="r"><code>res$comparison &lt;- sub(&quot;^X&quot;, &quot;&quot;, res$comparison) # required for numeric cluster labels
+
+res$comparison_a &lt;- sapply(strsplit(res$comparison, &quot;.&quot;, fixed = TRUE), &quot;[&quot;, 1)
+
+res$comparison_b &lt;- sapply(strsplit(res$comparison, &quot;.&quot;, fixed = TRUE), &quot;[&quot;, 2)</code></pre>
+<p>Create significance variable:</p>
+<pre class="r"><code>res$is_significant &lt;- res$pvalue &lt; 0.05</code></pre>
+<p>Create ranking variable:</p>
+<pre class="r"><code>set.seed(1701)
+
+ind &lt;- split(res$is_significant, res$id_cp_interaction)
+
+ind &lt;- sapply(ind, sum)
+
+ind &lt;- rank(-ind, ties.method = &quot;random&quot;) # negative ranking
+
+res$rank &lt;- ind[res$id_cp_interaction]</code></pre>
+<p>Define cluster variable:</p>
+<pre class="r"><code>mat &lt;- reshape2::acast(res, id_cp_interaction ~ comparison, value.var = &quot;is_significant&quot;)
+
+num &lt;- nrow(unique(mat))
+
+knn &lt;- kmeans(mat, centers = num)
+
+res$cluster &lt;- knn$cluster[res$id_cp_interaction]</code></pre>
+<p>Filter non-significant comparisons:</p>
+<pre class="r"><code>res &lt;- subset(res, is_significant == TRUE)</code></pre>
+<p>Plot results without effect size:</p>
+<pre class="r"><code>ggplot(res, aes(comparison, interacting_pair, shape = secreted)) + 
+  geom_point() + 
+  labs(x = &quot;Comparison&quot;, y = &quot;Interaction&quot;, shape = &quot;Secreted&quot;) + 
+  facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = &quot;free&quot;) + 
+  theme_bw() + 
+  theme(
+    legend.position = &quot;bottom&quot;,
+    panel.grid = element_blank()
+  )</code></pre>
+<p><img src="figure/cell-signalling.Rmd/unnamed-chunk-26-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Plot results with effect size:</p>
+<pre class="r"><code>ggplot(res, aes(comparison, interacting_pair, colour = log2(mean + 0.001), size = -log10(pvalue + 0.001), shape = secreted)) + 
+  geom_point() + 
+  scale_colour_distiller(palette = &quot;Reds&quot;, direction = 1) + 
+  labs(x = &quot;Comparison&quot;, y = &quot;Interaction&quot;, colour = &quot;log2(Mean)&quot;, size = &quot;-log10(P-value)&quot;, shape = &quot;Secreted&quot;) + 
+  facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = &quot;free&quot;) + 
+  theme_bw() + 
+  theme(
+    legend.position = &quot;bottom&quot;,
+    panel.grid = element_blank()
+  )</code></pre>
+<p><img src="figure/cell-signalling.Rmd/unnamed-chunk-27-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.7
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
+[8] methods   base     
+
+other attached packages:
+ [1] ggforce_0.3.2               scuttle_1.0.4              
+ [3] scran_1.18.3                scater_1.18.3              
+ [5] ggplot2_3.3.3               SingleCellExperiment_1.12.0
+ [7] SummarizedExperiment_1.20.0 Biobase_2.50.0             
+ [9] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
+[11] IRanges_2.24.1              S4Vectors_0.28.1           
+[13] BiocGenerics_0.36.0         MatrixGenerics_1.2.0       
+[15] matrixStats_0.57.0          workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+ [1] bitops_1.0-6              fs_1.5.0                 
+ [3] RColorBrewer_1.1-2        rprojroot_2.0.2          
+ [5] tools_4.0.2               R6_2.5.0                 
+ [7] irlba_2.3.3               vipor_0.4.5              
+ [9] DBI_1.1.1                 colorspace_2.0-0         
+[11] withr_2.4.1               tidyselect_1.1.0         
+[13] gridExtra_2.3             compiler_4.0.2           
+[15] git2r_0.28.0              BiocNeighbors_1.8.2      
+[17] DelayedArray_0.16.1       labeling_0.4.2           
+[19] scales_1.1.1              stringr_1.4.0            
+[21] digest_0.6.27             rmarkdown_2.6            
+[23] XVector_0.30.0            pkgconfig_2.0.3          
+[25] htmltools_0.5.1.1         sparseMatrixStats_1.2.0  
+[27] limma_3.46.0              rlang_0.4.10             
+[29] rstudioapi_0.13           DelayedMatrixStats_1.12.2
+[31] generics_0.1.0            farver_2.0.3             
+[33] BiocParallel_1.24.1       dplyr_1.0.3              
+[35] RCurl_1.98-1.2            magrittr_2.0.1           
+[37] BiocSingular_1.6.0        GenomeInfoDbData_1.2.4   
+[39] Matrix_1.3-2              Rcpp_1.0.6               
+[41] ggbeeswarm_0.6.0          munsell_0.5.0            
+[43] viridis_0.5.1             lifecycle_0.2.0          
+[45] stringi_1.5.3             whisker_0.4              
+[47] yaml_2.2.1                edgeR_3.32.1             
+[49] MASS_7.3-53               zlibbioc_1.36.0          
+[51] plyr_1.8.6                grid_4.0.2               
+[53] promises_1.1.1            dqrng_0.2.1              
+[55] crayon_1.3.4              lattice_0.20-41          
+[57] beachmat_2.6.4            locfit_1.5-9.4           
+[59] knitr_1.30                pillar_1.4.7             
+[61] igraph_1.2.6              reshape2_1.4.4           
+[63] codetools_0.2-18          glue_1.4.2               
+[65] evaluate_0.14             renv_0.12.5              
+[67] vctrs_0.3.6               tweenr_1.0.1             
+[69] httpuv_1.5.5              gtable_0.3.0             
+[71] purrr_0.3.4               polyclip_1.10-0          
+[73] assertthat_0.2.1          xfun_0.20                
+[75] rsvd_1.0.3                later_1.1.0.1            
+[77] viridisLite_0.3.0         tibble_3.0.5             
+[79] beeswarm_0.2.3            bluster_1.0.0            
+[81] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
