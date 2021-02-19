@@ -225,7 +225,7 @@ Plot results without effect size:
 ```{r fig.width = 8, fig.height = 35}
 ggplot(res, aes(comparison, interacting_pair, shape = secreted)) + 
   geom_point() + 
-  labs(x = "Comparison", y = "Interaction") + 
+  labs(x = "Comparison", y = "Interaction", shape = "Secreted") + 
   facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = "free") + 
   theme_bw() + 
   theme(
@@ -240,7 +240,7 @@ Plot results with effect size:
 ggplot(res, aes(comparison, interacting_pair, colour = log2(mean + 0.001), size = -log10(pvalue + 0.001), shape = secreted)) + 
   geom_point() + 
   scale_colour_distiller(palette = "Reds", direction = 1) + 
-  labs(x = "Comparison", y = "Interaction") + 
+  labs(x = "Comparison", y = "Interaction", colour = "log2(Mean)", size = "-log10(P-value)", shape = "Secreted") + 
   facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = "free") + 
   theme_bw() + 
   theme(
