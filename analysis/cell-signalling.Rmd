@@ -1,7 +1,7 @@
 ---
 title: "Cell signalling"
 author: "James Ashmore"
-date: "2021-02-18"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -182,6 +182,12 @@ res$comparison_a <- sapply(strsplit(res$comparison, ".", fixed = TRUE), "[", 1)
 res$comparison_b <- sapply(strsplit(res$comparison, ".", fixed = TRUE), "[", 2)
 ```
 
+Create significance variable:
+
+```{r}
+res$is_significant <- res$pvalue < 0.05
+```
+
 Create ranking variable:
 
 ```{r}
@@ -194,12 +200,6 @@ ind <- sapply(ind, sum)
 ind <- rank(-ind, ties.method = "random") # negative ranking
 
 res$rank <- ind[res$id_cp_interaction]
-```
-
-Create significance variable:
-
-```{r}
-res$is_significant <- res$pvalue < 0.05
 ```
 
 Define cluster variable:
