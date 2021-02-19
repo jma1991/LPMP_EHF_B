@@ -1,0 +1,260 @@
+---
+title: "Cell signalling"
+author: "James Ashmore"
+date: "2021-02-18"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/cell-signalling.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+## Packages
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(ggplot2)
+```
+
+## Data
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+Read human to mouse annotation table:
+
+```{r}
+ann <- read.csv("data/hsapiens_mmusculus.csv")
+```
+
+Subset annotation table to orthologous genes:
+
+```{r}
+ann <- subset(ann, mmusculus_homology_type == "ortholog_one2one")
+```
+
+Identify genes present in experiment object and annotation table:
+
+```{r}
+ids <- intersect(rowData(sce)$gene_id, ann$mmusculus_gene_id)
+```
+
+Subset experiment object to shared genes:
+
+```{r}
+sce <- sce[match(ids, rowData(sce)$gene_id), ]
+```
+
+Subset annotation table to shared genes:
+
+```{r}
+ann <- ann[match(ids, ann$mmusculus_gene_id), ]
+```
+
+Replace row names with human gene identifier:
+
+```{r}
+rownames(sce) <- ann$hsapiens_gene_id
+```
+
+Create output directory:
+
+```{r}
+unlink("output/cellphonedb", recursive = TRUE); dir.create("output/cellphonedb")
+```
+
+Write normalized counts matrix to disk:
+
+```{r}
+mat <- normalizeCounts(sce, log = FALSE)
+
+mat <- data.frame(Gene = rownames(mat), mat)
+
+write.csv(mat, file = "output/cellphonedb/counts.csv", quote = FALSE, row.names = FALSE)
+```
+
+Write column data frame to disk:
+
+```{r}
+dat <- data.frame(Cell = colnames(sce), cell_type = sce$cluster)
+
+write.csv(dat, file = "output/cellphonedb/meta.csv", quote = FALSE, row.names = FALSE)
+```
+
+## Results
+
+Run CellPhoneDB analysis:
+
+```{bash, engine.opts = "-l"}
+conda activate cellphonedb
+
+cellphonedb method statistical_analysis \
+  --counts-data ensembl \
+  --threshold 0.1 \
+  --output-path output/cellphonedb \
+  --output-format csv \
+  --threads 4 \
+  output/cellphonedb/meta.csv \
+  output/cellphonedb/counts.csv
+```
+
+Read output files:
+
+```{r}
+res <- list(
+  pvalues = read.csv("output/cellphonedb/pvalues.csv", header = TRUE),
+  means = read.csv("output/cellphonedb/means.csv", header = TRUE)
+)
+```
+
+Make interaction names in pvalues unique:
+
+```{r}
+res$pvalues$id_cp_interaction <- make.unique(res$pvalues$id_cp_interaction)
+
+res$pvalues$interacting_pair <- make.unique(res$pvalues$interacting_pair)
+```
+
+Make interaction names in means unique:
+
+```{r}
+res$means$id_cp_interaction <- make.unique(res$means$id_cp_interaction)
+
+res$mean$interacting_pair <- make.unique(res$means$interacting_pair)
+```
+
+Reshape pvalues to long format:
+
+```{r}
+ind <- seq(from = which(colnames(res$pvalues) == "is_integrin") + 1, to = ncol(res$pvalues))
+
+res$pvalues <- reshape2::melt(res$pvalues, measure.vars = ind, variable.name = "comparison", value.name = "pvalue")
+```
+
+Reshape means to long format:
+
+```{r}
+ind <- seq(from = which(colnames(res$means) == "is_integrin") + 1, to = ncol(res$means))
+
+res$means <- reshape2::melt(res$means, measure.vars = ind, variable.name = "comparison", value.name = "mean")
+```
+
+Join pvalues and means results:
+
+```{r}
+res <- dplyr::inner_join(res$pvalues, res$means)
+```
+
+Define comparison variable:
+
+```{r}
+res$comparison <- sub("^X", "", res$comparison) # required for numeric cluster labels
+
+res$comparison_a <- sapply(strsplit(res$comparison, ".", fixed = TRUE), "[", 1)
+
+res$comparison_b <- sapply(strsplit(res$comparison, ".", fixed = TRUE), "[", 2)
+```
+
+Create ranking variable:
+
+```{r}
+set.seed(1701)
+
+ind <- split(res$is_significant, res$id_cp_interaction)
+
+ind <- sapply(ind, sum)
+
+ind <- rank(-ind, ties.method = "random") # negative ranking
+
+res$rank <- ind[res$id_cp_interaction]
+```
+
+Create significance variable:
+
+```{r}
+res$is_significant <- res$pvalue < 0.05
+```
+
+Define cluster variable:
+
+```{r}
+mat <- reshape2::acast(res, id_cp_interaction ~ comparison, value.var = "is_significant")
+
+num <- nrow(unique(mat))
+
+knn <- kmeans(mat, centers = num)
+
+res$cluster <- knn$cluster[res$id_cp_interaction]
+```
+
+Filter non-significant comparisons:
+
+```{r}
+res <- subset(res, is_significant == TRUE)
+```
+
+Plot results without effect size:
+
+```{r fig.width = 8, fig.height = 35}
+ggplot(res, aes(comparison, interacting_pair, shape = secreted)) + 
+  geom_point() + 
+  labs(x = "Comparison", y = "Interaction") + 
+  facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = "free") + 
+  theme_bw() + 
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank()
+  )
+```
+
+Plot results with effect size:
+
+```{r fig.width = 8, fig.height = 35}
+ggplot(res, aes(comparison, interacting_pair, colour = log2(mean + 0.001), size = -log10(pvalue + 0.001), shape = secreted)) + 
+  geom_point() + 
+  scale_colour_distiller(palette = "Reds", direction = 1) + 
+  labs(x = "Comparison", y = "Interaction") + 
+  facet_grid(rows = vars(cluster), cols = vars(comparison_a), scales = "free") + 
+  theme_bw() + 
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_blank()
+  )
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
