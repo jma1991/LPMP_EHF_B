@@ -268,7 +268,7 @@ iSEEOptions$set(downsample = TRUE)
 iSEEOptions$set(color.maxlevels = 37)
 
 # Create iSEE object
-iSEE(sce, appTitle = "LPMP_EHF_B", colormap = ecm)
+iSEE(sce, appTitle = "LPMP_EHF_B_ATLAS", colormap = ecm)
 ```
 
 Deploy the iSEE application to the shiny server:
