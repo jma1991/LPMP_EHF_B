@@ -9,6 +9,12 @@ editor_options:
 
 ## Setup
 
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
 Load CRAN packages:
 
 ```{r}
