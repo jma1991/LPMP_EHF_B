@@ -431,6 +431,9 @@ div.tocify {
     <li>
       <a href="cell-signalling.html">Cell signalling</a>
     </li>
+    <li>
+      <a href="scenic-analysis.html">Scenic analysis</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -458,7 +461,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Interactive data exploration</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">08 March, 2021</h4>
+<h4 class="date">10 March, 2021</h4>
 
 </div>
 
@@ -483,7 +486,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-08
+<strong>Last updated:</strong> 2021-03-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -574,16 +577,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreecd02a3b4adb9e615ae4b4abc94151016dcbd64e7targetblankcd02a3ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/cd02a3b4adb9e615ae4b4abc94151016dcbd64e7" target="_blank">cd02a3b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree02e07d49b2a7e331bed27654b1d53bbe8e8ec453targetblank02e07d4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/02e07d49b2a7e331bed27654b1d53bbe8e8ec453" target="_blank">02e07d4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreecd02a3b4adb9e615ae4b4abc94151016dcbd64e7targetblankcd02a3ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree02e07d49b2a7e331bed27654b1d53bbe8e8ec453targetblank02e07d4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/cd02a3b4adb9e615ae4b4abc94151016dcbd64e7" target="_blank">cd02a3b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/02e07d49b2a7e331bed27654b1d53bbe8e8ec453" target="_blank">02e07d4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -603,10 +606,12 @@ Ignored files:
     Ignored:    slides/
 
 Untracked files:
-    Untracked:  analysis/test.Rmd
+    Untracked:  dask-worker-space/
+    Untracked:  resources/
 
 Unstaged changes:
     Modified:   _workflowr.R
+    Modified:   analysis/_site.yml
 
 </code></pre>
 <p>
@@ -645,6 +650,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/02e07d49b2a7e331bed27654b1d53bbe8e8ec453/analysis/interactive.Rmd" target="_blank">02e07d4</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-10
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/09f9ebd9c1eabeb7805bb3b24b76d071eec30586/docs/interactive.html" target="_blank">09f9ebd</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-08
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1062,6 +1101,8 @@ publish
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(eval = FALSE)</code></pre>
 <p>Load CRAN packages:</p>
 <pre class="r"><code>library(rsconnect)</code></pre>
 <p>Include Bioconductor package repositories:</p>
@@ -1081,7 +1122,6 @@ publish
 <pre class="r"><code>dir.create(&quot;shiny/annotated&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
 <p>Copy annotated data to iSEE directory:</p>
 <pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/annotated/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] TRUE</code></pre>
 <p>Write code to iSEE application file:</p>
 <pre class="r r"><code># Load required packages
 library(iSEE)
@@ -1171,30 +1211,8 @@ ecm &lt;- ExperimentColorMap(
 iSEE(sce, appTitle = &quot;LPMP_EHF_B&quot;, colormap = ecm)</code></pre>
 <p>Deploy the iSEE application to the shiny server:</p>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/annotated&quot;, appName = &quot;LPMP_EHF_B&quot;, appTitle = &quot;LPMP_EHF_B&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Uploading bundle for application: 3002030...DONE
-Deploying bundle: 4316963 for application: 3002030 ...
-Waiting for task: 885400142
-  building: Processing bundle: 4316963
-  building: Parsing manifest
-  building: Building image: 4937897
-  building: Installing system dependencies
-  building: Fetching packages
-  building: Installing packages
-  building: Installing files
-  building: Pushing image: 4937897
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B&quot;, appDir = &quot;shiny/annotated&quot;, size = &quot;xlarge&quot;)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Waiting for task: 885401625
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</code></pre>
 </div>
 <div id="integrated-data" class="section level3">
 <h3>Integrated data</h3>
@@ -1202,7 +1220,6 @@ Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B/</
 <pre class="r"><code>dir.create(&quot;shiny/integrated&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
 <p>Copy integrated data to iSEE directory:</p>
 <pre class="r"><code>file.copy(&quot;output/10-atlas-integration.rds&quot;, &quot;shiny/integrated/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] TRUE</code></pre>
 <p>Write code to iSEE application file:</p>
 <pre class="r r"><code># Load required packages
 library(iSEE)
@@ -1300,30 +1317,8 @@ iSEEOptions$set(color.maxlevels = 37)
 iSEE(sce, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, colormap = ecm)</code></pre>
 <p>Deploy the iSEE application to the shiny server:</p>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/integrated&quot;, appName = &quot;LPMP_EHF_B_ATLAS&quot;, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Uploading bundle for application: 3755027...DONE
-Deploying bundle: 4316996 for application: 3755027 ...
-Waiting for task: 885407793
-  building: Processing bundle: 4316996
-  building: Parsing manifest
-  building: Building image: 4937973
-  building: Installing system dependencies
-  building: Fetching packages
-  building: Installing packages
-  building: Installing files
-  building: Pushing image: 4937973
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_ATLAS&quot;, appDir = &quot;shiny/integrated&quot;, size = &quot;xxxlarge&quot;)</code></pre>
-<pre><code>Preparing to deploy application...DONE
-Waiting for task: 885410266
-  deploying: Starting instances
-  rollforward: Activating new instances
-  terminating: Stopping old instances
-Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_ATLAS/</code></pre>
 </div>
 </div>
 <div id="summary" class="section level2">
@@ -1332,37 +1327,6 @@ Application successfully deployed to https://jashmore.shinyapps.io/LPMP_EHF_B_AT
 <h3>Session</h3>
 <p>Print session information:</p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.0.2 (2020-06-22)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Catalina 10.15.7
-
-Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
-
-locale:
-[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
-
-attached base packages:
-[1] stats     graphics  grDevices datasets  utils     methods   base     
-
-other attached packages:
-[1] rsconnect_0.8.16 workflowr_1.6.2 
-
-loaded via a namespace (and not attached):
- [1] Rcpp_1.0.6          rstudioapi_0.13     whisker_0.4        
- [4] knitr_1.30          magrittr_2.0.1      R6_2.5.0           
- [7] rlang_0.4.10        stringr_1.4.0       tools_4.0.2        
-[10] packrat_0.5.0       xfun_0.20           git2r_0.28.0       
-[13] askpass_1.1         htmltools_0.5.1.1   ellipsis_0.3.1     
-[16] openssl_1.4.3       rprojroot_2.0.2     yaml_2.2.1         
-[19] digest_0.6.27       tibble_3.0.5        lifecycle_0.2.0    
-[22] crayon_1.3.4        BiocManager_1.30.10 later_1.1.0.1      
-[25] vctrs_0.3.6         promises_1.1.1      fs_1.5.0           
-[28] curl_4.3            glue_1.4.2          evaluate_0.14      
-[31] rmarkdown_2.6       stringi_1.5.3       compiler_4.0.2     
-[34] pillar_1.4.7        jsonlite_1.7.2      httpuv_1.5.5       
-[37] renv_0.12.5         pkgconfig_2.0.3    </code></pre>
 </div>
 </div>
 
