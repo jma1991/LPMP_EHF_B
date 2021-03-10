@@ -1,0 +1,198 @@
+---
+title: "SCENIC analysis"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this document we are going to analyse the results from the pySCENIC command-line software. SCENIC is a tool for single-cell regulatory network inference and clustering.
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/scenic-analysis.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(pheatmap)
+library(viridis)
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+Replace feature names with gene identifier:
+
+```{r}
+rownames(sce) <- rowData(sce)$gene_id
+```
+
+Create output directory:
+
+```{r}
+dir.create("output/pyscenic", showWarnings = FALSE, recursive = TRUE)
+```
+
+Write normalized counts matrix to disk:
+
+```{r}
+mat <- normalizeCounts(sce, log = FALSE)
+
+rownames(mat) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+
+mat <- t(mat)
+
+write.csv(mat, file = "output/pyscenic/normcounts.csv", quote = FALSE, row.names = TRUE)
+```
+
+## Scenic
+
+Derive co-expression modules from expression matrix:
+
+```{bash, eval = FALSE, engine.opts = "-l"}
+conda activate pyscenic
+
+pyscenic grn \
+  -o output/pyscenic/grn.csv \
+  --seed 0110110110 \
+  --num_workers 4 \
+  output/pyscenic/normcounts.csv \
+  resources/pyscenic/mm_mgi_tfs.txt
+  
+conda deactivate
+```
+
+Find enriched motifs for a gene signature:
+
+```{bash, eval = FALSE, engine.opts = "-l"}
+conda activate pyscenic
+
+pyscenic ctx \
+  -o output/pyscenic/ctx.csv \
+  --annotations_fname resources/pyscenic/motifs-v9-nr.mgi-m0.001-o0.0.tbl \
+  --num_workers 4 \
+  --expression_mtx_fname output/pyscenic/normcounts.csv \ 
+  output/pyscenic/grn.csv \
+  resources/pyscenic/mm10__refseq-r80__500bp_up_and_100bp_down_tss.mc9nr.feather
+  
+conda deactivate
+```
+
+Quantify activity of gene signatures across single cells:
+
+```{bash, eval = FALSE, engine.opts = "-l"}
+conda activate pyscenic
+
+pyscenic aucell \
+  -o output/pyscenic/aucell.csv \
+  --num_workers 4 \
+  --seed 0010011000 \
+  output/pyscenic/normcounts.csv \
+  output/pyscenic/ctx.csv
+
+conda deactivate
+```
+
+## Results
+
+Read and order activity matrix:
+
+```{r}
+auc <- read.csv("output/pyscenic/aucell.csv", row.names = "Regulon", stringsAsFactors = FALSE)
+
+auc <- auc[, order(sce$cluster)]
+
+auc <- as.matrix(auc)
+```
+
+Create heatmap colour palette:
+
+```{r}
+cluster.palette <- c(
+  "1" = "#4E79A7",
+  "2" = "#F28E2B",
+  "3" = "#E15759"
+)
+```
+
+Create heatmap annotation:
+
+```{r}
+ann <- list(
+  annotation_col = data.frame(Cluster = sce$cluster, row.names = colnames(sce)),
+  annotation_colors = list(Cluster = cluster.palette)
+)
+```
+
+Plot matrix of AUC values for all regulons:
+
+```{r fig.width = 8, fig.height = 6}
+pheatmap(
+  mat = auc,
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = FALSE,
+  show_colnames = FALSE,
+)
+```
+
+Identify outlier or potentially "interesting" regulons:
+
+```{r}
+out <- isOutlier(rowVars(auc), nmads = 1, type = "higher", log = TRUE)
+```
+
+Plot matrix of AUC values for outlier regulons:
+
+```{r fig.width = 8, fig.height = 6}
+pheatmap(
+  mat = auc[out, ],
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
