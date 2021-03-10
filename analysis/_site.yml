@@ -35,6 +35,8 @@ navbar:
           href: lineage-markers.html
         - text: "Cell signalling"
           href: cell-signalling.html
+        - text: "Scenic analysis"
+          href: scenic-analysis.html
     - text: "Interactive"
       href: interactive.html
   right:
