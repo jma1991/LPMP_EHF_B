@@ -1,0 +1,592 @@
+---
+title: "Atlas neighbors"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.lazy = FALSE,
+  cache.path = "cache/11-atlas-neighbors.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(BiocNeighbors)
+library(MouseGastrulationData)
+library(batchelor)
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(pheatmap)
+```
+
+Source user functions:
+
+```{r}
+source("code/splitByCol.R")
+source("code/weightedKNN.R")
+```
+
+## Neighbors
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/10-atlas-integration.rds")
+```
+
+Define source annotation:
+
+```{r}
+sce$source <- ifelse(sce$batch == "LPMP_EHF", "query", "reference")
+```
+
+Split experiment object by source:
+
+```{r}
+sce <- splitByCol(sce, sce$source)
+```
+
+Extract corrected PCA matrix for reference and query data:
+
+```{r}
+dim <- list(
+  reference = reducedDim(sce$reference, "corrected"),
+  query = reducedDim(sce$query, "corrected")
+)
+```
+
+Find kNN in reference data for each point in query data:
+
+```{r}
+set.seed(0011110001)
+
+knn <- queryKNN(X = dim$reference, query = dim$query, k = 20) # k = 20 to match fastMNN
+```
+
+Create matrix of kNN annotations:
+
+```{r}
+knn$cell <- structure(sce$reference$cell[knn$index], .Dim = dim(knn$index))
+
+knn$stage <- structure(sce$reference$stage[knn$index], .Dim = dim(knn$index))
+
+knn$celltype <- structure(sce$reference$celltype[knn$index], .Dim = dim(knn$index))
+```
+
+Plot UMAP embedding of kNN cells:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(sce$reference, use.coldata = c("stage", "celltype"), use.dimred = "UMAP"),
+  query = makePerCellDF(sce$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[sce$reference$cell %in% knn$cell] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage, drop = FALSE) + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP embedding of kNN stages:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(sce$reference, use.coldata = c("stage", "celltype"), use.dimred = "UMAP"),
+  query = makePerCellDF(sce$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[sce$reference$stage %in% knn$stage] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage, drop = FALSE) + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP embedding of kNN celltypes:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(sce$reference, use.coldata = c("stage", "celltype"), use.dimred = "UMAP"),
+  query = makePerCellDF(sce$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[dat$reference$celltype %in% knn$celltype] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage, drop = FALSE) +  
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Annotate query data with weighted kNN annotations:
+
+```{r}
+sce$query$cell.mapped <- as.list(as.data.frame(t(knn$cell)))
+
+sce$query$stage.mapped <- weightedKNN(knn, class = "stage")
+
+sce$query$celltype.mapped <- weightedKNN(knn, class = "celltype")
+```
+
+Self-annotate reference data:
+
+```{r}
+sce$reference$cell.mapped <- sce$reference$cell
+
+sce$reference$stage.mapped <- sce$reference$stage
+
+sce$reference$celltype.mapped <- sce$reference$celltype
+```
+
+Subset reference data to kNN annotations:
+
+```{r}
+id1 <- sce$reference$celltype %in% sce$query$celltype.mapped
+
+id2 <- sce$reference$stage %in% sce$query$stage.mapped
+
+idx <- id1 & id2
+
+sce$reference <- sce$reference[, idx]
+```
+
+Combine reference and query data:
+
+```{r}
+sce <- cbind(sce$reference, sce$query)
+```
+
+## Integration
+
+### Variance modelling
+
+Model the per-gene variance:
+
+```{r}
+dec <- modelGeneVar(sce, block = sce$sample)
+```
+
+### Feature selection
+
+Read blacklist genes and subset by category:
+
+```{r}
+nan <- read.csv("data/blacklist.csv")
+
+nan <- subset(nan, CATEGORY %in% c("CC", "MT", "RP", "XIST", "Y"))
+```
+
+Ignore blacklist genes in feature selection:
+
+```{r}
+dec$blacklist <- FALSE
+
+dec$blacklist[rownames(dec) %in% nan$ENSEMBL] <- TRUE
+```
+
+Identify highly variable genes:
+
+```{r}
+hvg <- subset(dec, blacklist == FALSE)
+
+hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+```
+
+### Batch normalization
+
+Perform scaling normalization:
+
+```{r}
+sce <- multiBatchNorm(sce, batch = sce$sample)
+```
+
+### Batch integration
+
+Create sequential merge order:
+
+```{r}
+tab <- as.data.frame(table(sce$sample, sce$stage), stringsAsFactors = FALSE)
+
+colnames(tab) <- c("sample", "stage", "ncells")
+
+tab <- subset(tab, ncells > 0)
+
+tab <- subset(tab, sample %in% AtlasSampleMetadata$sample)
+
+lvl <- c("E6.5", "E6.75", "E7.0", "mixed_gastrulation", "E7.25", "E7.5", "E7.75", "E8.0", "E8.25", "E8.5")
+
+tab$stage <- factor(tab$stage, levels = lvl)
+
+tab <- tab[order(tab$stage, tab$ncells, decreasing = TRUE), ]
+
+idx <- c(tab$sample, "LPMP_EHF")
+```
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(0000110010)
+
+mnn <- correctExperiments(
+  sce,
+  batch = sce$sample,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(merge.order = idx)
+)
+```
+
+Store combined variance model:
+
+```{r}
+metadata(mnn)$modelGeneVar <- dec
+```
+
+Store highly variable genes:
+
+```{r}
+metadata(mnn)$getTopHVGs <- hvg
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var), length.out = 101)
+
+pheatmap(var[, idx], color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r}
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab[, idx], color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Perform TSNE on the corrected PCA matrix:
+
+```{r}
+set.seed(42)
+
+mnn <- runTSNE(mnn, dimred = "corrected", perplexity = 120) # same settings as reference analysis
+```
+
+Visualize the corrected PCA using a TSNE plot:
+
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Perform UMAP on the corrected PCA matrix:
+
+```{r}
+set.seed(42)
+
+mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 20, min_dist = 0.7) # same settings as reference analysis
+```
+
+Visualize the corrected PCA using a UMAP plot:
+
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot TSNE embedding of mapped stage and mapped celltype:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  all = makePerCellDF(mnn, use.coldata = NULL, use.dimred = "TSNE"),
+  col = makePerCellDF(mnn, use.coldata = c("stage.mapped", "celltype.mapped", "source"), use.dimred = "TSNE")
+)
+
+dat$col$source <- factor(dat$col$source, levels = c("query", "reference"), labels = c("LPMP EHF", "Embryo Atlas"))
+
+ggplot() + 
+  geom_point(data = dat$all, aes(TSNE.1, TSNE.2), colour = "grey92", size = 0.1) + 
+  geom_point(data = dat$col, aes(TSNE.1, TSNE.2, colour = celltype.mapped), size = 0.1) + 
+  scale_colour_manual(name = "Celltype (Mapped)", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(source ~ stage.mapped) +  
+  labs(subtitle = "Stage (Mapped)") + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1, plot.subtitle = element_text(hjust = 0.5))
+```
+
+Plot UMAP embedding of mapped stage and mapped celltype:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  all = makePerCellDF(mnn, use.coldata = NULL, use.dimred = "UMAP"),
+  col = makePerCellDF(mnn, use.coldata = c("stage.mapped", "celltype.mapped", "source"), use.dimred = "UMAP")
+)
+
+dat$col$source <- factor(dat$col$source, levels = c("query", "reference"), labels = c("LPMP EHF", "Embryo Atlas"))
+
+ggplot() + 
+  geom_point(data = dat$all, aes(UMAP.1, UMAP.2), colour = "grey92", size = 0.1) + 
+  geom_point(data = dat$col, aes(UMAP.1, UMAP.2, colour = celltype.mapped), size = 0.1) + 
+  scale_colour_manual(name = "Celltype (Mapped)", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(source ~ stage.mapped) + 
+  labs(subtitle = "Stage (Mapped)") + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1, plot.subtitle = element_text(hjust = 0.5))
+```
+
+## Annotation
+
+Split experiment object by source:
+
+```{r}
+mnn <- splitByCol(mnn, mnn$source)
+```
+
+Extract corrected PCA matrix for reference and query data:
+
+```{r}
+dim <- list(
+  reference = reducedDim(mnn$reference, "corrected"),
+  query = reducedDim(mnn$query, "corrected")
+)
+```
+
+Find kNN in reference data for each point in query data:
+
+```{r}
+set.seed(0011110001)
+
+knn <- queryKNN(X = dim$reference, query = dim$query, k = 20) # k = 20 to match fastMNN
+```
+
+Create matrix of kNN annotations:
+
+```{r}
+knn$cell <- structure(mnn$reference$cell[knn$index], .Dim = dim(knn$index))
+
+knn$stage <- structure(mnn$reference$stage[knn$index], .Dim = dim(knn$index))
+
+knn$celltype <- structure(mnn$reference$celltype[knn$index], .Dim = dim(knn$index))
+```
+
+Plot UMAP embedding of kNN cells:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(mnn$reference, use.coldata = c("stage.mapped", "celltype.mapped"), use.dimred = "UMAP"),
+  query = makePerCellDF(mnn$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[mnn$reference$cell %in% knn$cell] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage.mapped, drop = FALSE) + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP embedding of kNN stages:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(mnn$reference, use.coldata = c("stage.mapped", "celltype.mapped"), use.dimred = "UMAP"),
+  query = makePerCellDF(mnn$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[mnn$reference$stage %in% knn$stage] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage.mapped, drop = FALSE) + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP embedding of kNN celltypes:
+
+```{r fig.width = 12, fig.height = 9}
+dat <- list(
+  reference = makePerCellDF(mnn$reference, use.coldata = c("stage.mapped", "celltype.mapped"), use.dimred = "UMAP"),
+  query = makePerCellDF(mnn$query, use.coldata = NULL, use.dimred = "UMAP")
+)
+
+dat$reference$neighbor <- "Non-neighbor"
+
+dat$reference$neighbor[dat$reference$celltype %in% knn$celltype] <- "Neighbor"
+
+dat$reference$neighbor <- factor(dat$reference$neighbor, levels = c("Neighbor", "Non-neighbor"))
+
+ggplot(dat$reference, aes(UMAP.1, UMAP.2, colour = celltype.mapped)) + 
+  geom_point(size = 0.1) + 
+  geom_point(data = dat$query, aes(UMAP.1, UMAP.2), size = 1, shape = 4, inherit.aes = FALSE) + 
+  scale_colour_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  guides(colour = guide_legend(override.aes = list(size = 1))) + 
+  facet_grid(neighbor ~ stage.mapped, drop = FALSE) +  
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Annotate query data with weighted kNN annotations:
+
+```{r}
+mnn$query$cell.remapped <- as.list(as.data.frame(t(knn$cell)))
+
+mnn$query$stage.remapped <- weightedKNN(knn, class = "stage")
+
+mnn$query$celltype.remapped <- weightedKNN(knn, class = "celltype")
+```
+
+Self-annotate reference data:
+
+```{r}
+mnn$reference$cell.remapped <- mnn$reference$cell
+
+mnn$reference$stage.remapped <- mnn$reference$stage
+
+mnn$reference$celltype.remapped <- mnn$reference$celltype
+```
+
+Compare mapped and remapped stage annotations:
+
+```{r}
+tab <- table(Mapped = mnn$query$stage.mapped, Remapped = mnn$query$stage.remapped)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Compare mapped and remapped celltype annotations:
+
+```{r}
+tab <- table(Mapped = mnn$query$celltype.mapped, Remapped = mnn$query$celltype.remapped)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Combine reference and query data:
+
+```{r}
+mnn <- cbind(mnn$reference, mnn$query)
+```
+
+## Summary
+
+### Output
+
+Save experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/11-atlas-neighbors.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

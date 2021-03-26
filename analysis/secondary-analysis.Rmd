@@ -1,0 +1,386 @@
+---
+title: "Secondary analysis"
+author: "James Ashmore"
+date: "2021-03-26"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/secondary-analysis.Rmd/",
+  dev        = "png",
+  echo       = TRUE,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+```{r include = FALSE}
+DT::datatable(matrix())
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(bluster)
+library(scater)
+library(scran)
+library(scuttle)
+library(slingshot)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(ggplot2)
+library(ggthemes)
+library(pheatmap)
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+## Feature selection
+
+List LPMP features:
+
+```{r}
+ids <- c(
+  "ENSMUSG00000042812" = "Foxf1",
+  "ENSMUSG00000037335" = "Hand1",
+  "ENSMUSG00000047002" = "Msgn1",
+  "ENSMUSG00000051323" = "Pcdh19",
+  "ENSMUSG00000014773" = "Dll1",
+  "ENSMUSG00000003436" = "Dll3",
+  "ENSMUSG00000062327" = "T",
+  "ENSMUSG00000030699" = "Tbx6",
+  "ENSMUSG00000026497" = "Mixl1",
+  "ENSMUSG00000030544" = "Mesp1",
+  "ENSMUSG00000029231" = "Pdgfra",
+  "ENSMUSG00000044338" = "Aplnr",
+  "ENSMUSG00000021994" = "Wnt5a",
+  "ENSMUSG00000024232" = "Bambi",
+  "ENSMUSG00000027559" = "Car3",
+  "ENSMUSG00000026124" = "Cfc1",
+  "ENSMUSG00000051159" = "Cited1",
+  "ENSMUSG00000032291" = "Crabp1",
+  "ENSMUSG00000032463" = "Faim",
+  "ENSMUSG00000031074" = "Fgf3",
+  "ENSMUSG00000027004" = "Frzb",
+  "ENSMUSG00000024907" = "Gal",
+  "ENSMUSG00000038668" = "Lpar1",
+  "ENSMUSG00000021469" = "Msx2",
+  "ENSMUSG00000010760" = "Phlda2",
+  "ENSMUSG00000042821" = "Snai1",
+  "ENSMUSG00000053560" = "Ier2"
+)
+```
+
+Set row subset:
+
+```{r}
+rowSubset(sce, "LPMP") <- ids
+```
+
+## Dimensionality reduction
+
+Perform PCA on expression data:
+
+```{r}
+set.seed(0010110101)
+
+sce <- denoisePCA(
+  x = sce,
+  technical = metadata(sce)$modelGeneVarWithSpikes,
+  subset.row = rowSubset(sce, "LPMP"),
+  BSPARAM = BiocSingular::ExactParam(),
+)
+```
+
+Perform TSNE on PCA data:
+
+```{r}
+set.seed(1010000010)
+
+sce <- runTSNE(sce, dimred = "PCA")
+```
+
+Perform UMAP on PCA data:
+
+```{r}
+set.seed(0111111001)
+
+sce <- runUMAP(sce, dimred = "PCA")
+```
+
+Perform DiffusionMap on PCA data:
+
+```{r}
+set.seed(0011000000)
+
+sce <- runDiffusionMap(sce, dimred = "PCA")
+```
+
+## Clustering {.tabset}
+
+Cluster rows of PCA data:
+
+```{r}
+set.seed(0101100010)
+
+mem <- clusterRows(reducedDim(sce, "PCA"), NNGraphParam(type = "jaccard", cluster.fun = "louvain"))
+```
+
+Set column labels:
+
+```{r}
+colLabels(sce) <- mem
+```
+
+Plot heatmap of LPMP features:
+
+```{r}
+plotHeatmap(
+  object = sce,
+  features = ids,
+  exprs_values = "logcounts",
+  center = TRUE,
+  zlim = c(-4, +4),
+  symmetric = TRUE,
+  colour_columns_by = "label"
+)
+```
+
+Create a per-cell data.frame:
+
+```{r}
+dat <- makePerCellDF(sce)
+```
+
+### PCA
+
+Plot PCA dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(PCA.1, PCA.2)) + 
+  geom_point(aes(colour = label)) + 
+  scale_colour_tableau() + 
+  labs(x = "PCA 1", y = "PCA 2", colour = "Label") + 
+  theme_bw() + 
+  coord_fixed()
+```
+
+### TSNE
+
+Plot TSNE dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(TSNE.1, TSNE.2)) + 
+  geom_point(aes(colour = label)) + 
+  scale_colour_tableau() + 
+  labs(x = "TSNE 1", y = "TSNE 2", colour = "Label") + 
+  coord_fixed() + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+### UMAP
+
+Plot UMAP dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(UMAP.1, UMAP.2)) + 
+  geom_point(aes(colour = label)) + 
+  scale_colour_tableau() + 
+  labs(x = "UMAP 1", y = "UMAP 2", colour = "Label") + 
+  coord_fixed() + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+### DiffusionMap
+
+Plot DiffusionMap dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) + 
+  geom_point(aes(colour = label)) + 
+  scale_colour_tableau() + 
+  labs(x = "DC 1", y = "DC 2", colour = "Label") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+## Marker detection
+
+Find candidate marker genes:
+
+```{r}
+res <- findMarkers(sce, colLabels(sce), test.type = "t", pval.type = "all")
+```
+
+Subset by significance threshold:
+
+```{r}
+sig <- lapply(res, subset, FDR < 0.05)
+
+sig <- Filter(nrow, sig)
+
+sig <- SimpleList(sig)
+```
+
+### Table {.tabset}
+
+Print table of significant marker genes:
+
+```{r, results = "asis", echo = FALSE}
+for (n in names(sig)) {
+
+  dat <- as.data.frame(sig[[n]])
+
+  cat("#### Label", n, "\n")
+
+  cat(knitr::knit_print(DT::datatable(dat)))
+
+  cat("\n\n")
+
+}
+```
+
+### Effect {.tabset}
+
+Plot heatmap of marker effect sizes:
+
+```{r, fig.width = 8, fig.height = 8, results = "asis"}
+for (n in names(sig)) {
+  
+  dat <- sig[[n]]
+  
+  mat <- getMarkerEffects(dat, prefix = "logFC")
+  
+  lim <- max(abs(mat))
+
+  cat("#### Label", n, "\n")
+  
+  pheatmap(mat, breaks = seq(-lim, +lim, length.out = 101))
+
+  cat("\n\n")
+  
+}
+```
+
+## Trajectory analysis
+
+Perform lineage inference with Slingshot:
+
+```{r}
+set.seed(0111101000)
+
+sce <- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = "PCA")
+```
+
+Embed trajectory in PCA space:
+
+```{r}
+cur <- embedCurves(sce, "PCA")
+```
+
+Extract first principal curve:
+
+```{r}
+cur.1 <- slingCurves(cur)[[1]]
+
+cur.1 <- data.frame(cur.1$s[cur.1$ord, ])
+```
+
+Create a per-cell data.frame:
+
+```{r}
+dat <- makePerCellDF(sce)
+```
+
+Plot PCA dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(PCA.1, PCA.2)) + 
+  geom_point(aes(colour = label)) + 
+  geom_path(data = cur.1, aes(PC1, PC2), arrow = arrow()) + 
+  scale_colour_tableau() + 
+  labs(x = "PCA 1", y = "PCA 2", colour = "Label") + 
+  coord_fixed() + 
+  theme_bw()
+```
+
+Plot PCA dimension coloured by pseudotime:
+
+```{r}
+ggplot(dat, aes(PCA.1, PCA.2)) + 
+  geom_point(aes(colour = slingPseudotime_1), size = 2) + 
+  geom_path(data = cur.1, aes(PC1, PC2), arrow = arrow()) + 
+  scale_colour_viridis_c() + 
+  labs(x = "PCA 1", y = "PCA 2", colour = "Pseudotime") + 
+  coord_fixed() + 
+  theme_bw()
+```
+
+Test for differences along pseudotime:
+
+```{r}
+set.seed(0010110101)
+
+res <- TSCAN::testPseudotime(sce, pseudotime = sce$slingPseudotime_1)
+```
+
+Subset by significance threshold:
+
+```{r}
+sig <- subset(res, FDR < 0.05)
+
+ind <- head(order(abs(sig$logFC), decreasing = TRUE), n = 100) # Top 100 by logFC
+```
+
+Plot heatmap of significant genes:
+
+```{r fig.width = 12, fig.height = 16}
+plotHeatmap(
+  object = sce,
+  features = rownames(sig)[ind],
+  exprs_values = "logcounts",
+  center = TRUE,
+  zlim = c(-4, +4),
+  symmetric = TRUE,
+  colour_columns_by = "label",
+  order_columns_by = "slingPseudotime_1",
+)
+```
+
+## Summary
+
+### Output
+
+Save experiment object:
+
+```{r}
+saveRDS(sce, file = "output/secondary-analysis.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
