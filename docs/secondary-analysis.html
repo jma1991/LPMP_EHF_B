@@ -589,16 +589,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree6e7479b9a915c27b00adf1e89c0c48d443170934targetblank6e7479ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/6e7479b9a915c27b00adf1e89c0c48d443170934" target="_blank">6e7479b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree4c2d94ecb38f044aa3dcd961f1639f2d035e1f42targetblank4c2d94ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/4c2d94ecb38f044aa3dcd961f1639f2d035e1f42" target="_blank">4c2d94e</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree6e7479b9a915c27b00adf1e89c0c48d443170934targetblank6e7479ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree4c2d94ecb38f044aa3dcd961f1639f2d035e1f42targetblank4c2d94ea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/6e7479b9a915c27b00adf1e89c0c48d443170934" target="_blank">6e7479b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/4c2d94ecb38f044aa3dcd961f1639f2d035e1f42" target="_blank">4c2d94e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -670,6 +670,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c2d94ecb38f044aa3dcd961f1639f2d035e1f42/analysis/secondary-analysis.Rmd" target="_blank">4c2d94e</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/cb9ea270887323a666a622828c1260f2f40d0392/docs/secondary-analysis.html" target="_blank">cb9ea27</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -738,7 +772,7 @@ library(pheatmap)</code></pre>
 </div>
 <div id="feature-selection" class="section level2">
 <h2>Feature selection</h2>
-<p>List LPMP features:</p>
+<p>List LPMP genes:</p>
 <pre class="r"><code>ids &lt;- c(
   &quot;ENSMUSG00000042812&quot; = &quot;Foxf1&quot;,
   &quot;ENSMUSG00000037335&quot; = &quot;Hand1&quot;,
@@ -757,12 +791,12 @@ library(pheatmap)</code></pre>
   &quot;ENSMUSG00000027559&quot; = &quot;Car3&quot;,
   &quot;ENSMUSG00000026124&quot; = &quot;Cfc1&quot;,
   &quot;ENSMUSG00000051159&quot; = &quot;Cited1&quot;,
-  &quot;ENSMUSG00000032291&quot; = &quot;Crabp1&quot;,
-  &quot;ENSMUSG00000032463&quot; = &quot;Faim&quot;,
+#  &quot;ENSMUSG00000032291&quot; = &quot;Crabp1&quot;,
+#  &quot;ENSMUSG00000032463&quot; = &quot;Faim&quot;,
   &quot;ENSMUSG00000031074&quot; = &quot;Fgf3&quot;,
   &quot;ENSMUSG00000027004&quot; = &quot;Frzb&quot;,
   &quot;ENSMUSG00000024907&quot; = &quot;Gal&quot;,
-  &quot;ENSMUSG00000038668&quot; = &quot;Lpar1&quot;,
+#  &quot;ENSMUSG00000038668&quot; = &quot;Lpar1&quot;,
   &quot;ENSMUSG00000021469&quot; = &quot;Msx2&quot;,
   &quot;ENSMUSG00000010760&quot; = &quot;Phlda2&quot;,
   &quot;ENSMUSG00000042821&quot; = &quot;Snai1&quot;,
@@ -803,7 +837,7 @@ sce &lt;- runDiffusionMap(sce, dimred = &quot;PCA&quot;)</code></pre>
 mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quot;jaccard&quot;, cluster.fun = &quot;louvain&quot;))</code></pre>
 <p>Set column labels:</p>
 <pre class="r"><code>colLabels(sce) &lt;- mem</code></pre>
-<p>Plot heatmap of LPMP features:</p>
+<p>Plot heatmap of LPMP genes:</p>
 <pre class="r"><code>plotHeatmap(
   object = sce,
   features = ids,
@@ -811,9 +845,47 @@ mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quo
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  colour_columns_by = &quot;label&quot;
+  colour_columns_by = &quot;label&quot;,
+  order_columns_by = &quot;label&quot;
 )</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-14-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Create a per-cell data.frame:</p>
 <pre class="r"><code>dat &lt;- makePerCellDF(sce)</code></pre>
 <div id="pca" class="section level3">
@@ -826,6 +898,43 @@ mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quo
   theme_bw() + 
   coord_fixed()</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-16-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="tsne" class="section level3">
 <h3>TSNE</h3>
@@ -838,6 +947,43 @@ mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quo
   theme_bw() + 
   theme(aspect.ratio = 1)</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-17-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="umap" class="section level3">
 <h3>UMAP</h3>
@@ -850,6 +996,43 @@ mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quo
   theme_bw() + 
   theme(aspect.ratio = 1)</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-18-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="diffusionmap" class="section level3">
 <h3>DiffusionMap</h3>
@@ -861,6 +1044,43 @@ mem &lt;- clusterRows(reducedDim(sce, &quot;PCA&quot;), NNGraphParam(type = &quo
   theme_bw() + 
   theme(aspect.ratio = 1)</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-19-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="marker-detection" class="section level2">
@@ -876,15 +1096,10 @@ sig &lt;- SimpleList(sig)</code></pre>
 <div id="table" class="section level3 tabset">
 <h3 class="tabset">Table</h3>
 <p>Print table of significant marker genes:</p>
-<div id="label-1" class="section level4">
-<h4>Label 1</h4>
-<div id="htmlwidget-db041a12f592f40f47a6" style="width:960px;height:500px;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-db041a12f592f40f47a6">{"x":{"filter":"none","data":[["Pdgfra","Msgn1","Cited1","Dll3","Fgf3","Car3","Dll1","Snai1","Slc2a3","Gal","Cldn7","Gpc3","Pdgfa","Hs3st3b1","Pcdh19","Crabp1","Inka1"],[5.95455971763287e-13,6.7721271699225e-13,1.88015579979576e-10,7.77601713446889e-10,4.26823785615013e-08,6.19503965530045e-08,1.68125231465254e-07,7.5749268713378e-07,1.26641576079808e-06,1.70388726814309e-06,2.08989922361978e-06,2.61050419331971e-06,3.37930570147369e-06,4.5946024717523e-06,4.66279695144953e-06,5.67535834516795e-06,1.30062006375685e-05],[1.87828333121385e-08,1.87828333121385e-08,3.47647074568235e-06,1.07835861616531e-05,0.000473526844237008,0.000572741741198619,0.0013322963878013,0.00525235960599974,0.00780548318524783,0.00945163306511656,0.0105389818030375,0.0120672731756365,0.0144194974281883,0.0172433339795904,0.0172433339795904,0.0196761126728007,0.0424392326803859],[-7.15638643655329,-5.91612855229584,-4.75226522565515,-6.1440076321063,-4.87496135928946,-4.99213699068478,-4.88525813198463,-3.53669442172815,1.99122892554056,-5.06062788064684,3.34618737082274,-0.862542629383073,3.3526913348103,-3.08864348273794,-4.80429919673247,-3.34189725372707,-3.44643998047719],[-7.15638643655329,-5.91612855229584,-5.58644901407142,-6.1440076321063,-4.87496135928946,-5.56479989724963,-4.88525813198463,-3.97023516111076,3.38276834477701,-5.06062788064684,3.7773202603855,-1.3190380673823,4.26729681837351,-5.20506870135567,-7.80302812752337,-4.38320448160973,-3.44643998047719],[-7.10119896942289,-6.23296881215831,-4.75226522565515,-6.85901816094774,-5.03145912408214,-4.99213699068478,-5.9811650198114,-3.53669442172815,1.99122892554056,-5.60063442465102,3.34618737082274,-0.862542629383073,3.3526913348103,-3.08864348273794,-4.80429919673247,-3.34189725372707,-3.73853907724191]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.2<\/th>\n      <th>logFC.3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-</div>
-<div id="label-2" class="section level4">
-<h4>Label 2</h4>
-<div id="htmlwidget-738a553380d7e7667007" style="width:960px;height:500px;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-738a553380d7e7667007">{"x":{"filter":"none","data":[["Hand1","Prxl2a","Phlda2"],[2.4114843541861e-08,5.32246718467826e-07,9.02018913106336e-07],[0.00133767448611057,0.0147621288600644,0.0166786303763072],[4.86048701175685,-4.12875589277551,3.32932715129189],[4.86048701175685,-5.13352784561876,3.32932715129189],[5.04643663548587,-4.12875589277551,2.00298687229179]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.1<\/th>\n      <th>logFC.3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="label-4" class="section level4">
+<h4>Label 4</h4>
+<div id="htmlwidget-dde813f04d642f9a8996" style="width:960px;height:500px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dde813f04d642f9a8996">{"x":{"filter":"none","data":[["Dll3","Pdgfra","Msgn1","Fgf3","Cited1","Dll1"],[3.41044866870424e-08,5.13339097738906e-08,7.13872180617468e-08,8.28203280267916e-08,8.70417671643735e-08,3.2362641984763e-06],[0.000965658773274994,0.000965658773274994,0.000965658773274994,0.000965658773274994,0.000965658773274994,0.0299198018922798],[-5.74486578114258,-5.88419191734601,-5.36135562703348,-4.61086857159433,-3.9892153512429,-5.10125498375275],[-5.74486578114258,-5.88419191734601,-5.36135562703348,-4.61086857159433,-3.9892153512429,-5.10125498375275],[-7.72692093789676,-8.07517834933866,-6.80720939441449,-5.37766518418754,-5.28600910266503,-6.54454416574529],[-6.21823604343868,-7.1766369986189,-6.04743021673655,-4.88254528680519,-5.62334751617557,-5.06798203254518]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>p.value<\/th>\n      <th>FDR<\/th>\n      <th>summary.logFC<\/th>\n      <th>logFC.1<\/th>\n      <th>logFC.2<\/th>\n      <th>logFC.3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="effect" class="section level3 tabset">
@@ -905,13 +1120,46 @@ sig &lt;- SimpleList(sig)</code></pre>
   cat(&quot;\n\n&quot;)
   
 }</code></pre>
-<div id="label-1-1" class="section level4">
-<h4>Label 1</h4>
+<div id="label-4-1" class="section level4">
+<h4>Label 4</h4>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-23-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-23-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="label-2-1" class="section level4">
-<h4>Label 2</h4>
-<p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-23-2.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 </div>
 </div>
@@ -938,6 +1186,43 @@ cur.1 &lt;- data.frame(cur.1$s[cur.1$ord, ])</code></pre>
   coord_fixed() + 
   theme_bw()</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Plot PCA dimension coloured by pseudotime:</p>
 <pre class="r"><code>ggplot(dat, aes(PCA.1, PCA.2)) + 
   geom_point(aes(colour = slingPseudotime_1), size = 2) + 
@@ -947,14 +1232,51 @@ cur.1 &lt;- data.frame(cur.1$s[cur.1$ord, ])</code></pre>
   coord_fixed() + 
   theme_bw()</code></pre>
 <p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
+Past versions of unnamed-chunk-29-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ba02853e51e0b168aff33f86c0b473339e827b94/docs/figure/secondary-analysis.Rmd/unnamed-chunk-29-1.png" target="_blank">ba02853</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-26
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Test for differences along pseudotime:</p>
 <pre class="r"><code>set.seed(0010110101)
 
 res &lt;- TSCAN::testPseudotime(sce, pseudotime = sce$slingPseudotime_1)</code></pre>
 <p>Subset by significance threshold:</p>
-<pre class="r"><code>sig &lt;- subset(res, FDR &lt; 0.05)
-
-ind &lt;- head(order(abs(sig$logFC), decreasing = TRUE), n = 100) # Top 100 by logFC</code></pre>
+<pre class="r"><code>sig &lt;- subset(res, FDR &lt; 0.05)</code></pre>
+<p>Identify Top 100 genes:</p>
+<pre class="r"><code>ind &lt;- head(order(abs(sig$logFC), decreasing = TRUE), n = 100)</code></pre>
 <p>Plot heatmap of significant genes:</p>
 <pre class="r"><code>plotHeatmap(
   object = sce,
@@ -966,7 +1288,7 @@ ind &lt;- head(order(abs(sig$logFC), decreasing = TRUE), n = 100) # Top 100 by l
   colour_columns_by = &quot;label&quot;,
   order_columns_by = &quot;slingPseudotime_1&quot;,
 )</code></pre>
-<p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-32-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/secondary-analysis.Rmd/unnamed-chunk-33-1.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
@@ -991,7 +1313,7 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
@@ -1008,54 +1330,78 @@ other attached packages:
 [21] workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
- [1] ggbeeswarm_0.6.0          colorspace_2.0-0         
- [3] ellipsis_0.3.1            mclust_5.4.7             
- [5] rprojroot_2.0.2           XVector_0.30.0           
- [7] BiocNeighbors_1.8.2       fs_1.5.0                 
- [9] rstudioapi_0.13           farver_2.0.3             
-[11] codetools_0.2-18          splines_4.0.2            
-[13] sparseMatrixStats_1.2.0   knitr_1.30               
-[15] polyclip_1.10-0           shiny_1.6.0              
-[17] compiler_4.0.2            dqrng_0.2.1              
-[19] fastmap_1.1.0             assertthat_0.2.1         
-[21] Matrix_1.3-2              limma_3.46.0             
-[23] later_1.1.0.1             tweenr_1.0.1             
-[25] BiocSingular_1.6.0        htmltools_0.5.1.1        
-[27] tools_4.0.2               rsvd_1.0.3               
-[29] igraph_1.2.6              gtable_0.3.0             
-[31] glue_1.4.2                GenomeInfoDbData_1.2.4   
-[33] dplyr_1.0.3               Rcpp_1.0.6               
-[35] TSCAN_1.28.0              vctrs_0.3.6              
-[37] ape_5.4-1                 nlme_3.1-151             
-[39] DelayedMatrixStats_1.12.2 xfun_0.20                
-[41] stringr_1.4.0             beachmat_2.6.4           
-[43] mime_0.9                  lifecycle_0.2.0          
-[45] irlba_2.3.3               renv_0.12.5              
-[47] gtools_3.8.2              statmod_1.4.35           
-[49] edgeR_3.32.1              zlibbioc_1.36.0          
-[51] MASS_7.3-53               scales_1.1.1             
-[53] promises_1.1.1            RColorBrewer_1.1-2       
-[55] yaml_2.2.1                gridExtra_2.3            
-[57] fastICA_1.2-2             stringi_1.5.3            
-[59] caTools_1.18.1            BiocParallel_1.24.1      
-[61] rlang_0.4.10              pkgconfig_2.0.3          
-[63] bitops_1.0-6              evaluate_0.14            
-[65] lattice_0.20-41           purrr_0.3.4              
-[67] labeling_0.4.2            tidyselect_1.1.0         
-[69] plyr_1.8.6                magrittr_2.0.1           
-[71] R6_2.5.0                  gplots_3.1.1             
-[73] generics_0.1.0            combinat_0.0-8           
-[75] DelayedArray_0.16.1       DBI_1.1.1                
-[77] pillar_1.4.7              withr_2.4.1              
-[79] mgcv_1.8-33               RCurl_1.98-1.2           
-[81] tibble_3.0.5              crayon_1.3.4             
-[83] KernSmooth_2.23-18        rmarkdown_2.6            
-[85] viridis_0.5.1             locfit_1.5-9.4           
-[87] grid_4.0.2                git2r_0.28.0             
-[89] digest_0.6.27             xtable_1.8-4             
-[91] httpuv_1.5.5              munsell_0.5.0            
-[93] beeswarm_0.2.3            viridisLite_0.3.0        
-[95] vipor_0.4.5              </code></pre>
+  [1] tidyselect_1.1.0          htmlwidgets_1.5.3        
+  [3] grid_4.0.2                combinat_0.0-8           
+  [5] ranger_0.12.1             BiocParallel_1.24.1      
+  [7] Rtsne_0.15                munsell_0.5.0            
+  [9] destiny_3.4.0             codetools_0.2-18         
+ [11] statmod_1.4.35            DT_0.17                  
+ [13] withr_2.4.1               colorspace_2.0-0         
+ [15] fastICA_1.2-2             knitr_1.30               
+ [17] rstudioapi_0.13           robustbase_0.93-7        
+ [19] vcd_1.4-8                 VIM_6.1.0                
+ [21] TTR_0.24.2                labeling_0.4.2           
+ [23] git2r_0.28.0              GenomeInfoDbData_1.2.4   
+ [25] polyclip_1.10-0           farver_2.0.3             
+ [27] rprojroot_2.0.2           vctrs_0.3.6              
+ [29] generics_0.1.0            xfun_0.20                
+ [31] R6_2.5.0                  ggbeeswarm_0.6.0         
+ [33] rsvd_1.0.3                RcppEigen_0.3.3.9.1      
+ [35] locfit_1.5-9.4            bitops_1.0-6             
+ [37] DelayedArray_0.16.1       assertthat_0.2.1         
+ [39] promises_1.1.1            scales_1.1.1             
+ [41] nnet_7.3-15               beeswarm_0.2.3           
+ [43] gtable_0.3.0              beachmat_2.6.4           
+ [45] rlang_0.4.10              scatterplot3d_0.3-41     
+ [47] splines_4.0.2             hexbin_1.28.2            
+ [49] yaml_2.2.1                abind_1.4-5              
+ [51] crosstalk_1.1.1           httpuv_1.5.5             
+ [53] tools_4.0.2               ellipsis_0.3.1           
+ [55] gplots_3.1.1              RColorBrewer_1.1-2       
+ [57] proxy_0.4-24              Rcpp_1.0.6               
+ [59] plyr_1.8.6                sparseMatrixStats_1.2.0  
+ [61] zlibbioc_1.36.0           purrr_0.3.4              
+ [63] RCurl_1.98-1.2            viridis_0.5.1            
+ [65] zoo_1.8-8                 haven_2.3.1              
+ [67] fs_1.5.0                  magrittr_2.0.1           
+ [69] data.table_1.13.6         RSpectra_0.16-0          
+ [71] openxlsx_4.2.3            lmtest_0.9-38            
+ [73] pcaMethods_1.82.0         whisker_0.4              
+ [75] xtable_1.8-4              mime_0.9                 
+ [77] hms_1.0.0                 evaluate_0.14            
+ [79] smoother_1.1              rio_0.5.16               
+ [81] mclust_5.4.7              readxl_1.3.1             
+ [83] gridExtra_2.3             compiler_4.0.2           
+ [85] tibble_3.0.5              KernSmooth_2.23-18       
+ [87] crayon_1.3.4              htmltools_0.5.1.1        
+ [89] mgcv_1.8-33               later_1.1.0.1            
+ [91] tidyr_1.1.2               DBI_1.1.1                
+ [93] tweenr_1.0.1              MASS_7.3-53              
+ [95] boot_1.3-26               Matrix_1.3-2             
+ [97] car_3.0-10                igraph_1.2.6             
+ [99] forcats_0.5.0             pkgconfig_2.0.3          
+[101] foreign_0.8-81            laeken_0.5.1             
+[103] sp_1.4-5                  vipor_0.4.5              
+[105] dqrng_0.2.1               XVector_0.30.0           
+[107] stringr_1.4.0             digest_0.6.27            
+[109] rmarkdown_2.6             cellranger_1.1.0         
+[111] TSCAN_1.28.0              uwot_0.1.10              
+[113] edgeR_3.32.1              DelayedMatrixStats_1.12.2
+[115] curl_4.3                  shiny_1.6.0              
+[117] gtools_3.8.2              ggplot.multistats_1.0.0  
+[119] lifecycle_0.2.0           nlme_3.1-151             
+[121] jsonlite_1.7.2            carData_3.0-4            
+[123] BiocNeighbors_1.8.2       viridisLite_0.3.0        
+[125] limma_3.46.0              pillar_1.4.7             
+[127] lattice_0.20-41           fastmap_1.1.0            
+[129] DEoptimR_1.0-8            glue_1.4.2               
+[131] xts_0.12.1                zip_2.1.1                
+[133] FNN_1.1.3                 class_7.3-18             
+[135] stringi_1.5.3             RcppHNSW_0.3.0           
+[137] BiocSingular_1.6.0        caTools_1.18.1           
+[139] renv_0.12.5               dplyr_1.0.3              
+[141] irlba_2.3.3               knn.covertree_1.0        
+[143] e1071_1.7-4               ape_5.4-1                </code></pre>
 </div>
 </div>
 
