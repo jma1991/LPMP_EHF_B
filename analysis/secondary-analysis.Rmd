@@ -230,7 +230,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
 Find candidate marker genes:
 
 ```{r}
-res <- findMarkers(sce, colLabels(sce), test.type = "t", pval.type = "all")
+res <- findMarkers(sce, colLabels(sce), test.type = "t", pval.type = "any")
 ```
 
 Subset by significance threshold:
