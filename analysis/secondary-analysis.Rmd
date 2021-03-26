@@ -55,7 +55,7 @@ sce <- readRDS("output/09-cell-annotation.rds")
 
 ## Feature selection
 
-List LPMP features:
+List LPMP genes:
 
 ```{r}
 ids <- c(
@@ -76,12 +76,12 @@ ids <- c(
   "ENSMUSG00000027559" = "Car3",
   "ENSMUSG00000026124" = "Cfc1",
   "ENSMUSG00000051159" = "Cited1",
-  "ENSMUSG00000032291" = "Crabp1",
-  "ENSMUSG00000032463" = "Faim",
+#  "ENSMUSG00000032291" = "Crabp1",
+#  "ENSMUSG00000032463" = "Faim",
   "ENSMUSG00000031074" = "Fgf3",
   "ENSMUSG00000027004" = "Frzb",
   "ENSMUSG00000024907" = "Gal",
-  "ENSMUSG00000038668" = "Lpar1",
+#  "ENSMUSG00000038668" = "Lpar1",
   "ENSMUSG00000021469" = "Msx2",
   "ENSMUSG00000010760" = "Phlda2",
   "ENSMUSG00000042821" = "Snai1",
@@ -150,7 +150,7 @@ Set column labels:
 colLabels(sce) <- mem
 ```
 
-Plot heatmap of LPMP features:
+Plot heatmap of LPMP genes:
 
 ```{r}
 plotHeatmap(
@@ -160,7 +160,8 @@ plotHeatmap(
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  colour_columns_by = "label"
+  colour_columns_by = "label",
+  order_columns_by = "label"
 )
 ```
 
@@ -348,8 +349,12 @@ Subset by significance threshold:
 
 ```{r}
 sig <- subset(res, FDR < 0.05)
+```
 
-ind <- head(order(abs(sig$logFC), decreasing = TRUE), n = 100) # Top 100 by logFC
+Identify Top 100 genes:
+
+```{r}
+ind <- head(order(abs(sig$logFC), decreasing = TRUE), n = 100)
 ```
 
 Plot heatmap of significant genes:
