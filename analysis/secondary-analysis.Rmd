@@ -268,7 +268,7 @@ Plot heatmap of marker effect sizes:
 ```{r, fig.width = 8, fig.height = 8, results = "asis"}
 for (n in names(sig)) {
   
-  dat <- sig[[n]]
+  dat <- subset(sig[[n]], Top <= 10)
   
   mat <- getMarkerEffects(dat, prefix = "logFC")
   
