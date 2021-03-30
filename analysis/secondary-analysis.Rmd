@@ -123,7 +123,7 @@ Subset by significance threshold:
 sig <- subset(res, FDR < 0.05)
 ```
 
-Plot heatmap of correlated marker genes:
+Plot heatmap of correlated genes:
 
 ```{r}
 plotHeatmap(
@@ -222,7 +222,8 @@ plotHeatmap(
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  colour_columns_by = "label"
+  colour_columns_by = "label",
+  show_rownames = FALSE
 )
 ```
 
