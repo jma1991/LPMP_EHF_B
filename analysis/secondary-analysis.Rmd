@@ -309,7 +309,7 @@ sig <- SimpleList(sig)
 
 Print table of significant marker genes:
 
-```{r, results = "asis", echo = FALSE}
+```{r, results = "asis", echo = FALSE, fig.width = "100%"}
 for (n in names(sig)) {
 
   dat <- as.data.frame(sig[[n]])
