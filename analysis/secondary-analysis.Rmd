@@ -503,7 +503,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   theme(aspect.ratio = 1)
 ```
 
-###
+##
 
 Test for differences along pseudotime:
 
