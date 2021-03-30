@@ -588,16 +588,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreea872102f66c0e4b6884885589115ab45c79b7750targetblanka872102a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/a872102f66c0e4b6884885589115ab45c79b7750" target="_blank">a872102</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeac247e6bc3c14cab5c40127adcb7789fc673e449targetblankac247e6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/ac247e6bc3c14cab5c40127adcb7789fc673e449" target="_blank">ac247e6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreea872102f66c0e4b6884885589115ab45c79b7750targetblanka872102a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeac247e6bc3c14cab5c40127adcb7789fc673e449targetblankac247e6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/a872102f66c0e4b6884885589115ab45c79b7750" target="_blank">a872102</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/ac247e6bc3c14cab5c40127adcb7789fc673e449" target="_blank">ac247e6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -667,6 +667,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/ac247e6bc3c14cab5c40127adcb7789fc673e449/analysis/secondary-analysis.Rmd" target="_blank">ac247e6</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-30
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/325a85bd0ff13ea96e0eb9f4f4f907fb2a52afc4/docs/secondary-analysis.html" target="_blank">325a85b</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-03-30
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2286,7 +2320,7 @@ James Ashmore
 <p>Perform lineage inference with Slingshot:</p>
 <pre class="r"><code>set.seed(0111101000)
 
-sce &lt;- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = &quot;PCA&quot;)</code></pre>
+sce &lt;- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = &quot;PCA&quot;, start.clus = 1)</code></pre>
 <p>Create a per-cell data.frame:</p>
 <pre class="r"><code>dat &lt;- makePerCellDF(sce)</code></pre>
 <div id="curve-1" class="section level3 tabset">
