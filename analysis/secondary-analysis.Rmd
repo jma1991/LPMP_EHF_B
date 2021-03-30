@@ -354,7 +354,7 @@ Perform lineage inference with Slingshot:
 ```{r}
 set.seed(0111101000)
 
-sce <- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = "PCA")
+sce <- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = "PCA", start.clus = 1)
 ```
 
 Create a per-cell data.frame:
