@@ -133,7 +133,7 @@ plotHeatmap(
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  fontsize = 4
+  show_rownames = FALSE
 )
 ```
 
