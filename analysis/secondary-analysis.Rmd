@@ -93,9 +93,24 @@ ids <- c(
 )
 ```
 
+Plot heatmap of marker genes:
+
+```{r}
+plotHeatmap(
+  object = sce,
+  features = ids,
+  exprs_values = "logcounts",
+  center = TRUE,
+  zlim = c(-4, +4),
+  symmetric = TRUE
+)
+```
+
 Test for significant correlations:
 
 ```{r}
+set.seed(0100110000)
+
 res <- correlatePairs(
   x = logcounts(sce),
   pairings = list(query = ids, reference = rownames(sce))
@@ -106,6 +121,19 @@ Subset by significance threshold:
 
 ```{r}
 sig <- subset(res, FDR < 0.05)
+```
+
+Plot heatmap of correlated marker genes:
+
+```{r}
+plotHeatmap(
+  object = sce,
+  features = unique(sig$gene2),
+  exprs_values = "logcounts",
+  center = TRUE,
+  zlim = c(-4, +4),
+  symmetric = TRUE
+)
 ```
 
 Set row subset:
@@ -179,8 +207,7 @@ plotHeatmap(
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  colour_columns_by = "label",
-  order_columns_by = "label"
+  colour_columns_by = "label"
 )
 ```
 
@@ -189,13 +216,12 @@ Plot heatmap of correlated marker genes:
 ```{r}
 plotHeatmap(
   object = sce,
-  features = rownames(sce)[rowSubset(sce, "HVG")],
+  features = unique(sig$gene2),
   exprs_values = "logcounts",
   center = TRUE,
   zlim = c(-4, +4),
   symmetric = TRUE,
-  colour_columns_by = "label",
-  order_columns_by = "label"
+  colour_columns_by = "label"
 )
 ```
 
@@ -503,7 +529,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   theme(aspect.ratio = 1)
 ```
 
-##
+#### testPseudotime
 
 Test for differences along pseudotime:
 
