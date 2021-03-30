@@ -313,6 +313,8 @@ Print table of significant marker genes:
 for (n in names(sig)) {
 
   dat <- as.data.frame(sig[[n]])
+  
+  dat <- round(dat, digits = 2)
 
   cat("#### Label", n, "\n")
 
