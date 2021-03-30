@@ -125,7 +125,7 @@ sig <- subset(res, FDR < 0.05)
 
 Plot heatmap of correlated marker genes:
 
-```{r}
+```{r fig.height = 12}
 plotHeatmap(
   object = sce,
   features = unique(sig$gene2),
