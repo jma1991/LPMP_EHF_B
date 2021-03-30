@@ -309,7 +309,7 @@ sig <- SimpleList(sig)
 
 Print table of significant marker genes:
 
-```{r, results = "asis", echo = FALSE, fig.width = "100%"}
+```{r, results = "asis", echo = FALSE}
 for (n in names(sig)) {
 
   dat <- as.data.frame(sig[[n]])
@@ -533,7 +533,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   theme(aspect.ratio = 1)
 ```
 
-#### testPseudotime
+#### Pseudotime
 
 Test for differences along pseudotime:
 
