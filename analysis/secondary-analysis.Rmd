@@ -1,7 +1,7 @@
 ---
 title: "Secondary analysis"
 author: "James Ashmore"
-date: "2021-03-26"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
