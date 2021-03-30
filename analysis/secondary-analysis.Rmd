@@ -55,7 +55,7 @@ sce <- readRDS("output/09-cell-annotation.rds")
 
 ## Feature selection
 
-List LPMP genes:
+List marker genes:
 
 ```{r}
 ids <- c(
@@ -76,12 +76,9 @@ ids <- c(
   "ENSMUSG00000027559" = "Car3",
   "ENSMUSG00000026124" = "Cfc1",
   "ENSMUSG00000051159" = "Cited1",
-#  "ENSMUSG00000032291" = "Crabp1",
-#  "ENSMUSG00000032463" = "Faim",
   "ENSMUSG00000031074" = "Fgf3",
   "ENSMUSG00000027004" = "Frzb",
   "ENSMUSG00000024907" = "Gal",
-#  "ENSMUSG00000038668" = "Lpar1",
   "ENSMUSG00000021469" = "Msx2",
   "ENSMUSG00000010760" = "Phlda2",
   "ENSMUSG00000042821" = "Snai1",
@@ -96,10 +93,25 @@ ids <- c(
 )
 ```
 
+Test for significant correlations:
+
+```{r}
+res <- correlatePairs(
+  x = logcounts(sce),
+  pairings = list(query = ids, reference = rownames(sce))
+)
+```
+
+Subset by significance threshold:
+
+```{r}
+sig <- subset(res, FDR < 0.05)
+```
+
 Set row subset:
 
 ```{r}
-rowSubset(sce, "LPMP") <- ids
+rowSubset(sce, "HVG") <- c(ids, sig$gene2)
 ```
 
 ## Dimensionality reduction
@@ -112,7 +124,7 @@ set.seed(0010110101)
 sce <- denoisePCA(
   x = sce,
   technical = metadata(sce)$modelGeneVarWithSpikes,
-  subset.row = rowSubset(sce, "LPMP"),
+  subset.row = rowSubset(sce, "HVG"),
   BSPARAM = BiocSingular::ExactParam(),
 )
 ```
@@ -157,12 +169,27 @@ Set column labels:
 colLabels(sce) <- mem
 ```
 
-Plot heatmap of LPMP genes:
+Plot heatmap of marker genes:
 
 ```{r}
 plotHeatmap(
   object = sce,
   features = ids,
+  exprs_values = "logcounts",
+  center = TRUE,
+  zlim = c(-4, +4),
+  symmetric = TRUE,
+  colour_columns_by = "label",
+  order_columns_by = "label"
+)
+```
+
+Plot heatmap of correlated marker genes:
+
+```{r}
+plotHeatmap(
+  object = sce,
+  features = rownames(sce)[rowSubset(sce, "HVG")],
   exprs_values = "logcounts",
   center = TRUE,
   zlim = c(-4, +4),
@@ -290,7 +317,7 @@ for (n in names(sig)) {
 }
 ```
 
-## Trajectory analysis
+## Trajectory analysis {.tabset}
 
 Perform lineage inference with Slingshot:
 
@@ -299,6 +326,16 @@ set.seed(0111101000)
 
 sce <- slingshot(sce, clusterLabels = colLabels(sce), reducedDim = "PCA")
 ```
+
+Create a per-cell data.frame:
+
+```{r}
+dat <- makePerCellDF(sce)
+```
+
+### Curve 1 {.tabset}
+
+#### PCA 
 
 Embed trajectory in PCA space:
 
@@ -312,12 +349,8 @@ Extract first principal curve:
 cur.1 <- slingCurves(cur)[[1]]
 
 cur.1 <- data.frame(cur.1$s[cur.1$ord, ])
-```
 
-Create a per-cell data.frame:
-
-```{r}
-dat <- makePerCellDF(sce)
+colnames(cur.1) <- c("Dim.1", "Dim.2")
 ```
 
 Plot PCA dimension coloured by label:
@@ -325,7 +358,7 @@ Plot PCA dimension coloured by label:
 ```{r}
 ggplot(dat, aes(PCA.1, PCA.2)) + 
   geom_point(aes(colour = label)) + 
-  geom_path(data = cur.1, aes(PC1, PC2), arrow = arrow()) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_tableau() + 
   labs(x = "PCA 1", y = "PCA 2", colour = "Label") + 
   coord_fixed() + 
@@ -337,12 +370,140 @@ Plot PCA dimension coloured by pseudotime:
 ```{r}
 ggplot(dat, aes(PCA.1, PCA.2)) + 
   geom_point(aes(colour = slingPseudotime_1), size = 2) + 
-  geom_path(data = cur.1, aes(PC1, PC2), arrow = arrow()) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_viridis_c() + 
   labs(x = "PCA 1", y = "PCA 2", colour = "Pseudotime") + 
   coord_fixed() + 
   theme_bw()
 ```
+
+#### TSNE 
+
+Embed trajectory in TSNE space:
+
+```{r}
+cur <- embedCurves(sce, "TSNE")
+```
+
+Extract first principal curve:
+
+```{r}
+cur.1 <- slingCurves(cur)[[1]]
+
+cur.1 <- data.frame(cur.1$s[cur.1$ord, ])
+
+colnames(cur.1) <- c("Dim.1", "Dim.2")
+```
+
+Plot TSNE dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(TSNE.1, TSNE.2)) + 
+  geom_point(aes(colour = label)) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_tableau() + 
+  labs(x = "TSNE 1", y = "TSNE 2", colour = "Label") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot TSNE dimension coloured by pseudotime:
+
+```{r}
+ggplot(dat, aes(TSNE.1, TSNE.2)) + 
+  geom_point(aes(colour = slingPseudotime_1), size = 2) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_viridis_c() + 
+  labs(x = "TSNE 1", y = "TSNE 2", colour = "Pseudotime") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+#### UMAP
+
+Embed trajectory in UMAP space:
+
+```{r}
+cur <- embedCurves(sce, "UMAP")
+```
+
+Extract first principal curve:
+
+```{r}
+cur.1 <- slingCurves(cur)[[1]]
+
+cur.1 <- data.frame(cur.1$s[cur.1$ord, ])
+
+colnames(cur.1) <- c("Dim.1", "Dim.2")
+```
+
+Plot UMAP dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(UMAP.1, UMAP.2)) + 
+  geom_point(aes(colour = label)) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_tableau() + 
+  labs(x = "UMAP 1", y = "UMAP 2", colour = "Label") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP dimension coloured by pseudotime:
+
+```{r}
+ggplot(dat, aes(UMAP.1, UMAP.2)) + 
+  geom_point(aes(colour = slingPseudotime_1), size = 2) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_viridis_c() + 
+  labs(x = "UMAP 1", y = "UMAP 2", colour = "Pseudotime") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+#### DiffusionMap
+
+Embed trajectory in DiffusionMap space:
+
+```{r}
+cur <- embedCurves(sce, "DiffusionMap")
+```
+
+Extract first principal curve:
+
+```{r}
+cur.1 <- slingCurves(cur)[[1]]
+
+cur.1 <- data.frame(cur.1$s[cur.1$ord, ])
+
+colnames(cur.1) <- c("Dim.1", "Dim.2")
+```
+
+Plot DiffusionMap dimension coloured by label:
+
+```{r}
+ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) + 
+  geom_point(aes(colour = label)) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_tableau() + 
+  labs(x = "DiffusionMap 1", y = "DiffusionMap 2", colour = "Label") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot DiffusionMap dimension coloured by pseudotime:
+
+```{r}
+ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) + 
+  geom_point(aes(colour = slingPseudotime_1), size = 2) + 
+  geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
+  scale_colour_viridis_c() + 
+  labs(x = "DiffusionMap 1", y = "DiffusionMap 2", colour = "Pseudotime") + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+###
 
 Test for differences along pseudotime:
 
