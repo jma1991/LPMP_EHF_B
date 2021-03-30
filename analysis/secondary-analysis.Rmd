@@ -132,7 +132,8 @@ plotHeatmap(
   exprs_values = "logcounts",
   center = TRUE,
   zlim = c(-4, +4),
-  symmetric = TRUE
+  symmetric = TRUE,
+  fontsize = 8
 )
 ```
 
