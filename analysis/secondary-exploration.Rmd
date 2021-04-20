@@ -136,7 +136,7 @@ plt <- ggplot() +
   theme_no_axes() + 
   theme(aspect.ratio = 1)
 
-addSmallLegend(plt)
+addSmallLegend(plt, pointSize = 1, textSize = 6, spaceLegend = 0.1)
 ```
 
 ## Summary
