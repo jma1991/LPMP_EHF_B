@@ -96,15 +96,28 @@ colour.values <- MouseGastrulationData::EmbryoCelltypeColours
 shape.values <- c("Epi" = 0, "Epi/PXM" = 1, "LPM/P" = 2, "PXM/Meso" = 3)
 ```
 
+Define function to reduce legend size:
+
+```{r}
+addSmallLegend <- function(myPlot, pointSize = 0.5, textSize = 3, spaceLegend = 0.1) {
+    myPlot +
+        guides(shape = guide_legend(override.aes = list(size = pointSize)),
+               color = guide_legend(override.aes = list(size = pointSize))) +
+        theme(legend.title = element_text(size = textSize), 
+              legend.text  = element_text(size = textSize),
+              legend.key.size = unit(spaceLegend, "lines"))
+}
+```
+
+
 Plot UMAP coloured by celltype and shaped by cluster:
 
 ```{r fig.width = 9, fig.height = 9}
-ggplot() + 
+plt <- ggplot() + 
   geom_point(
     data = dat$reference, 
     mapping = aes(UMAP.1, UMAP.2, colour = label),
     size = 1,
-    show.legend = FALSE,
     inherit.aes = FALSE
   ) + 
   geom_point(
@@ -123,6 +136,8 @@ ggplot() +
   ) + 
   theme_no_axes() + 
   theme(aspect.ratio = 1)
+
+addSmallLegend(plt)
 ```
 
 ## Summary
