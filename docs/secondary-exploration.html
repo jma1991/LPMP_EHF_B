@@ -583,16 +583,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreead44aed875da3c01e11469d16ef332da8ee12fe4targetblankad44aeda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/ad44aed875da3c01e11469d16ef332da8ee12fe4" target="_blank">ad44aed</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree26f73052f42a5d260602a277c3c51226670e970atargetblank26f7305a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/26f73052f42a5d260602a277c3c51226670e970a" target="_blank">26f7305</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreead44aed875da3c01e11469d16ef332da8ee12fe4targetblankad44aeda" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree26f73052f42a5d260602a277c3c51226670e970atargetblank26f7305a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/ad44aed875da3c01e11469d16ef332da8ee12fe4" target="_blank">ad44aed</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/26f73052f42a5d260602a277c3c51226670e970a" target="_blank">26f7305</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -662,6 +662,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/53f3fc3d9bb20f5f2ed85caff1ab74d4cb0b0fb2/analysis/secondary-exploration.Rmd" target="_blank">53f3fc3</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-20
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/9ee54310dbcd6dccd5cebe48412040c4814f3ad7/analysis/secondary-exploration.Rmd" target="_blank">9ee5431</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-20
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/7ee3e126a595be0309bfb3fed6a3d8c122508603/docs/secondary-exploration.html" target="_blank">7ee3e12</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-20
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -737,8 +788,17 @@ names(dat) &lt;- c(&quot;reference&quot;, &quot;query&quot;)</code></pre>
 <pre class="r"><code>colour.values &lt;- MouseGastrulationData::EmbryoCelltypeColours
 
 shape.values &lt;- c(&quot;Epi&quot; = 0, &quot;Epi/PXM&quot; = 1, &quot;LPM/P&quot; = 2, &quot;PXM/Meso&quot; = 3)</code></pre>
+<p>Define function to reduce legend size:</p>
+<pre class="r"><code>addSmallLegend &lt;- function(myPlot, pointSize = 0.5, textSize = 3, spaceLegend = 0.1) {
+    myPlot +
+        guides(shape = guide_legend(override.aes = list(size = pointSize)),
+               color = guide_legend(override.aes = list(size = pointSize))) +
+        theme(legend.title = element_text(size = textSize), 
+              legend.text  = element_text(size = textSize),
+              legend.key.size = unit(spaceLegend, &quot;lines&quot;))
+}</code></pre>
 <p>Plot UMAP coloured by celltype and shaped by cluster:</p>
-<pre class="r"><code>ggplot() + 
+<pre class="r"><code>plt &lt;- ggplot() + 
   geom_point(
     data = dat$reference, 
     mapping = aes(UMAP.1, UMAP.2, colour = label),
@@ -760,8 +820,10 @@ shape.values &lt;- c(&quot;Epi&quot; = 0, &quot;Epi/PXM&quot; = 1, &quot;LPM/P&q
     values = shape.values
   ) + 
   theme_no_axes() + 
-  theme(aspect.ratio = 1)</code></pre>
-<p><img src="figure/secondary-exploration.Rmd/unnamed-chunk-11-1.png" width="864" style="display: block; margin: auto;" /></p>
+  theme(aspect.ratio = 1)
+
+addSmallLegend(plt)</code></pre>
+<p><img src="figure/secondary-exploration.Rmd/unnamed-chunk-12-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
