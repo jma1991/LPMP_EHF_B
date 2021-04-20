@@ -104,6 +104,7 @@ ggplot() +
     data = dat$reference, 
     mapping = aes(UMAP.1, UMAP.2, colour = label),
     size = 1,
+    show.legend = FALSE,
     inherit.aes = FALSE
   ) + 
   geom_point(
