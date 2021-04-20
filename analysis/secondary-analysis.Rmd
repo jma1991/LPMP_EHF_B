@@ -192,18 +192,6 @@ set.seed(0101100010)
 mem <- clusterRows(reducedDim(sce, "PCA"), NNGraphParam(type = "jaccard", cluster.fun = "louvain"))
 ```
 
-Write cluster labels:
-
-```{r}
-dat <- data.frame(
-  colname = colnames(sce),
-  cluster = mem,
-  stringsAsFactors = FALSE
-)
-
-write.csv(dat, file = "output/secondary-clusters.csv")
-```
-
 Set column labels:
 
 ```{r}
