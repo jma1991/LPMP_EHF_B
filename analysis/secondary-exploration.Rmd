@@ -116,13 +116,13 @@ plt <- ggplot() +
   geom_point(
     data = dat$reference, 
     mapping = aes(UMAP.1, UMAP.2, colour = label),
-    size = 1,
+    size = 0.5,
     inherit.aes = FALSE
   ) + 
   geom_point(
     data = dat$query, 
     mapping = aes(UMAP.1, UMAP.2, shape = label), 
-    size = 2,
+    size = 5,
     inherit.aes = FALSE
   ) + 
   scale_colour_manual(
@@ -133,7 +133,11 @@ plt <- ggplot() +
     name = "Cluster",
     values = shape.values
   ) + 
-  theme_no_axes() + 
+  coord_cartesian(
+    xlim = c(-7.5, 2.5),
+    ylim = c(-2.5, 12.5)
+  ) + 
+  theme_bw() +  
   theme(aspect.ratio = 1)
 
 addSmallLegend(plt, pointSize = 2, textSize = 8, spaceLegend = 0.75)
