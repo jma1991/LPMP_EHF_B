@@ -1,0 +1,135 @@
+---
+title: "Secondary exploration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/secondary-exploration.Rmd/",
+  dev        = "png",
+  echo       = TRUE,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+library(scuttle)
+library(slingshot)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(ggplot2)
+library(ggthemes)
+library(pheatmap)
+```
+
+Read experiment object:
+
+```{r cache = FALSE}
+sce <- readRDS("output/10-atlas-integration.rds")
+```
+
+Read secondary cluster labels:
+
+```{r}
+mem <- read.csv("output/secondary-clusters.csv", row.names = 1)
+```
+
+## Processing
+
+Add celltype annotation to cluster labels:
+
+```{r}
+ids <- c("Epi", "Epi/PXM", "LPM/P", "PXM/Meso")
+
+mem$celltype <- ids[mem$cluster]
+```
+
+Set column labels as celltype annotation:
+
+```{r cache = FALSE}
+colLabels(sce) <- sce$celltype
+```
+
+Replace column labels for LPMP data with cluster annotation:
+
+```{r cache = FALSE}
+colLabels(sce)[sce$batch == "LPMP_EHF"] <- mem$celltype
+```
+
+## Exploration
+
+Create a per-cell data.frame:
+
+```{r cache = FALSE}
+dat <- makePerCellDF(sce, use.dimred = "UMAP")
+
+dat <- split(dat, dat$batch == "LPMP_EHF")
+
+names(dat) <- c("reference", "query")
+```
+
+Define colour and shape palettes:
+
+```{r}
+colour.values <- MouseGastrulationData::EmbryoCelltypeColours
+
+shape.values <- c("Epi" = 0, "Epi/PXM" = 1, "LPM/P" = 2, "PXM/Meso" = 3)
+```
+
+Plot UMAP coloured by celltype and shaped by cluster:
+
+```{r fig.width = 9, fig.height = 9}
+ggplot() + 
+  geom_point(
+    data = dat$reference, 
+    mapping = aes(UMAP.1, UMAP.2, colour = label),
+    size = 1,
+    inherit.aes = FALSE
+  ) + 
+  geom_point(
+    data = dat$query, 
+    mapping = aes(UMAP.1, UMAP.2, shape = label), 
+    size = 2,
+    inherit.aes = FALSE
+  ) + 
+  scale_colour_manual(
+    name = "Celltype",
+    values = colour.values
+  ) + 
+  scale_shape_manual(
+    name = "Cluster",
+    values = shape.values
+  ) + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
