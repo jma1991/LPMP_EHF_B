@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 Load Bioconductor packages:
 
-```{r}
+```{r cache = FALSE}
 library(scater)
 library(scran)
 library(scuttle)
@@ -35,7 +35,7 @@ library(slingshot)
 
 Load CRAN packages:
 
-```{r}
+```{r cache = FALSE}
 library(ggforce)
 library(ggplot2)
 library(ggthemes)
