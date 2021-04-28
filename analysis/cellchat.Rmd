@@ -287,6 +287,26 @@ for (i in ids) {
 }
 ```
 
+### Target {.tabset}
+
+```{r, fig.width = 7, fig.height = 7, results = "asis"}
+ids <- sort(unique(net$target))
+
+for (i in ids) {
+  
+  cat("####", i, "\n")
+  
+  chordDiagram(
+    x = subset(net, target == i), 
+    title = i
+  )
+  
+  cat("\n\n")
+  
+}
+```
+
+
 
 
 
