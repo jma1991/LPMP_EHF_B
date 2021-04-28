@@ -259,7 +259,7 @@ chordDiagram <- function(x, title = NULL) {
 
   lgd <- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = "Prob")
 
-  draw(lgd, x = unit(10, "mm"), y = unit(10, "mm"), just = c("left", "bottom"))
+  ComplexHeatmap::draw(lgd, x = unit(10, "mm"), y = unit(10, "mm"), just = c("left", "bottom"))
 
   #
 
