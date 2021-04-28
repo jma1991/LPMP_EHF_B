@@ -275,11 +275,11 @@ ids <- sort(unique(net$source))
 
 for (i in ids) {
   
-  cat("####", n, "\n")
+  cat("####", i, "\n")
   
   chordDiagram(
     x = subset(net, source == i), 
-    title = "Source: 1"
+    title = i
   )
   
   cat("\n\n")
