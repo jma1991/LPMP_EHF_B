@@ -181,6 +181,7 @@ chordDiagram <- function(x, title = NULL) {
   ## Create prob colour palette
 
   prob.colours <- RColorBrewer::brewer.pal(10, "Spectral")
+  prob.breaks <- seq(0, 1, along.with = prob.colours)
   prob.palette <- colorRamp(prob.colours)
   prob.palette <- rgb(prob.palette(x$prob)/255)
 
@@ -255,10 +256,10 @@ chordDiagram <- function(x, title = NULL) {
   }
 
   # Plot links legend
+  
+  col <- colorRamp2(breaks = prob.breaks, colors = prob.colours)
 
-  col <- colorRamp2(breaks = c(0, 1), colors = prob.colours)
-
-  lgd <- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = "Prob")
+  lgd <- ComplexHeatmap::Legend(at = c(0, 0.5, 1), col_fun = col, title = "Prob")
 
   ComplexHeatmap::draw(lgd, x = unit(10, "mm"), y = unit(10, "mm"), just = c("left", "bottom"))
 
