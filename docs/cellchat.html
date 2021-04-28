@@ -591,16 +591,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreee218f34da693f37edecf4a7d58b8dc4304edc46etargetblanke218f34a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/e218f34da693f37edecf4a7d58b8dc4304edc46e" target="_blank">e218f34</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec7372d0f98e128739fc6516814e53fa42ae76e45targetblankc7372d0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c7372d0f98e128739fc6516814e53fa42ae76e45" target="_blank">c7372d0</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreee218f34da693f37edecf4a7d58b8dc4304edc46etargetblanke218f34a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec7372d0f98e128739fc6516814e53fa42ae76e45targetblankc7372d0a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/e218f34da693f37edecf4a7d58b8dc4304edc46e" target="_blank">e218f34</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c7372d0f98e128739fc6516814e53fa42ae76e45" target="_blank">c7372d0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -671,6 +671,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c7372d0f98e128739fc6516814e53fa42ae76e45/analysis/cellchat.Rmd" target="_blank">c7372d0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/analysis/cellchat.Rmd" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/cellchat.html" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1075,7 +1126,9 @@ The cell groups used for CellChat analysis are  1 2 3 4 </code></pre>
 
   ## Create prob colour palette
 
-  prob.palette &lt;- colorRamp(c(&quot;white&quot;, &quot;black&quot;))
+  prob.colours &lt;- RColorBrewer::brewer.pal(10, &quot;Spectral&quot;)
+  prob.breaks &lt;- seq(0, 1, along.with = prob.colours)
+  prob.palette &lt;- colorRamp(prob.colours)
   prob.palette &lt;- rgb(prob.palette(x$prob)/255)
 
   ## Plot chord diagram
@@ -1149,10 +1202,10 @@ The cell groups used for CellChat analysis are  1 2 3 4 </code></pre>
   }
 
   # Plot links legend
+  
+  col &lt;- colorRamp2(breaks = prob.breaks, colors = prob.colours)
 
-  col &lt;- colorRamp2(c(0, 1), c(&quot;white&quot;, &quot;black&quot;))
-
-  lgd &lt;- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = &quot;Prob&quot;)
+  lgd &lt;- ComplexHeatmap::Legend(at = c(0, 0.5, 1), col_fun = col, title = &quot;Prob&quot;)
 
   ComplexHeatmap::draw(lgd, x = unit(10, &quot;mm&quot;), y = unit(10, &quot;mm&quot;), just = c(&quot;left&quot;, &quot;bottom&quot;))
 
@@ -1204,6 +1257,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-1.png" target="_blank">4c5043c</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/507a4d5265dc115133edcac12fd139a30346dea7/docs/figure/cellchat.Rmd/unnamed-chunk-20-1.png" target="_blank">507a4d5</a>
 </td>
 <td>
@@ -1243,6 +1307,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-2.png" target="_blank">4c5043c</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/507a4d5265dc115133edcac12fd139a30346dea7/docs/figure/cellchat.Rmd/unnamed-chunk-20-2.png" target="_blank">507a4d5</a>
@@ -1286,6 +1361,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-3.png" target="_blank">4c5043c</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/507a4d5265dc115133edcac12fd139a30346dea7/docs/figure/cellchat.Rmd/unnamed-chunk-20-3.png" target="_blank">507a4d5</a>
 </td>
 <td>
@@ -1327,6 +1413,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-4.png" target="_blank">4c5043c</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/507a4d5265dc115133edcac12fd139a30346dea7/docs/figure/cellchat.Rmd/unnamed-chunk-20-4.png" target="_blank">507a4d5</a>
 </td>
 <td>
@@ -1361,18 +1458,166 @@ for (i in ids) {
 <div id="section-4" class="section level4">
 <h4>1</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
+Past versions of unnamed-chunk-21-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-1.png" target="_blank">e218f34</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="section-5" class="section level4">
 <h4>2</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-2">
+Past versions of unnamed-chunk-21-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-2.png" target="_blank">e218f34</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="section-6" class="section level4">
 <h4>3</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-3">
+Past versions of unnamed-chunk-21-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-3.png" target="_blank">e218f34</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="section-7" class="section level4">
 <h4>4</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-4">
+Past versions of unnamed-chunk-21-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-4.png" target="_blank">e218f34</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="annotation" class="section level3 tabset">
@@ -1394,14 +1639,125 @@ for (i in ids) {
 <div id="cell-cell-contact" class="section level4">
 <h4>Cell-Cell Contact</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-1.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ecm-receptor" class="section level4">
 <h4>ECM-Receptor</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-2">
+Past versions of unnamed-chunk-22-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-2.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="secreted-signaling" class="section level4">
 <h4>Secreted Signaling</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-3">
+Past versions of unnamed-chunk-22-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-3.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="pathway" class="section level3 tabset">
@@ -1423,86 +1779,863 @@ for (i in ids) {
 <div id="apelin" class="section level4">
 <h4>APELIN</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-1.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="apj" class="section level4">
 <h4>APJ</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-2">
+Past versions of unnamed-chunk-23-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-2.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="bmp" class="section level4">
 <h4>BMP</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-3">
+Past versions of unnamed-chunk-23-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-3.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cadm" class="section level4">
 <h4>CADM</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-4">
+Past versions of unnamed-chunk-23-4.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-4" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-4.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cdh" class="section level4">
 <h4>CDH</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-5">
+Past versions of unnamed-chunk-23-5.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-5" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-5.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="collagen" class="section level4">
 <h4>COLLAGEN</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-6">
+Past versions of unnamed-chunk-23-6.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-6" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-6.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cxcl" class="section level4">
 <h4>CXCL</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-7">
+Past versions of unnamed-chunk-23-7.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-7" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-7.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="epha" class="section level4">
 <h4>EPHA</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-8">
+Past versions of unnamed-chunk-23-8.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-8" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-8.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ephb" class="section level4">
 <h4>EPHB</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-9">
+Past versions of unnamed-chunk-23-9.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-9" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-9.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="fn1" class="section level4">
 <h4>FN1</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-10">
+Past versions of unnamed-chunk-23-10.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-10" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-10.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="gdf" class="section level4">
 <h4>GDF</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-11.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-11">
+Past versions of unnamed-chunk-23-11.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-11" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-11.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="l1cam" class="section level4">
 <h4>L1CAM</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-12.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-12">
+Past versions of unnamed-chunk-23-12.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-12" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-12.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ncam" class="section level4">
 <h4>NCAM</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-13.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-13">
+Past versions of unnamed-chunk-23-13.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-13" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-13.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ncwnt" class="section level4">
 <h4>ncWNT</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-14.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-14">
+Past versions of unnamed-chunk-23-14.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-14" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-14.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="notch" class="section level4">
 <h4>NOTCH</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-15.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-15">
+Past versions of unnamed-chunk-23-15.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-15" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-15.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="pdgf" class="section level4">
 <h4>PDGF</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-16.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-16">
+Past versions of unnamed-chunk-23-16.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-16" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-16.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ptn" class="section level4">
 <h4>PTN</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-17.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-17">
+Past versions of unnamed-chunk-23-17.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-17" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-17.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="sema6" class="section level4">
 <h4>SEMA6</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-18.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-18">
+Past versions of unnamed-chunk-23-18.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-18" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-18.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="vegf" class="section level4">
 <h4>VEGF</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-19.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-19">
+Past versions of unnamed-chunk-23-19.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-19" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-19.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="visfatin" class="section level4">
 <h4>VISFATIN</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-20.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-20">
+Past versions of unnamed-chunk-23-20.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-20" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-20.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="wnt" class="section level4">
 <h4>WNT</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-23-21.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-21">
+Past versions of unnamed-chunk-23-21.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-21" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-21.png" target="_blank">d4f75b0</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>

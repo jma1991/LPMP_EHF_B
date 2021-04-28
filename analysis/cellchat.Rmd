@@ -180,7 +180,7 @@ chordDiagram <- function(x, title = NULL) {
 
   ## Create prob colour palette
 
-  prob.colours <- RColorBrewer::brewer.pal(10, "Spectral")
+  prob.colours <- rev(RColorBrewer::brewer.pal(10, "Spectral"))
   prob.breaks <- seq(0, 1, along.with = prob.colours)
   prob.palette <- colorRamp(prob.colours)
   prob.palette <- rgb(prob.palette(x$prob)/255)
@@ -269,6 +269,8 @@ chordDiagram <- function(x, title = NULL) {
 
 }
 ```
+
+###
 
 ### Source {.tabset}
 
