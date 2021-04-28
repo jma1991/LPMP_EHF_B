@@ -270,7 +270,7 @@ chordDiagram <- function(x, title = NULL) {
 
 ### Source {.tabset}
 
-```{r, fig.width = 8, fig.height = 8, results = "asis"}
+```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$source))
 
 for (i in ids) {
