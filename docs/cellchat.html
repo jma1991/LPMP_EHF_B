@@ -591,16 +591,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a19d9f18211456be71e63ca53542a58fb182b51targetblank8a19d9fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a19d9f18211456be71e63ca53542a58fb182b51" target="_blank">8a19d9f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreedc1707aca7d657ce653a9074b85622935ba43df9targetblankdc1707aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/dc1707aca7d657ce653a9074b85622935ba43df9" target="_blank">dc1707a</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree8a19d9f18211456be71e63ca53542a58fb182b51targetblank8a19d9fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreedc1707aca7d657ce653a9074b85622935ba43df9targetblankdc1707aa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/8a19d9f18211456be71e63ca53542a58fb182b51" target="_blank">8a19d9f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/dc1707aca7d657ce653a9074b85622935ba43df9" target="_blank">dc1707a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -671,6 +671,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/dc1707aca7d657ce653a9074b85622935ba43df9/analysis/cellchat.Rmd" target="_blank">dc1707a</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/dc1707aca7d657ce653a9074b85622935ba43df9/docs/cellchat.html" target="_blank">dc1707a</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1285,7 +1319,7 @@ The cell groups used for CellChat analysis are  1 2 3 4 </code></pre>
 }</code></pre>
 <div id="source" class="section level3 tabset">
 <h3 class="tabset">Source</h3>
-<p>Plot chord diagram subset by source:</p>
+<p>Plot chord diagram by source:</p>
 <pre class="r"><code>ids &lt;- sort(unique(net$source))
 
 for (i in ids) {
@@ -1555,7 +1589,7 @@ James Ashmore
 </div>
 <div id="target" class="section level3 tabset">
 <h3 class="tabset">Target</h3>
-<p>Plot chord diagram subset by target:</p>
+<p>Plot chord diagram by target:</p>
 <pre class="r"><code>ids &lt;- sort(unique(net$target))
 
 for (i in ids) {
@@ -1781,7 +1815,7 @@ James Ashmore
 </div>
 <div id="annotation" class="section level3 tabset">
 <h3 class="tabset">Annotation</h3>
-<p>Plot chord diagram subset by annotation:</p>
+<p>Plot chord diagram by annotation:</p>
 <pre class="r"><code>ids &lt;- sort(unique(net$annotation))
 
 for (i in ids) {
@@ -1955,7 +1989,7 @@ James Ashmore
 </div>
 <div id="pathway" class="section level3 tabset">
 <h3 class="tabset">Pathway</h3>
-<p>Plot chord diagram subset by pathway:</p>
+<p>Plot chord diagram by pathway:</p>
 <pre class="r"><code>ids &lt;- sort(unique(net$pathway_name))
 
 for (i in ids) {
