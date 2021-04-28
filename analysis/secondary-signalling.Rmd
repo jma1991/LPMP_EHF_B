@@ -1,5 +1,5 @@
 ---
-title: "CellChat"
+title: "Secondary signalling"
 author: "James Ashmore"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
@@ -15,7 +15,7 @@ Set chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = "cache/cellchat.Rmd/",
+  cache.path = "cache/secondary-signalling.Rmd/",
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
