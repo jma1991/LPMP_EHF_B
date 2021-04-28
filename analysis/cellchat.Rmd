@@ -306,28 +306,43 @@ for (i in ids) {
 }
 ```
 
+### Annotation {.tabset}
 
+```{r, fig.width = 7, fig.height = 7, results = "asis"}
+ids <- sort(unique(net$annotation))
 
+for (i in ids) {
+  
+  cat("####", i, "\n")
+  
+  chordDiagram(
+    x = subset(net, annotation == i), 
+    title = i
+  )
+  
+  cat("\n\n")
+  
+}
+```
 
+### Pathway {.tabset}
 
+```{r, fig.width = 7, fig.height = 7, results = "asis"}
+ids <- sort(unique(net$pathway_name))
 
-<!-- ## Target -->
-
-<!-- ```{r} -->
-<!-- chordDiagram(x = subset(net, source == 1), title = "Source: 1") -->
-<!-- ``` -->
-
-<!-- ## Annotation -->
-
-<!-- ```{r} -->
-<!-- chordDiagram(x = subset(net, source == 1), title = "Source: 1") -->
-<!-- ``` -->
-
-<!-- ## Pathway -->
-
-<!-- ```{r} -->
-<!-- chordDiagram(x = subset(net, source == 1), title = "Source: 1") -->
-<!-- ``` -->
+for (i in ids) {
+  
+  cat("####", i, "\n")
+  
+  chordDiagram(
+    x = subset(net, pathway_name == i), 
+    title = i
+  )
+  
+  cat("\n\n")
+  
+}
+```
 
 ## Summary
 
