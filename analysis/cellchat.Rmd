@@ -131,142 +131,142 @@ Print interactive table of all the inferred cell-cell communications:
 cat(knitr::knit_print(DT::datatable(net)))
 ```
 
-<!-- ## Results {.tabset} -->
+## Results {.tabset}
 
-<!-- Define chord diagram function: -->
+Define chord diagram function:
 
-<!-- ```{r} -->
-<!-- chordDiagram <- function(x, title = NULL) { -->
+```{r}
+chordDiagram <- function(x, title = NULL) {
 
-<!--   ## Create data frame with connections -->
+  ## Create data frame with connections
 
-<!--   dat <- data.frame( -->
-<!--     from = paste(x$source, x$ligand, sep = "."),  -->
-<!--     to = paste(x$target, x$receptor, sep = ".") -->
-<!--   ) -->
+  dat <- data.frame(
+    from = paste(x$source, x$ligand, sep = "."),
+    to = paste(x$target, x$receptor, sep = ".")
+  )
 
-<!--   ## Create connections annotation -->
+  ## Create connections annotation
 
-<!--   ann <- setNames( -->
-<!--     object = c(x$ligand, x$receptor),  -->
-<!--     nm = c(x$source, x$target) -->
-<!--   ) -->
+  ann <- setNames(
+    object = c(x$ligand, x$receptor),
+    nm = c(x$source, x$target)
+  )
 
-<!--   ## Filter duplicated connections -->
+  ## Filter duplicated connections
 
-<!--   ids <- paste(names(ann), ann, sep = ".") -->
+  ids <- paste(names(ann), ann, sep = ".")
 
-<!--   ann <- ann[!duplicated(ids)] -->
-
-
-<!--   ## Order connections by name and value -->
-
-<!--   ids <- paste(names(ann), ann, sep = ".") -->
-
-<!--   ann <- ann[order(ids)] -->
+  ann <- ann[!duplicated(ids)]
 
 
-<!--   ## Create LR colour palette -->
+  ## Order connections by name and value
 
-<!--   ids <- unique(ann) -->
+  ids <- paste(names(ann), ann, sep = ".")
 
-<!--   col <- iwanthue(n = length(ids)) -->
+  ann <- ann[order(ids)]
 
-<!--   names(col) <- ids -->
 
-<!--   col <- col[ann] -->
+  ## Create LR colour palette
 
-<!--   names(col) <- paste(names(ann), ann, sep = ".") -->
+  ids <- unique(ann)
 
-<!--   ## Create prob colour palette -->
+  col <- iwanthue(n = length(ids))
 
-<!--   prob.palette <- colorRamp(c("blue", "yellow", "red")) -->
-<!--   prob.palette <- rgb(prob.palette(x$prob)/255) -->
+  names(col) <- ids
 
-<!--   ## Plot chord diagram -->
+  col <- col[ann]
 
-<!--   circlize::chordDiagram( -->
-<!--     x = dat,  -->
-<!--     grid.col = col,  -->
-<!--     transparency = 0.5,  -->
-<!--     col = "#00000000",  -->
-<!--     order = names(col),  -->
-<!--     directional = 1,  -->
-<!--     direction.type = "arrows",  -->
-<!--     annotationTrack = "grid",  -->
-<!--     preAllocateTracks = list( -->
-<!--       list(track.height = uh(2,'mm')),  -->
-<!--       list(track.height = uh(12,'mm')) -->
-<!--     ),  -->
-<!--     annotationTrackHeight = c(0.01, 0.01), -->
-<!--     link.arr.col = prob.palette -->
-<!--   ) -->
+  names(col) <- paste(names(ann), ann, sep = ".")
 
-<!--   ## Plot title -->
+  ## Create prob colour palette
 
-<!--   graphics::title(title, cex = 0.6) -->
+  prob.palette <- colorRamp(c("blue", "yellow", "red"))
+  prob.palette <- rgb(prob.palette(x$prob)/255)
 
-<!--   ## Plot track region -->
+  ## Plot chord diagram
 
-<!--   circlize::circos.trackPlotRegion( -->
-<!--     track.index = 2,  -->
-<!--     bg.border = 0,  -->
-<!--     panel.fun = function(x, y) { -->
-<!--       xlim <- get.cell.meta.data("xlim") -->
-<!--       ylim <- get.cell.meta.data("ylim") -->
-<!--       sector.index <- ann[get.cell.meta.data("sector.numeric.index")] -->
-<!--       circos.text( -->
-<!--         x = mean(xlim),  -->
-<!--         y = mean(ylim),  -->
-<!--         sector.index,  -->
-<!--         facing = "clockwise",  -->
-<!--         niceFacing = TRUE,  -->
-<!--         cex = 0.7,  -->
-<!--         col = "black" -->
-<!--       ) -->
-<!--     } -->
-<!--   ) -->
+  circlize::chordDiagram(
+    x = dat,
+    grid.col = col,
+    transparency = 0.5,
+    col = "#00000000",
+    order = names(col),
+    directional = 1,
+    direction.type = "arrows",
+    annotationTrack = "grid",
+    preAllocateTracks = list(
+      list(track.height = uh(2,'mm')),
+      list(track.height = uh(12,'mm'))
+    ),
+    annotationTrackHeight = c(0.01, 0.01),
+    link.arr.col = prob.palette
+  )
 
-<!--   ## Create group colour palette -->
+  ## Plot title
 
-<!--   ids <- unique(names(ann)) -->
+  graphics::title(title, cex = 0.6)
 
-<!--   col <- iwanthue(n = length(ids)) -->
+  ## Plot track region
 
-<!--   names(col) <- ids -->
+  circlize::circos.trackPlotRegion(
+    track.index = 2,
+    bg.border = 0,
+    panel.fun = function(x, y) {
+      xlim <- get.cell.meta.data("xlim")
+      ylim <- get.cell.meta.data("ylim")
+      sector.index <- ann[get.cell.meta.data("sector.numeric.index")]
+      circos.text(
+        x = mean(xlim),
+        y = mean(ylim),
+        sector.index,
+        facing = "clockwise",
+        niceFacing = TRUE,
+        cex = 0.7,
+        col = "black"
+      )
+    }
+  )
 
-<!--   ## Plot highlight sector -->
+  ## Create group colour palette
 
-<!--   for (i in ids) { -->
+  ids <- unique(names(ann))
 
-<!--     df <- ann[names(ann) == i] -->
+  col <- iwanthue(n = length(ids))
 
-<!--     circlize::highlight.sector( -->
-<!--       sector.index = paste(names(df), df, sep = "."),  -->
-<!--       track.index = 1,  -->
-<!--       col = col[i],  -->
-<!--       lwd = 1, -->
-<!--       text = i,  -->
-<!--       text.vjust = '0.4cm',  -->
-<!--       niceFacing = TRUE -->
-<!--     ) -->
+  names(col) <- ids
 
-<!--   } -->
+  ## Plot highlight sector
 
-<!--   # Plot links legend -->
+  for (i in ids) {
 
-<!--   col <- colorRamp2(c(0, 0.5, 1), c("blue", "yellow", "red")) -->
+    df <- ann[names(ann) == i]
 
-<!--   lgd <- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = "Prob") -->
+    circlize::highlight.sector(
+      sector.index = paste(names(df), df, sep = "."),
+      track.index = 1,
+      col = col[i],
+      lwd = 1,
+      text = i,
+      text.vjust = '0.4cm',
+      niceFacing = TRUE
+    )
 
-<!--   draw(lgd, x = unit(10, "mm"), y = unit(10, "mm"), just = c("left", "bottom")) -->
+  }
 
-<!--   # -->
+  # Plot links legend
 
-<!--   circos.clear() -->
+  col <- colorRamp2(c(0, 0.5, 1), c("blue", "yellow", "red"))
 
-<!-- } -->
-<!-- ``` -->
+  lgd <- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = "Prob")
+
+  draw(lgd, x = unit(10, "mm"), y = unit(10, "mm"), just = c("left", "bottom"))
+
+  #
+
+  circos.clear()
+
+}
+```
 
 <!-- ## Source -->
 
