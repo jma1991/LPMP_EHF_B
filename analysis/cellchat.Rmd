@@ -131,7 +131,7 @@ Print interactive table of all the inferred cell-cell communications:
 cat(knitr::knit_print(DT::datatable(net)))
 ```
 
-## Results {.tabset}
+## Results
 
 Define chord diagram function:
 
@@ -268,7 +268,7 @@ chordDiagram <- function(x, title = NULL) {
 }
 ```
 
-### Source
+### Source {.tabset}
 
 ```{r, fig.width = 8, fig.height = 8, results = "asis"}
 ids <- sort(unique(net$source))
