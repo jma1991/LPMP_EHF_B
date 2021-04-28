@@ -272,7 +272,7 @@ chordDiagram <- function(x, title = NULL) {
 
 ### Source {.tabset}
 
-Plot chord diagram subset by source:
+Plot chord diagram by source:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$source))
@@ -293,7 +293,7 @@ for (i in ids) {
 
 ### Target {.tabset}
 
-Plot chord diagram subset by target:
+Plot chord diagram by target:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$target))
@@ -314,7 +314,7 @@ for (i in ids) {
 
 ### Annotation {.tabset}
 
-Plot chord diagram subset by annotation:
+Plot chord diagram by annotation:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$annotation))
@@ -335,7 +335,7 @@ for (i in ids) {
 
 ### Pathway {.tabset}
 
-Plot chord diagram subset by pathway:
+Plot chord diagram by pathway:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$pathway_name))
