@@ -127,7 +127,7 @@ net <- subsetCommunication(cellchat)
 
 Print interactive table of all the inferred cell-cell communications:
 
-```{r}
+```{r, results = "asis", echo = FALSE}
 cat(knitr::knit_print(DT::datatable(dat)))
 ```
 
