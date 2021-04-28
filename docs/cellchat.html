@@ -591,16 +591,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec7372d0f98e128739fc6516814e53fa42ae76e45targetblankc7372d0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c7372d0f98e128739fc6516814e53fa42ae76e45" target="_blank">c7372d0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec4773b586cba9289df879cc39de32ed36491a4d0targetblankc4773b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c4773b586cba9289df879cc39de32ed36491a4d0" target="_blank">c4773b5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec7372d0f98e128739fc6516814e53fa42ae76e45targetblankc7372d0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec4773b586cba9289df879cc39de32ed36491a4d0targetblankc4773b5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c7372d0f98e128739fc6516814e53fa42ae76e45" target="_blank">c7372d0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c4773b586cba9289df879cc39de32ed36491a4d0" target="_blank">c4773b5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -671,6 +671,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/analysis/cellchat.Rmd" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/c4773b586cba9289df879cc39de32ed36491a4d0/docs/cellchat.html" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1126,7 +1160,7 @@ The cell groups used for CellChat analysis are  1 2 3 4 </code></pre>
 
   ## Create prob colour palette
 
-  prob.colours &lt;- RColorBrewer::brewer.pal(10, &quot;Spectral&quot;)
+  prob.colours &lt;- rev(RColorBrewer::brewer.pal(10, &quot;Spectral&quot;))
   prob.breaks &lt;- seq(0, 1, along.with = prob.colours)
   prob.palette &lt;- colorRamp(prob.colours)
   prob.palette &lt;- rgb(prob.palette(x$prob)/255)
@@ -1214,6 +1248,9 @@ The cell groups used for CellChat analysis are  1 2 3 4 </code></pre>
   circos.clear()
 
 }</code></pre>
+<div id="section" class="section level3">
+<h3></h3>
+</div>
 <div id="source" class="section level3 tabset">
 <h3 class="tabset">Source</h3>
 <pre class="r"><code>ids &lt;- sort(unique(net$source))
@@ -1230,7 +1267,7 @@ for (i in ids) {
   cat(&quot;\n\n&quot;)
   
 }</code></pre>
-<div id="section" class="section level4">
+<div id="section-1" class="section level4">
 <h4>1</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1255,6 +1292,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-20-1.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-1.png" target="_blank">4c5043c</a>
@@ -1282,7 +1330,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-1" class="section level4">
+<div id="section-2" class="section level4">
 <h4>2</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1307,6 +1355,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-20-2.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-2.png" target="_blank">4c5043c</a>
@@ -1334,7 +1393,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-2" class="section level4">
+<div id="section-3" class="section level4">
 <h4>3</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1359,6 +1418,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-20-3.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-3.png" target="_blank">4c5043c</a>
@@ -1386,7 +1456,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-3" class="section level4">
+<div id="section-4" class="section level4">
 <h4>4</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-20-4.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1411,6 +1481,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-20-4.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/4c5043c974ba3cfacb62eeec40a6dd0b2fe1e8ca/docs/figure/cellchat.Rmd/unnamed-chunk-20-4.png" target="_blank">4c5043c</a>
@@ -1455,7 +1536,7 @@ for (i in ids) {
   cat(&quot;\n\n&quot;)
   
 }</code></pre>
-<div id="section-4" class="section level4">
+<div id="section-5" class="section level4">
 <h4>1</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1482,6 +1563,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-21-1.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-1.png" target="_blank">e218f34</a>
 </td>
 <td>
@@ -1496,7 +1588,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-5" class="section level4">
+<div id="section-6" class="section level4">
 <h4>2</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1523,6 +1615,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-21-2.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-2.png" target="_blank">e218f34</a>
 </td>
 <td>
@@ -1537,7 +1640,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-6" class="section level4">
+<div id="section-7" class="section level4">
 <h4>3</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1564,6 +1667,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-21-3.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-3.png" target="_blank">e218f34</a>
 </td>
 <td>
@@ -1578,7 +1692,7 @@ James Ashmore
 </div>
 </div>
 </div>
-<div id="section-7" class="section level4">
+<div id="section-8" class="section level4">
 <h4>4</h4>
 <p><img src="figure/cellchat.Rmd/unnamed-chunk-21-4.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1603,6 +1717,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-21-4.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/e218f34da693f37edecf4a7d58b8dc4304edc46e/docs/figure/cellchat.Rmd/unnamed-chunk-21-4.png" target="_blank">e218f34</a>
@@ -1663,6 +1788,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-22-1.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-1.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -1704,6 +1840,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-22-2.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-2.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -1743,6 +1890,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-22-3.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-22-3.png" target="_blank">d4f75b0</a>
@@ -1803,6 +1961,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-1.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-1.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -1842,6 +2011,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-2.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-2.png" target="_blank">d4f75b0</a>
@@ -1885,6 +2065,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-3.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-3.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -1924,6 +2115,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-4.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-4.png" target="_blank">d4f75b0</a>
@@ -1967,6 +2169,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-5.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-5.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2006,6 +2219,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-6.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-6.png" target="_blank">d4f75b0</a>
@@ -2049,6 +2273,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-7.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-7.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2088,6 +2323,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-8.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-8.png" target="_blank">d4f75b0</a>
@@ -2131,6 +2377,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-9.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-9.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2170,6 +2427,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-10.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-10.png" target="_blank">d4f75b0</a>
@@ -2213,6 +2481,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-11.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-11.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2252,6 +2531,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-12.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-12.png" target="_blank">d4f75b0</a>
@@ -2295,6 +2585,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-13.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-13.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2334,6 +2635,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-14.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-14.png" target="_blank">d4f75b0</a>
@@ -2377,6 +2689,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-15.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-15.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2416,6 +2739,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-16.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-16.png" target="_blank">d4f75b0</a>
@@ -2459,6 +2793,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-17.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-17.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2498,6 +2843,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-18.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-18.png" target="_blank">d4f75b0</a>
@@ -2541,6 +2897,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-19.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-19.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2582,6 +2949,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-20.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-20.png" target="_blank">d4f75b0</a>
 </td>
 <td>
@@ -2621,6 +2999,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c4773b586cba9289df879cc39de32ed36491a4d0/docs/figure/cellchat.Rmd/unnamed-chunk-23-21.png" target="_blank">c4773b5</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/jma1991/LPMP_EHF_B/blob/d4f75b0f1eff72b17213044eb999173d82ea675f/docs/figure/cellchat.Rmd/unnamed-chunk-23-21.png" target="_blank">d4f75b0</a>

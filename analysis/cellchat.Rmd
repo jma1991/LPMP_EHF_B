@@ -63,7 +63,7 @@ rownames(sce) <- uniquifyFeatureNames(
 )
 ```
 
-## CellChat
+## Processing
 
 Create a CellChat object from a SingleCellExperiment object:
 
@@ -125,15 +125,15 @@ Returns a data frame consisting of all the inferred cell-cell communications:
 net <- subsetCommunication(cellchat)
 ```
 
-Print interactive table of all the inferred cell-cell communications:
-
-```{r, results = "asis", echo = FALSE}
-cat(knitr::knit_print(DT::datatable(net)))
-```
-
 ## Results
 
-Define chord diagram function:
+Print interactive table of all the inferred cell-cell communications:
+
+```{r}
+DT::datatable(net)
+```
+
+Define chord diagram function for downstream visualization:
 
 ```{r}
 chordDiagram <- function(x, title = NULL) {
@@ -270,9 +270,9 @@ chordDiagram <- function(x, title = NULL) {
 }
 ```
 
-###
-
 ### Source {.tabset}
+
+Plot chord diagram subset by source:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$source))
@@ -293,6 +293,8 @@ for (i in ids) {
 
 ### Target {.tabset}
 
+Plot chord diagram subset by target:
+
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$target))
 
@@ -312,6 +314,8 @@ for (i in ids) {
 
 ### Annotation {.tabset}
 
+Plot chord diagram subset by annotation:
+
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$annotation))
 
@@ -330,6 +334,8 @@ for (i in ids) {
 ```
 
 ### Pathway {.tabset}
+
+Plot chord diagram subset by pathway:
 
 ```{r, fig.width = 7, fig.height = 7, results = "asis"}
 ids <- sort(unique(net$pathway_name))
