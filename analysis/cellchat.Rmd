@@ -180,7 +180,7 @@ chordDiagram <- function(x, title = NULL) {
 
   ## Create prob colour palette
 
-  prob.palette <- colorRamp(c("blue", "yellow", "red"))
+  prob.palette <- colorRamp(c("white", "black"))
   prob.palette <- rgb(prob.palette(x$prob)/255)
 
   ## Plot chord diagram
@@ -255,7 +255,7 @@ chordDiagram <- function(x, title = NULL) {
 
   # Plot links legend
 
-  col <- colorRamp2(c(0, 0.5, 1), c("blue", "yellow", "red"))
+  col <- colorRamp2(c(0, 1), c("white", "black"))
 
   lgd <- ComplexHeatmap::Legend(at = c(0, 1), col_fun = col, title = "Prob")
 
@@ -268,11 +268,28 @@ chordDiagram <- function(x, title = NULL) {
 }
 ```
 
-<!-- ## Source -->
+### Source
 
-<!-- ```{r} -->
-<!-- chordDiagram(x = subset(net, source == 1), title = "Source: 1") -->
-<!-- ``` -->
+```{r, fig.width = 8, fig.height = 8, results = "asis"}
+ids <- sort(unique(net$source))
+
+for (i in ids) {
+  
+  cat("####", n, "\n")
+  
+  chordDiagram(
+    x = subset(net, source == i), 
+    title = "Source: 1"
+  )
+  
+  cat("\n\n")
+  
+}
+```
+
+
+
+
 
 <!-- ## Target -->
 
