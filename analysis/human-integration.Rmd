@@ -1,0 +1,406 @@
+---
+title: "Human integration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.lazy = FALSE,
+  cache.path = "cache/human-integration.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(batchelor)
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(ggrepel)
+library(hues)
+library(pheatmap)
+```
+
+## Data
+
+### Mouse data
+
+Read mouse experiment object:
+
+```{r}
+sce <- readRDS("output/secondary-analysis.rds")
+```
+
+Define function to clean mouse experiment object:
+
+```{r}
+cleanSCE <- function(x, sample = NA) {
+  
+  # Clear metadata
+  metadata(x) <- list()
+  
+  # Remove NA
+  x <- x[!is.na(rowData(x)$gene_id), ]
+
+  # Replace rownames
+  rownames(x) <- rowData(x)$gene_id
+
+  # Clear rowData
+  rowData(x) <- NULL
+
+  # Replace rowRanges
+  rowRanges(x) <- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) <- NULL
+
+  # Replace colData
+  colData(x) <- DataFrame(
+    Sample = sample,
+    Cluster = paste(sample, x$cluster, sep = "_"),
+    Label = paste(sample, x$label, sep = "_"),
+    Origin = NA,
+    sizeFactor = sizeFactors(x)
+  )
+
+  # Clear reducedDims
+  reducedDims(x) <- NULL
+
+  # Clear altExp
+  altExp(x) <- NULL
+
+  # Return object
+  return(x)
+  
+}
+```
+
+Clean mouse experiment objects:
+
+```{r}
+sce <- cleanSCE(x = sce, sample = "LPMP_EHF")
+```
+
+### Human data
+
+Read human embryo experiment object:
+
+```{r}
+ref <- readRDS("data/HumanGastrulationData.rds")
+```
+
+Define function to clean human experiment object:
+
+```{r}
+cleanSCE <- function(x, sample = NA) {
+  
+  # Clear metadata
+  metadata(x) <- list()
+  
+  # Remove NA
+  x <- x[!is.na(rowData(x)$ID), ]
+
+  # Replace rownames
+  rownames(x) <- rowData(x)$ID
+
+  # Clear rowData
+  rowData(x) <- NULL
+
+  # Replace rowRanges
+  rowRanges(x) <- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) <- NULL
+
+  # Replace colData
+  colData(x) <- DataFrame(
+    Sample = sample,
+    Cluster = x$Cluster,
+    Label = NA,
+    Origin = x$Origin,
+    sizeFactor = sizeFactors(x)
+  )
+
+  # Clear reducedDims
+  reducedDims(x) <- NULL
+
+  # Clear altExp
+  altExp(x) <- NULL
+
+  # Return object
+  return(x)
+  
+}
+```
+
+Clean human experiment object:
+
+```{r}
+ref <- cleanSCE(ref, sample = "Human")
+```
+
+## Integration
+
+### Data processing
+
+Read orthologous gene mapping table:
+
+```{r}
+tbl <- read.csv("data/hsapiens_mmusculus.csv")
+
+tbl <- subset(tbl, mmusculus_homology_type == "ortholog_one2one")
+```
+
+Subset mapping table to measured genes:
+
+```{r}
+tbl <- subset(tbl, mmusculus_gene_id %in% rownames(sce))
+
+tbl <- subset(tbl, hsapiens_gene_id %in% rownames(ref))
+```
+
+Subset experiment objects to common genes:
+
+```{r}
+sce <- sce[tbl$mmusculus_gene_id, ]
+
+ref <- ref[tbl$hsapiens_gene_id, ]
+```
+
+Replace mouse rowData slot with gene mapping table:
+
+```{r}
+df <- DataFrame(
+  Human_ID = tbl$hsapiens_gene_id,
+  Human_Symbol = tbl$hsapiens_gene_name,
+  Mouse_ID = tbl$mmusculus_gene_id,
+  Mouse_Symbol = tbl$mmusculus_gene_name,
+  row.names = tbl$mmusculus_gene_id
+)
+  
+df <- df[rownames(sce), ]
+  
+rowData(sce) <- df
+
+rownames(sce) <- rowData(sce)$Human_ID
+```  
+
+Replace human rowData slot with gene mapping table:
+
+```{r}
+df <- DataFrame(
+  Human_ID = tbl$hsapiens_gene_id,
+  Human_Symbol = tbl$hsapiens_gene_name,
+  Mouse_ID = tbl$mmusculus_gene_id,
+  Mouse_Symbol = tbl$mmusculus_gene_name,
+  row.names = tbl$hsapiens_gene_id
+)
+
+df <- df[rownames(ref), ]
+
+rowData(ref) <- df
+
+rownames(ref) <- rowData(ref)$Human_ID
+```
+
+Create list of all experiment data:
+
+```{r}
+all <- c("Human" = ref, "Mouse" = sce)
+```
+
+### Variance modelling
+
+Model the per-gene variance:
+
+```{r}
+dec <- lapply(all, modelGeneVar)
+```
+
+Combine variance decompositions:
+
+```{r}
+dec <- do.call(combineVar, dec)
+```
+
+### Feature selection
+
+Identify highly variable genes:
+
+```{r}
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0)
+```
+
+### Batch normalization
+
+Perform scaling normalization:
+
+```{r}
+all <- multiBatchNorm(all)
+```
+
+### Batch integration
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(1111001110)
+
+mnn <- correctExperiments(
+  all,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(merge.order = c("Human", "Mouse"))
+)
+```
+
+Store combined variance model:
+
+```{r}
+metadata(mnn)$combineVar <- dec
+```
+
+Store highly variable genes:
+
+```{r}
+metadata(mnn)$getTopHVGs <- hvg
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var), length.out = 101)
+
+pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r}
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Perform UMAP on the corrected PCA matrix:
+
+```{r}
+set.seed(1100111110)
+
+mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 15, min_dist = 0.5) # same settings as reference analysis
+```
+
+Plot UMAP coloured by cluster annotation:
+
+```{r fig.width = 12, fig.height = 12}
+dat <- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = "UMAP")
+
+HumanClusterColours <- c(
+  "Epiblast" = "#3D7AB0",
+  "Ectoderm" = "#4FC0CB",
+  "Primitive Streak" = "#A6BEDF",
+  "Nascent Mesoderm" = "#C67DB4",
+  "Axial Mesoderm" = "#7B534D",
+  "Emergent Mesoderm" = "#ABB973",
+  "Endoderm" = "#F28941",
+  "Advanced Mesoderm" = "#4F9E74",
+  "YS Mesoderm" = "#FAB781",
+  "Hemogenic Endothelial Progenitors" = "#6A59A6",
+  "Erythrocytes" = "#C5433E"
+)
+
+MouseClusterColours <- iwanthue(length(unique(sce$Cluster)))
+
+names(MouseClusterColours) <- unique(sce$Cluster)  
+
+ClusterColours <- c(HumanClusterColours, MouseClusterColours)
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Cluster)) + 
+  geom_point(data = dat[, c("UMAP.1", "UMAP.2")], colour = "gainsboro") + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = ClusterColours, na.value = "#000000") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ batch) + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)
+```
+
+Plot UMAP coloured by label annotation:
+
+```{r fig.width = 12, fig.height = 12}
+dat <- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = "UMAP")
+
+MouseLabelColours <- iwanthue(length(unique(sce$Label)))
+
+names(MouseLabelColours) <- unique(sce$Label)  
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Label)) + 
+  geom_point(data = dat[, c("UMAP.1", "UMAP.2")], colour = "gainsboro") + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = MouseLabelColours, na.value = "#000000") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ batch) + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/human-integration.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
