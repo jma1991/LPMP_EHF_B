@@ -141,7 +141,7 @@ cleanSCE <- function(x, sample = NA) {
   colData(x) <- DataFrame(
     Sample = sample,
     Cluster = x$Cluster,
-    Label = NA,
+    Label = x$Cluster,
     Origin = x$Origin,
     sizeFactor = sizeFactors(x)
   )
@@ -373,14 +373,30 @@ Plot UMAP coloured by label annotation:
 ```{r fig.width = 12, fig.height = 12}
 dat <- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = "UMAP")
 
+HumanLabelColours <- c(
+  "Epiblast" = "#3D7AB0",
+  "Ectoderm" = "#4FC0CB",
+  "Primitive Streak" = "#A6BEDF",
+  "Nascent Mesoderm" = "#C67DB4",
+  "Axial Mesoderm" = "#7B534D",
+  "Emergent Mesoderm" = "#ABB973",
+  "Endoderm" = "#F28941",
+  "Advanced Mesoderm" = "#4F9E74",
+  "YS Mesoderm" = "#FAB781",
+  "Hemogenic Endothelial Progenitors" = "#6A59A6",
+  "Erythrocytes" = "#C5433E"
+)
+
 MouseLabelColours <- iwanthue(length(unique(sce$Label)))
 
 names(MouseLabelColours) <- unique(sce$Label)  
 
+LabelColours <- c(HumanLabelColours, MouseLabelColours)
+
 ggplot(dat, aes(UMAP.1, UMAP.2, colour = Label)) + 
   geom_point(data = dat[, c("UMAP.1", "UMAP.2")], colour = "gainsboro") + 
   geom_point(size = 2) + 
-  scale_colour_manual(values = MouseLabelColours, na.value = "#000000") + 
+  scale_colour_manual(values = LabelColours, na.value = "#000000") + 
   labs(x = "UMAP 1", y = "UMAP 2") + 
   facet_wrap(~ batch) + 
   theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
