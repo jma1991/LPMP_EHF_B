@@ -12,7 +12,7 @@
 <meta name="author" content="James Ashmore" />
 
 
-<title>SCENIC analysis</title>
+<title>Human integration</title>
 
 <script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -471,7 +471,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">SCENIC analysis</h1>
+<h1 class="title toc-ignore">Human integration</h1>
 <h4 class="author">James Ashmore</h4>
 <h4 class="date">30 April, 2021</h4>
 
@@ -646,7 +646,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/scenic-analysis.Rmd</code>) and HTML (<code>docs/scenic-analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/human-integration.Rmd</code>) and HTML (<code>docs/human-integration.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -672,84 +672,16 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/54d976ac351d219e4a3c4502ad37a1f191872486/docs/scenic-analysis.html" target="_blank">54d976a</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-28
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/6255298460d63ee2bb81421935b0490e15f4555e/docs/scenic-analysis.html" target="_blank">6255298</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-28
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/cb9ea270887323a666a622828c1260f2f40d0392/docs/scenic-analysis.html" target="_blank">cb9ea27</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-03-26
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/358542fd9632c3d363a7b93bde2ab48d188ef545/docs/scenic-analysis.html" target="_blank">358542f</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-03-10
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/b6892dcf1b5745739c10e8abff614aacaa0f19ad/analysis/scenic-analysis.Rmd" target="_blank">b6892dc</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/b09591289470652367b25965c8a3e8206d57c49a/analysis/human-integration.Rmd" target="_blank">b095912</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2021-03-10
+2021-04-30
 </td>
 <td>
 Build
@@ -762,17 +694,17 @@ Build
 </div>
 </div>
 </div>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<p>In this document we are going to analyse the results from the pySCENIC command-line software. SCENIC is a tool for single-cell regulatory network inference and clustering.</p>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
 </div>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
-<p>Define chunk options:</p>
+<p>Setup chunk options:</p>
 <pre class="r"><code>knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = &quot;cache/scenic-analysis.Rmd/&quot;,
+  cache.lazy = FALSE,
+  cache.path = &quot;cache/human-integration.Rmd/&quot;,
   dev        = &quot;png&quot;,
   error      = FALSE,
   message    = FALSE,
@@ -781,110 +713,278 @@ Build
   out.width = &#39;100%&#39;
 )</code></pre>
 <p>Load Bioconductor packages:</p>
-<pre class="r"><code>library(scuttle)</code></pre>
+<pre class="r"><code>library(batchelor)
+library(scater)
+library(scran)
+library(scuttle)</code></pre>
 <p>Load CRAN packages:</p>
-<pre class="r"><code>library(pheatmap)
-library(viridis)</code></pre>
-<p>Read experiment object:</p>
-<pre class="r"><code>sce &lt;- readRDS(&quot;output/09-cell-annotation.rds&quot;)</code></pre>
-<p>Replace feature names with gene identifier:</p>
-<pre class="r"><code>rownames(sce) &lt;- rowData(sce)$gene_id</code></pre>
-<p>Create output directory:</p>
-<pre class="r"><code>dir.create(&quot;output/pyscenic&quot;, showWarnings = FALSE, recursive = TRUE)</code></pre>
-<p>Write normalized counts matrix to disk:</p>
-<pre class="r"><code>mat &lt;- normalizeCounts(sce, log = FALSE)
-
-rownames(mat) &lt;- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
-
-mat &lt;- t(mat)
-
-write.csv(mat, file = &quot;output/pyscenic/normcounts.csv&quot;, quote = FALSE, row.names = TRUE)</code></pre>
+<pre class="r"><code>library(ggforce)
+library(ggrepel)
+library(hues)
+library(pheatmap)</code></pre>
 </div>
-<div id="scenic" class="section level2">
-<h2>Scenic</h2>
-<p>Derive co-expression modules from expression matrix:</p>
-<pre class="bash"><code>conda activate pyscenic
-
-pyscenic grn \
-  -o output/pyscenic/grn.csv \
-  --seed 0110110110 \
-  --num_workers 4 \
-  output/pyscenic/normcounts.csv \
-  resources/pyscenic/mm_mgi_tfs.txt
+<div id="data" class="section level2">
+<h2>Data</h2>
+<div id="mouse-data" class="section level3">
+<h3>Mouse data</h3>
+<p>Read mouse experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/secondary-analysis.rds&quot;)</code></pre>
+<p>Define function to clean mouse experiment object:</p>
+<pre class="r"><code>cleanSCE &lt;- function(x, sample = NA) {
   
-conda deactivate</code></pre>
-<p>Find enriched motifs for a gene signature:</p>
-<pre class="bash"><code>conda activate pyscenic
-
-pyscenic ctx \
-  -o output/pyscenic/ctx.csv \
-  --annotations_fname resources/pyscenic/motifs-v9-nr.mgi-m0.001-o0.0.tbl \
-  --num_workers 4 \
-  --expression_mtx_fname output/pyscenic/normcounts.csv \ 
-  output/pyscenic/grn.csv \
-  resources/pyscenic/mm10__refseq-r80__500bp_up_and_100bp_down_tss.mc9nr.feather
+  # Clear metadata
+  metadata(x) &lt;- list()
   
-conda deactivate</code></pre>
-<p>Quantify activity of gene signatures across single cells:</p>
-<pre class="bash"><code>conda activate pyscenic
+  # Remove NA
+  x &lt;- x[!is.na(rowData(x)$gene_id), ]
 
-pyscenic aucell \
-  -o output/pyscenic/aucell.csv \
-  --num_workers 4 \
-  --seed 0010011000 \
-  output/pyscenic/normcounts.csv \
-  output/pyscenic/ctx.csv
+  # Replace rownames
+  rownames(x) &lt;- rowData(x)$gene_id
 
-conda deactivate</code></pre>
+  # Clear rowData
+  rowData(x) &lt;- NULL
+
+  # Replace rowRanges
+  rowRanges(x) &lt;- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) &lt;- NULL
+
+  # Replace colData
+  colData(x) &lt;- DataFrame(
+    Sample = sample,
+    Cluster = paste(sample, x$cluster, sep = &quot;_&quot;),
+    Label = paste(sample, x$label, sep = &quot;_&quot;),
+    Origin = NA,
+    sizeFactor = sizeFactors(x)
+  )
+
+  # Clear reducedDims
+  reducedDims(x) &lt;- NULL
+
+  # Clear altExp
+  altExp(x) &lt;- NULL
+
+  # Return object
+  return(x)
+  
+}</code></pre>
+<p>Clean mouse experiment objects:</p>
+<pre class="r"><code>sce &lt;- cleanSCE(x = sce, sample = &quot;LPMP_EHF&quot;)</code></pre>
 </div>
-<div id="results" class="section level2">
-<h2>Results</h2>
-<p>Read and order activity matrix:</p>
-<pre class="r"><code>auc &lt;- read.csv(&quot;output/pyscenic/aucell.csv&quot;, row.names = &quot;Regulon&quot;, stringsAsFactors = FALSE)
+<div id="human-data" class="section level3">
+<h3>Human data</h3>
+<p>Read human embryo experiment object:</p>
+<pre class="r"><code>ref &lt;- readRDS(&quot;data/HumanGastrulationData.rds&quot;)</code></pre>
+<p>Define function to clean human experiment object:</p>
+<pre class="r"><code>cleanSCE &lt;- function(x, sample = NA) {
+  
+  # Clear metadata
+  metadata(x) &lt;- list()
+  
+  # Remove NA
+  x &lt;- x[!is.na(rowData(x)$ID), ]
 
-auc &lt;- auc[, order(sce$cluster)]
+  # Replace rownames
+  rownames(x) &lt;- rowData(x)$ID
 
-auc &lt;- as.matrix(auc)</code></pre>
-<p>Create heatmap colour palette:</p>
-<pre class="r"><code>cluster.palette &lt;- c(
-  &quot;1&quot; = &quot;#4E79A7&quot;,
-  &quot;2&quot; = &quot;#F28E2B&quot;,
-  &quot;3&quot; = &quot;#E15759&quot;
+  # Clear rowData
+  rowData(x) &lt;- NULL
+
+  # Replace rowRanges
+  rowRanges(x) &lt;- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) &lt;- NULL
+
+  # Replace colData
+  colData(x) &lt;- DataFrame(
+    Sample = sample,
+    Cluster = x$Cluster,
+    Label = NA,
+    Origin = x$Origin,
+    sizeFactor = sizeFactors(x)
+  )
+
+  # Clear reducedDims
+  reducedDims(x) &lt;- NULL
+
+  # Clear altExp
+  altExp(x) &lt;- NULL
+
+  # Return object
+  return(x)
+  
+}</code></pre>
+<p>Clean human experiment object:</p>
+<pre class="r"><code>ref &lt;- cleanSCE(ref, sample = &quot;Human&quot;)</code></pre>
+</div>
+</div>
+<div id="integration" class="section level2">
+<h2>Integration</h2>
+<div id="data-processing" class="section level3">
+<h3>Data processing</h3>
+<p>Read orthologous gene mapping table:</p>
+<pre class="r"><code>tbl &lt;- read.csv(&quot;data/hsapiens_mmusculus.csv&quot;)
+
+tbl &lt;- subset(tbl, mmusculus_homology_type == &quot;ortholog_one2one&quot;)</code></pre>
+<p>Subset mapping table to measured genes:</p>
+<pre class="r"><code>tbl &lt;- subset(tbl, mmusculus_gene_id %in% rownames(sce))
+
+tbl &lt;- subset(tbl, hsapiens_gene_id %in% rownames(ref))</code></pre>
+<p>Subset experiment objects to common genes:</p>
+<pre class="r"><code>sce &lt;- sce[tbl$mmusculus_gene_id, ]
+
+ref &lt;- ref[tbl$hsapiens_gene_id, ]</code></pre>
+<p>Replace mouse rowData slot with gene mapping table:</p>
+<pre class="r"><code>df &lt;- DataFrame(
+  Human_ID = tbl$hsapiens_gene_id,
+  Human_Symbol = tbl$hsapiens_gene_name,
+  Mouse_ID = tbl$mmusculus_gene_id,
+  Mouse_Symbol = tbl$mmusculus_gene_name,
+  row.names = tbl$mmusculus_gene_id
+)
+  
+df &lt;- df[rownames(sce), ]
+  
+rowData(sce) &lt;- df
+
+rownames(sce) &lt;- rowData(sce)$Human_ID</code></pre>
+<p>Replace human rowData slot with gene mapping table:</p>
+<pre class="r"><code>df &lt;- DataFrame(
+  Human_ID = tbl$hsapiens_gene_id,
+  Human_Symbol = tbl$hsapiens_gene_name,
+  Mouse_ID = tbl$mmusculus_gene_id,
+  Mouse_Symbol = tbl$mmusculus_gene_name,
+  row.names = tbl$hsapiens_gene_id
+)
+
+df &lt;- df[rownames(ref), ]
+
+rowData(ref) &lt;- df
+
+rownames(ref) &lt;- rowData(ref)$Human_ID</code></pre>
+<p>Create list of all experiment data:</p>
+<pre class="r"><code>all &lt;- c(&quot;Human&quot; = ref, &quot;Mouse&quot; = sce)</code></pre>
+</div>
+<div id="variance-modelling" class="section level3">
+<h3>Variance modelling</h3>
+<p>Model the per-gene variance:</p>
+<pre class="r"><code>dec &lt;- lapply(all, modelGeneVar)</code></pre>
+<p>Combine variance decompositions:</p>
+<pre class="r"><code>dec &lt;- do.call(combineVar, dec)</code></pre>
+</div>
+<div id="feature-selection" class="section level3">
+<h3>Feature selection</h3>
+<p>Identify highly variable genes:</p>
+<pre class="r"><code>hvg &lt;- getTopHVGs(dec, var.field = &quot;bio&quot;, var.threshold = 0)</code></pre>
+</div>
+<div id="batch-normalization" class="section level3">
+<h3>Batch normalization</h3>
+<p>Perform scaling normalization:</p>
+<pre class="r"><code>all &lt;- multiBatchNorm(all)</code></pre>
+</div>
+<div id="batch-integration" class="section level3">
+<h3>Batch integration</h3>
+<p>Correct experiments using nearest neighbours:</p>
+<pre class="r"><code>set.seed(1111001110)
+
+mnn &lt;- correctExperiments(
+  all,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(merge.order = c(&quot;Human&quot;, &quot;Mouse&quot;))
 )</code></pre>
-<p>Create heatmap annotation:</p>
-<pre class="r"><code>ann &lt;- list(
-  annotation_col = data.frame(Cluster = sce$cluster, row.names = colnames(sce)),
-  annotation_colors = list(Cluster = cluster.palette)
-)</code></pre>
-<p>Plot matrix of AUC values for all regulons:</p>
-<pre class="r"><code>pheatmap(
-  mat = auc,
-  color = viridis(100),
-  cluster_cols = FALSE,
-  annotation_col = ann$annotation_col,
-  annotation_colors = ann$annotation_colors,
-  border_color = NA,
-  show_rownames = FALSE,
-  show_colnames = FALSE,
-)</code></pre>
-<p><img src="figure/scenic-analysis.Rmd/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>Identify outlier or potentially “interesting” regulons:</p>
-<pre class="r"><code>out &lt;- isOutlier(rowVars(auc), nmads = 1, type = &quot;higher&quot;, log = TRUE)</code></pre>
-<p>Plot matrix of AUC values for outlier regulons:</p>
-<pre class="r"><code>pheatmap(
-  mat = auc[out, ],
-  color = viridis(100),
-  cluster_cols = FALSE,
-  annotation_col = ann$annotation_col,
-  annotation_colors = ann$annotation_colors,
-  border_color = NA,
-  show_rownames = TRUE,
-  show_colnames = FALSE,
-)</code></pre>
-<p><img src="figure/scenic-analysis.Rmd/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Store combined variance model:</p>
+<pre class="r"><code>metadata(mnn)$combineVar &lt;- dec</code></pre>
+<p>Store highly variable genes:</p>
+<pre class="r"><code>metadata(mnn)$getTopHVGs &lt;- hvg</code></pre>
+</div>
+</div>
+<div id="diagnostics" class="section level2">
+<h2>Diagnostics</h2>
+<p>Check proportion of lost variance:</p>
+<pre class="r"><code>var &lt;- metadata(mnn)$merge.info$lost.var
+
+col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Reds&quot;))(100)
+
+brk &lt;- seq(0, max(var), length.out = 101)
+
+pheatmap(var, color = col, display_numbers = TRUE, number_format = &quot;%.2f&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Cluster on the corrected PCA to obtain a partitioning of the cells:</p>
+<pre class="r"><code>snn &lt;- buildSNNGraph(mnn, type = &quot;jaccard&quot;, use.dimred = &quot;corrected&quot;)
+
+com &lt;- igraph::cluster_louvain(snn)</code></pre>
+<p>Tabulate number of cells from multiple batches within each cluster:</p>
+<pre class="r"><code>tab &lt;- table(Cluster = com$membership, Batch = mnn$batch)
+
+col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Blues&quot;))(100)
+
+brk &lt;- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = &quot;%d&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-25-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Perform UMAP on the corrected PCA matrix:</p>
+<pre class="r"><code>set.seed(1100111110)
+
+mnn &lt;- runUMAP(mnn, dimred = &quot;corrected&quot;, n_neighbors = 15, min_dist = 0.5) # same settings as reference analysis</code></pre>
+<p>Plot UMAP coloured by cluster annotation:</p>
+<pre class="r"><code>dat &lt;- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = &quot;UMAP&quot;)
+
+HumanClusterColours &lt;- c(
+  &quot;Epiblast&quot; = &quot;#3D7AB0&quot;,
+  &quot;Ectoderm&quot; = &quot;#4FC0CB&quot;,
+  &quot;Primitive Streak&quot; = &quot;#A6BEDF&quot;,
+  &quot;Nascent Mesoderm&quot; = &quot;#C67DB4&quot;,
+  &quot;Axial Mesoderm&quot; = &quot;#7B534D&quot;,
+  &quot;Emergent Mesoderm&quot; = &quot;#ABB973&quot;,
+  &quot;Endoderm&quot; = &quot;#F28941&quot;,
+  &quot;Advanced Mesoderm&quot; = &quot;#4F9E74&quot;,
+  &quot;YS Mesoderm&quot; = &quot;#FAB781&quot;,
+  &quot;Hemogenic Endothelial Progenitors&quot; = &quot;#6A59A6&quot;,
+  &quot;Erythrocytes&quot; = &quot;#C5433E&quot;
+)
+
+MouseClusterColours &lt;- iwanthue(length(unique(sce$Cluster)))
+
+names(MouseClusterColours) &lt;- unique(sce$Cluster)  
+
+ClusterColours &lt;- c(HumanClusterColours, MouseClusterColours)
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Cluster)) + 
+  geom_point(data = dat[, c(&quot;UMAP.1&quot;, &quot;UMAP.2&quot;)], colour = &quot;gainsboro&quot;) + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = ClusterColours, na.value = &quot;#000000&quot;) + 
+  labs(x = &quot;UMAP 1&quot;, y = &quot;UMAP 2&quot;) + 
+  facet_wrap(~ batch) + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-27-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Plot UMAP coloured by label annotation:</p>
+<pre class="r"><code>dat &lt;- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = &quot;UMAP&quot;)
+
+MouseLabelColours &lt;- iwanthue(length(unique(sce$Label)))
+
+names(MouseLabelColours) &lt;- unique(sce$Label)  
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Label)) + 
+  geom_point(data = dat[, c(&quot;UMAP.1&quot;, &quot;UMAP.2&quot;)], colour = &quot;gainsboro&quot;) + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = MouseLabelColours, na.value = &quot;#000000&quot;) + 
+  labs(x = &quot;UMAP 1&quot;, y = &quot;UMAP 2&quot;) + 
+  facet_wrap(~ batch) + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-28-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<p>Save integrated experiment object to disk:</p>
+<pre class="r"><code>saveRDS(mnn, file = &quot;output/human-integration.rds&quot;)</code></pre>
+</div>
 <div id="session" class="section level3">
 <h3>Session</h3>
 <p>Print session information:</p>
@@ -901,56 +1001,64 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
- [1] viridis_0.5.1               viridisLite_0.3.0          
- [3] pheatmap_1.0.12             scuttle_1.0.4              
- [5] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
- [7] Biobase_2.50.0              GenomicRanges_1.42.0       
- [9] GenomeInfoDb_1.26.2         IRanges_2.24.1             
-[11] S4Vectors_0.28.1            BiocGenerics_0.36.0        
-[13] MatrixGenerics_1.2.0        matrixStats_0.57.0         
-[15] workflowr_1.6.2            
+ [1] pheatmap_1.0.12             hues_0.2.0                 
+ [3] ggrepel_0.9.1               ggforce_0.3.2              
+ [5] scuttle_1.0.4               scran_1.18.3               
+ [7] scater_1.18.3               ggplot2_3.3.3              
+ [9] batchelor_1.6.2             SingleCellExperiment_1.12.0
+[11] SummarizedExperiment_1.20.0 Biobase_2.50.0             
+[13] GenomicRanges_1.42.0        GenomeInfoDb_1.26.2        
+[15] IRanges_2.24.1              S4Vectors_0.28.1           
+[17] BiocGenerics_0.36.0         MatrixGenerics_1.2.0       
+[19] matrixStats_0.57.0          workflowr_1.6.2            
 
 loaded via a namespace (and not attached):
- [1] edgeR_3.32.1              BiocSingular_1.6.0       
- [3] DelayedMatrixStats_1.12.2 assertthat_0.2.1         
- [5] statmod_1.4.35            dqrng_0.2.1              
- [7] renv_0.12.5               GenomeInfoDbData_1.2.4   
- [9] yaml_2.2.1                pillar_1.4.7             
-[11] lattice_0.20-41           limma_3.46.0             
-[13] glue_1.4.2                beachmat_2.6.4           
-[15] digest_0.6.27             RColorBrewer_1.1-2       
-[17] promises_1.1.1            XVector_0.30.0           
-[19] colorspace_2.0-0          htmltools_0.5.1.1        
-[21] httpuv_1.5.5              Matrix_1.3-2             
-[23] pkgconfig_2.0.3           zlibbioc_1.36.0          
-[25] purrr_0.3.4               scales_1.1.1             
-[27] later_1.1.0.1             BiocParallel_1.24.1      
-[29] git2r_0.28.0              tibble_3.0.5             
-[31] farver_2.0.3              generics_0.1.0           
-[33] ggplot2_3.3.3             ellipsis_0.3.1           
-[35] magrittr_2.0.1            crayon_1.3.4             
-[37] evaluate_0.14             fs_1.5.0                 
-[39] bluster_1.0.0             tools_4.0.2              
-[41] lifecycle_0.2.0           stringr_1.4.0            
-[43] locfit_1.5-9.4            munsell_0.5.0            
-[45] DelayedArray_0.16.1       irlba_2.3.3              
-[47] compiler_4.0.2            rsvd_1.0.3               
-[49] rlang_0.4.10              grid_4.0.2               
-[51] RCurl_1.98-1.2            BiocNeighbors_1.8.2      
-[53] rstudioapi_0.13           igraph_1.2.6             
-[55] bitops_1.0-6              rmarkdown_2.6            
-[57] gtable_0.3.0              codetools_0.2-18         
-[59] DBI_1.1.1                 R6_2.5.0                 
-[61] gridExtra_2.3             knitr_1.30               
-[63] dplyr_1.0.3               rprojroot_2.0.2          
-[65] stringi_1.5.3             Rcpp_1.0.6               
-[67] scran_1.18.3              vctrs_0.3.6              
-[69] tidyselect_1.1.0          xfun_0.20                
-[71] sparseMatrixStats_1.2.0  </code></pre>
+ [1] bitops_1.0-6              fs_1.5.0                 
+ [3] RColorBrewer_1.1-2        rprojroot_2.0.2          
+ [5] tools_4.0.2               R6_2.5.0                 
+ [7] irlba_2.3.3               ResidualMatrix_1.0.0     
+ [9] vipor_0.4.5               uwot_0.1.10              
+[11] DBI_1.1.1                 colorspace_2.0-0         
+[13] withr_2.4.1               tidyselect_1.1.0         
+[15] gridExtra_2.3             compiler_4.0.2           
+[17] git2r_0.28.0              BiocNeighbors_1.8.2      
+[19] DelayedArray_0.16.1       labeling_0.4.2           
+[21] scales_1.1.1              stringr_1.4.0            
+[23] digest_0.6.27             rmarkdown_2.6            
+[25] XVector_0.30.0            pkgconfig_2.0.3          
+[27] htmltools_0.5.1.1         sparseMatrixStats_1.2.0  
+[29] limma_3.46.0              rlang_0.4.10             
+[31] rstudioapi_0.13           FNN_1.1.3                
+[33] DelayedMatrixStats_1.12.2 farver_2.0.3             
+[35] generics_0.1.0            BiocParallel_1.24.1      
+[37] dplyr_1.0.3               RCurl_1.98-1.2           
+[39] magrittr_2.0.1            BiocSingular_1.6.0       
+[41] GenomeInfoDbData_1.2.4    Matrix_1.3-2             
+[43] Rcpp_1.0.6                ggbeeswarm_0.6.0         
+[45] munsell_0.5.0             viridis_0.5.1            
+[47] lifecycle_0.2.0           stringi_1.5.3            
+[49] whisker_0.4               yaml_2.2.1               
+[51] edgeR_3.32.1              MASS_7.3-53              
+[53] zlibbioc_1.36.0           grid_4.0.2               
+[55] promises_1.1.1            dqrng_0.2.1              
+[57] crayon_1.3.4              lattice_0.20-41          
+[59] beachmat_2.6.4            locfit_1.5-9.4           
+[61] knitr_1.30                pillar_1.4.7             
+[63] igraph_1.2.6              codetools_0.2-18         
+[65] glue_1.4.2                evaluate_0.14            
+[67] renv_0.12.5               tweenr_1.0.1             
+[69] vctrs_0.3.6               httpuv_1.5.5             
+[71] gtable_0.3.0              purrr_0.3.4              
+[73] polyclip_1.10-0           assertthat_0.2.1         
+[75] xfun_0.20                 rsvd_1.0.3               
+[77] RSpectra_0.16-0           later_1.1.0.1            
+[79] viridisLite_0.3.0         tibble_3.0.5             
+[81] beeswarm_0.2.3            bluster_1.0.0            
+[83] statmod_1.4.35            ellipsis_0.3.1           </code></pre>
 </div>
 </div>
 
