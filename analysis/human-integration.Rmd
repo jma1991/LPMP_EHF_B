@@ -59,7 +59,7 @@ sce <- readRDS("output/secondary-analysis.rds")
 Revalue label annotation:
 
 ```{r}
-ann <- c("1" = "Epi", "2" = "Epi/PXM", "3" = "LPM/P", "4" = "PXM/Meso")
+ann <- c("1" = "1_Epi", "2" = "2_Epi/PXM", "3" = "3_LPM/P", "4" = "4_PXM/Meso")
 
 sce$label <- unname(ann[as.character(sce$label)])
 ```
