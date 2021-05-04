@@ -146,6 +146,12 @@ Define chord diagram function for downstream visualization:
 ```{r}
 chordDiagram <- function(x, title = NULL) {
 
+  ## Convert factors to strings
+
+  x$source <- as.character(x$source)
+  
+  x$target <- as.character(x$target)
+
   ## Create data frame with connections
 
   dat <- data.frame(
@@ -166,13 +172,11 @@ chordDiagram <- function(x, title = NULL) {
 
   ann <- ann[!duplicated(ids)]
 
-
   ## Order connections by name and value
 
   ids <- paste(names(ann), ann, sep = ".")
 
   ann <- ann[order(ids)]
-
 
   ## Create LR colour palette
 
