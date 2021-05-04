@@ -473,7 +473,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Human integration</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">30 April, 2021</h4>
+<h4 class="date">04 May, 2021</h4>
 
 </div>
 
@@ -498,7 +498,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-30
+<strong>Last updated:</strong> 2021-05-04
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -589,16 +589,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree799921529c669c6d8af72dcf27d03513e17fdf2ftargetblank7999215a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/799921529c669c6d8af72dcf27d03513e17fdf2f" target="_blank">7999215</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3be8f21d47a8c30b145b2126c2f7f83badc33844targetblank3be8f21a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3be8f21d47a8c30b145b2126c2f7f83badc33844" target="_blank">3be8f21</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree799921529c669c6d8af72dcf27d03513e17fdf2ftargetblank7999215a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree3be8f21d47a8c30b145b2126c2f7f83badc33844targetblank3be8f21a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/799921529c669c6d8af72dcf27d03513e17fdf2f" target="_blank">7999215</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/3be8f21d47a8c30b145b2126c2f7f83badc33844" target="_blank">3be8f21</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -670,6 +670,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/3be8f21d47a8c30b145b2126c2f7f83badc33844/analysis/human-integration.Rmd" target="_blank">3be8f21</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-05-04
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/9cb5b5dcd1f3cabc4231feee3088662cee8a3811/docs/human-integration.html" target="_blank">9cb5b5d</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-30
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -780,6 +814,10 @@ library(pheatmap)</code></pre>
 <h3>Mouse data</h3>
 <p>Read mouse experiment object:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;output/secondary-analysis.rds&quot;)</code></pre>
+<p>Revalue label annotation:</p>
+<pre class="r"><code>ann &lt;- c(&quot;1&quot; = &quot;Epi&quot;, &quot;2&quot; = &quot;Epi/PXM&quot;, &quot;3&quot; = &quot;LPM/P&quot;, &quot;4&quot; = &quot;PXM/Meso&quot;)
+
+sce$label &lt;- unname(ann[as.character(sce$label)])</code></pre>
 <p>Define function to clean mouse experiment object:</p>
 <pre class="r"><code>cleanSCE &lt;- function(x, sample = NA) {
   
@@ -962,44 +1000,7 @@ col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Reds&quo
 brk &lt;- seq(0, max(var), length.out = 101)
 
 pheatmap(var, color = col, display_numbers = TRUE, number_format = &quot;%.2f&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
-<p><img src="figure/human-integration.Rmd/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
-Past versions of unnamed-chunk-23-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-23-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/figure/human-integration.Rmd/unnamed-chunk-23-1.png" target="_blank">a06aa09</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-30
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Cluster on the corrected PCA to obtain a partitioning of the cells:</p>
 <pre class="r"><code>snn &lt;- buildSNNGraph(mnn, type = &quot;jaccard&quot;, use.dimred = &quot;corrected&quot;)
 
@@ -1012,44 +1013,7 @@ col &lt;- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = &quot;Blues&qu
 brk &lt;- seq(0, max(tab), length.out = 101)
 
 pheatmap(tab, color = col, display_numbers = TRUE, number_format = &quot;%d&quot;, cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)</code></pre>
-<p><img src="figure/human-integration.Rmd/unnamed-chunk-25-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-1">
-Past versions of unnamed-chunk-25-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-25-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/figure/human-integration.Rmd/unnamed-chunk-25-1.png" target="_blank">a06aa09</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-30
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-26-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Perform UMAP on the corrected PCA matrix:</p>
 <pre class="r"><code>set.seed(1100111110)
 
@@ -1085,13 +1049,13 @@ ggplot(dat, aes(UMAP.1, UMAP.2, colour = Cluster)) +
   facet_wrap(~ batch) + 
   theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
   theme(aspect.ratio = 1)</code></pre>
-<p><img src="figure/human-integration.Rmd/unnamed-chunk-27-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-28-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
-Past versions of unnamed-chunk-27-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-27-1" class="collapse">
+<div id="fig-unnamed-chunk-28-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1110,7 +1074,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/figure/human-integration.Rmd/unnamed-chunk-27-1.png" target="_blank">a06aa09</a>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/9cb5b5dcd1f3cabc4231feee3088662cee8a3811/docs/figure/human-integration.Rmd/unnamed-chunk-28-1.png" target="_blank">9cb5b5d</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-30
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/figure/human-integration.Rmd/unnamed-chunk-28-1.png" target="_blank">a06aa09</a>
 </td>
 <td>
 James Ashmore
@@ -1154,44 +1129,7 @@ ggplot(dat, aes(UMAP.1, UMAP.2, colour = Label)) +
   facet_wrap(~ batch) + 
   theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
   theme(aspect.ratio = 1)</code></pre>
-<p><img src="figure/human-integration.Rmd/unnamed-chunk-28-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
-Past versions of unnamed-chunk-28-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-28-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/jma1991/LPMP_EHF_B/blob/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/figure/human-integration.Rmd/unnamed-chunk-28-1.png" target="_blank">a06aa09</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-04-30
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/human-integration.Rmd/unnamed-chunk-29-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
@@ -1216,7 +1154,7 @@ locale:
 [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
 
 attached base packages:
-[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
+[1] stats4    parallel  stats     graphics  grDevices datasets  utils    
 [8] methods   base     
 
 other attached packages:
@@ -1265,8 +1203,8 @@ loaded via a namespace (and not attached):
 [61] knitr_1.30                pillar_1.4.7             
 [63] igraph_1.2.6              codetools_0.2-18         
 [65] glue_1.4.2                evaluate_0.14            
-[67] renv_0.12.5               tweenr_1.0.1             
-[69] vctrs_0.3.6               httpuv_1.5.5             
+[67] renv_0.12.5               vctrs_0.3.6              
+[69] tweenr_1.0.1              httpuv_1.5.5             
 [71] gtable_0.3.0              purrr_0.3.4              
 [73] polyclip_1.10-0           assertthat_0.2.1         
 [75] xfun_0.20                 rsvd_1.0.3               
