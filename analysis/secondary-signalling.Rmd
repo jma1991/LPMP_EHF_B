@@ -63,6 +63,14 @@ rownames(sce) <- uniquifyFeatureNames(
 )
 ```
 
+Revalue label annotation:
+
+```{r}
+ann <- c("1" = "1_Epi", "2" = "2_Epi/PXM", "3" = "3_LPM/P", "4" = "4_PXM/Meso")
+
+sce$label <- unname(ann[as.character(sce$label)])
+```
+
 ## Processing
 
 Create a CellChat object from a SingleCellExperiment object:
