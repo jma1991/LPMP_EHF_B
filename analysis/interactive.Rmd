@@ -295,6 +295,8 @@ Create iSEE directory for secondary data:
 
 ```{r eval = TRUE}
 library(rsconnect)
+options(repos = BiocManager::repositories())
+options(needs.promptUser = FALSE)
 dir.create("shiny/secondary", showWarnings = FALSE, mode = "0755")
 ```
 
