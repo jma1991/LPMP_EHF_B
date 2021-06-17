@@ -294,6 +294,7 @@ configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "
 Create iSEE directory for secondary data:
 
 ```{r eval = TRUE}
+library(rsconnect)
 dir.create("shiny/secondary", showWarnings = FALSE, mode = "0755")
 ```
 
