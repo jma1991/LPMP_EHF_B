@@ -295,8 +295,7 @@ Create iSEE directory for secondary data:
 
 ```{r eval = TRUE}
 library(rsconnect)
-options(repos = BiocManager::repositories())
-options(needs.promptUser = FALSE)
+setRepositories(addURLs = c(BioC = "https://bioconductor.org/packages/3.11/bioc"))
 dir.create("shiny/secondary", showWarnings = FALSE, mode = "0755")
 ```
 
