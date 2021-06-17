@@ -293,19 +293,19 @@ configureApp(appName = "LPMP_EHF_B_ATLAS", appDir = "shiny/integrated", size = "
 
 Create iSEE directory for secondary data:
 
-```{r}
+```{r eval = TRUE}
 dir.create("shiny/secondary", showWarnings = FALSE, mode = "0755")
 ```
 
 Copy secondary data to iSEE directory:
 
-```{r}
+```{r eval = TRUE}
 file.copy("output/secondary-analysis.rds", "shiny/secondary/data.rds", overwrite = TRUE)
 ```
 
 Write code to iSEE application file:
 
-```{cat, engine.opts = list(file = "shiny/secondary/app.R"), class.source = "r"}
+```{cat, eval = TRUE, engine.opts = list(file = "shiny/secondary/app.R"), class.source = "r"}
 # Load required packages
 library(iSEE)
 library(SingleCellExperiment)
@@ -396,13 +396,13 @@ iSEE(sce, appTitle = "LPMP_EHF_B_SECONDARY", colormap = ecm)
 
 Deploy the iSEE application to the shiny server:
 
-```{r}
+```{r eval = TRUE}
 deployApp(appDir = "shiny/secondary", appName = "LPMP_EHF_B_SECONDARY", appTitle = "LPMP_EHF_B_SECONDARY", launch.browser = FALSE, forceUpdate = TRUE)
 ```
 
 Allocate more memory to the iSEE application:
 
-```{r}
+```{r eval = TRUE}
 configureApp(appName = "LPMP_EHF_B_SECONDARY", appDir = "shiny/secondary", size = "xxxlarge")
 ```
 
