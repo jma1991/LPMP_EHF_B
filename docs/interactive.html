@@ -473,7 +473,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Interactive data exploration</h1>
 <h4 class="author">James Ashmore</h4>
-<h4 class="date">30 April, 2021</h4>
+<h4 class="date">17 June, 2021</h4>
 
 </div>
 
@@ -498,7 +498,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-04-30
+<strong>Last updated:</strong> 2021-06-17
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -589,16 +589,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeb09591289470652367b25965c8a3e8206d57c49atargetblankb095912a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/b09591289470652367b25965c8a3e8206d57c49a" target="_blank">b095912</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree26a5e6fe06078900fa3a49cc43229d2cdfc040a6targetblank26a5e6fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/26a5e6fe06078900fa3a49cc43229d2cdfc040a6" target="_blank">26a5e6f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreeb09591289470652367b25965c8a3e8206d57c49atargetblankb095912a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtree26a5e6fe06078900fa3a49cc43229d2cdfc040a6targetblank26a5e6fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/b09591289470652367b25965c8a3e8206d57c49a" target="_blank">b095912</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/26a5e6fe06078900fa3a49cc43229d2cdfc040a6" target="_blank">26a5e6f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -670,6 +670,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/26a5e6fe06078900fa3a49cc43229d2cdfc040a6/analysis/interactive.Rmd" target="_blank">26a5e6f</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-06-17
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/a06aa091f53df87f24d728c3a798c827d9f656ca/docs/interactive.html" target="_blank">a06aa09</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-04-30
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1424,6 +1458,104 @@ iSEE(sce, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, colormap = ecm)</code></pre>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/integrated&quot;, appName = &quot;LPMP_EHF_B_ATLAS&quot;, appTitle = &quot;LPMP_EHF_B_ATLAS&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_ATLAS&quot;, appDir = &quot;shiny/integrated&quot;, size = &quot;xxxlarge&quot;)</code></pre>
+</div>
+<div id="secondary-data" class="section level3">
+<h3>Secondary data</h3>
+<p>Create iSEE directory for secondary data:</p>
+<pre class="r"><code>dir.create(&quot;shiny/secondary&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
+<p>Copy secondary data to iSEE directory:</p>
+<pre class="r"><code>file.copy(&quot;output/secondary-analysis.rds&quot;, &quot;shiny/secondary/data.rds&quot;, overwrite = TRUE)</code></pre>
+<p>Write code to iSEE application file:</p>
+<pre class="r r"><code># Load required packages
+library(iSEE)
+library(SingleCellExperiment)
+
+# Load experiment object
+sce &lt;- readRDS(&quot;data.rds&quot;)
+
+# Make feature names unique
+rownames(sce) &lt;- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+
+# Define column data variables
+sce$Etv2 &lt;- counts(sce)[&quot;Etv2&quot;, ] &gt; 0
+sce$Kdr &lt;- counts(sce)[&quot;Kdr&quot;, ] &gt; 0
+sce$Runx1 &lt;- counts(sce)[&quot;Runx1&quot;, ] &gt; 0
+sce$Ednrb &lt;- counts(sce)[&quot;Ednrb&quot;, ] &gt; 0
+sce$Etv2_AND_Kdr &lt;- sce$Etv2 &amp; sce$Kdr
+sce$Etv2_AND_Kdr_AND_Runx1 &lt;- sce$Etv2_AND_Kdr &amp; sce$Runx1
+sce$Etv2_AND_Ednrb &lt;- sce$Etv2 &amp; sce$Ednrb
+
+# Define column data colours
+celltype_colours &lt;- function(n) {
+  c(
+    &quot;Allantois&quot; = &quot;#532C8A&quot;,
+    &quot;Anterior Primitive Streak&quot; = &quot;#C19F70&quot;,
+    &quot;Blood progenitors 1&quot; = &quot;#D9DECF&quot;,
+    &quot;Blood progenitors 2&quot; = &quot;#C9A997&quot;,
+    &quot;Cardiomyocytes&quot; = &quot;#B51D8D&quot;,
+    &quot;Caudal epiblast&quot; = &quot;#9E6762&quot;,
+    &quot;Caudal Mesoderm&quot; = &quot;#3F84AA&quot;,
+    &quot;Caudal neurectoderm&quot; = &quot;#354E23&quot;,
+    &quot;Def. endoderm&quot; = &quot;#F397C0&quot;,
+    &quot;Endothelium&quot; = &quot;#FF891C&quot;,
+    &quot;Epiblast&quot; = &quot;#635547&quot;,
+    &quot;Erythroid1&quot; = &quot;#C72228&quot;,
+    &quot;Erythroid2&quot; = &quot;#F79083&quot;,
+    &quot;Erythroid3&quot; = &quot;#EF4E22&quot;,
+    &quot;ExE ectoderm&quot; = &quot;#989898&quot;,
+    &quot;ExE endoderm&quot; = &quot;#7F6874&quot;,
+    &quot;ExE mesoderm&quot; = &quot;#8870AD&quot;,
+    &quot;Forebrain/Midbrain/Hindbrain&quot; = &quot;#647A4F&quot;,
+    &quot;Gut&quot; = &quot;#EF5A9D&quot;,
+    &quot;Haematoendothelial progenitors&quot; = &quot;#FBBE92&quot;,
+    &quot;Intermediate mesoderm&quot; = &quot;#139992&quot;,
+    &quot;Mesenchyme&quot; = &quot;#CC7818&quot;,
+    &quot;Mixed mesoderm&quot; = &quot;#DFCDE4&quot;,
+    &quot;Nascent mesoderm&quot; = &quot;#C594BF&quot;,
+    &quot;Neural crest&quot; = &quot;#C3C388&quot;,
+    &quot;NMP&quot; = &quot;#8EC792&quot;,
+    &quot;Notochord&quot; = &quot;#0F4A9C&quot;,
+    &quot;Paraxial mesoderm&quot; = &quot;#8DB5CE&quot;,
+    &quot;Parietal endoderm&quot; = &quot;#1A1A1A&quot;,
+    &quot;PGC&quot; = &quot;#FACB12&quot;,
+    &quot;Pharyngeal mesoderm&quot; = &quot;#C9EBFB&quot;,
+    &quot;Primitive Streak&quot; = &quot;#DABE99&quot;,
+    &quot;Rostral neurectoderm&quot; = &quot;#65A83E&quot;,
+    &quot;Somitic mesoderm&quot; = &quot;#005579&quot;,
+    &quot;Spinal cord&quot; = &quot;#CDE088&quot;,
+    &quot;Surface ectoderm&quot; = &quot;#F7F79E&quot;,
+    &quot;Visceral endoderm&quot; = &quot;#F6BFCB&quot;
+  )
+}
+
+boolean_colours &lt;- function(n) {
+  c(&quot;TRUE&quot; = &quot;#E15759&quot;, &quot;FALSE&quot; = &quot;#BAB0AC&quot;)
+}
+
+# Set iSEE options
+iSEEOptions$set(downsample = TRUE)
+iSEEOptions$set(color.maxlevels = 37)
+
+# Define iSEE colours
+ecm &lt;- ExperimentColorMap(
+  colData = list(
+    celltype = celltype_colours,
+    Etv2 = boolean_colours,
+    Kdr = boolean_colours,
+    Runx1 = boolean_colours,
+    Ednrb = boolean_colours,
+    Etv2_AND_Kdr = boolean_colours,
+    Etv2_AND_Kdr_AND_Runx1 = boolean_colours,
+    Etv2_AND_Ednrb = boolean_colours
+  )
+)
+
+# Create iSEE object
+iSEE(sce, appTitle = &quot;LPMP_EHF_B_SECONDARY&quot;, colormap = ecm)</code></pre>
+<p>Deploy the iSEE application to the shiny server:</p>
+<pre class="r"><code>deployApp(appDir = &quot;shiny/secondary&quot;, appName = &quot;LPMP_EHF_B_SECONDARY&quot;, appTitle = &quot;LPMP_EHF_B_SECONDARY&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
+<p>Allocate more memory to the iSEE application:</p>
+<pre class="r"><code>configureApp(appName = &quot;LPMP_EHF_B_SECONDARY&quot;, appDir = &quot;shiny/secondary&quot;, size = &quot;xxxlarge&quot;)</code></pre>
 </div>
 </div>
 <div id="summary" class="section level2">
