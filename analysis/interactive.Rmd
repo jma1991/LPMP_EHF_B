@@ -403,7 +403,7 @@ deployApp(appDir = "shiny/secondary", appName = "LPMP_EHF_B_SECONDARY", appTitle
 Allocate more memory to the iSEE application:
 
 ```{r}
-configureApp(appName = "LPMP_EHF_B_SECONDARY", appDir = "shiny/secondary", size = "xxxlarge")
+configureApp(appName = "LPMP_EHF_B_SECONDARY", appDir = "shiny/secondary", size = "xlarge")
 ```
 
 ## Summary
