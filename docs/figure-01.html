@@ -560,16 +560,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec0ecf8161f05e276854bfb6d5bdd5daa7475c77ctargetblankc0ecf81a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c0ecf8161f05e276854bfb6d5bdd5daa7475c77c" target="_blank">c0ecf81</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreef8371740350b5afcab6aee023ca8e02ad5ed3b6ftargetblankf837174a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/f8371740350b5afcab6aee023ca8e02ad5ed3b6f" target="_blank">f837174</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec0ecf8161f05e276854bfb6d5bdd5daa7475c77ctargetblankc0ecf81a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreef8371740350b5afcab6aee023ca8e02ad5ed3b6ftargetblankf837174a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c0ecf8161f05e276854bfb6d5bdd5daa7475c77c" target="_blank">c0ecf81</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/f8371740350b5afcab6aee023ca8e02ad5ed3b6f" target="_blank">f837174</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -643,6 +643,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/f8371740350b5afcab6aee023ca8e02ad5ed3b6f/analysis/figure-01.Rmd" target="_blank">f837174</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-07-13
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP_EHF_B/48c4649da989ab2b755e44ca628735b29782015d/docs/figure-01.html" target="_blank">48c4649</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-07-13
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -854,6 +888,8 @@ Build
 </div>
 </div>
 </div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
 <p>Set chunk options:</p>
 <pre class="r"><code>knitr::opts_chunk$set(
   autodep    = TRUE,
@@ -871,10 +907,16 @@ library(scran)
 library(scuttle)</code></pre>
 <p>Load CRAN packages:</p>
 <pre class="r"><code>library(pheatmap)</code></pre>
+</div>
+<div id="processing" class="section level2">
+<h2>Processing</h2>
 <p>Read experiment data:</p>
 <pre class="r"><code>sce &lt;- readRDS(&quot;output/secondary-analysis.rds&quot;)</code></pre>
 <p>Rename column labels:</p>
 <pre class="r"><code>levels(sce$label) &lt;- c(&quot;1&quot; = &quot;Epi&quot;, &quot;2&quot; = &quot;Epi/PXM&quot;, &quot;3&quot; = &quot;LPMP&quot;, &quot;4&quot; = &quot;PXM/Meso&quot;)</code></pre>
+</div>
+<div id="markers" class="section level2">
+<h2>Markers</h2>
 <p>Find marker genes:</p>
 <pre class="r"><code>res &lt;- findMarkers(sce, sce$label, test.type = &quot;t&quot;, pval.type = &quot;some&quot;)</code></pre>
 <p>Subset by significance:</p>
@@ -984,6 +1026,9 @@ James Ashmore
 </table>
 </div>
 </div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
 <p>Print session information:</p>
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.0.2 (2020-06-22)
@@ -1053,6 +1098,7 @@ loaded via a namespace (and not attached):
 [77] viridisLite_0.4.0         tibble_3.1.2             
 [79] beeswarm_0.4.0            bluster_1.0.0            
 [81] statmod_1.4.36            ellipsis_0.3.2           </code></pre>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
