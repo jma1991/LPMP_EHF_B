@@ -7,6 +7,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Setup
+
 Set chunk options:
 
 ```{r}
@@ -36,6 +38,8 @@ Load CRAN packages:
 library(pheatmap)
 ```
 
+## Processing
+
 Read experiment data:
 
 ```{r}
@@ -47,6 +51,8 @@ Rename column labels:
 ```{r}
 levels(sce$label) <- c("1" = "Epi", "2" = "Epi/PXM", "3" = "LPMP", "4" = "PXM/Meso")
 ```
+
+## Markers
 
 Find marker genes:
 
@@ -94,6 +100,8 @@ plotHeatmap(
   gaps_col = c(18, 37, 63), 
 )
 ```
+
+## Summary
 
 Print session information:
 
