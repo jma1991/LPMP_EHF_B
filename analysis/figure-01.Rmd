@@ -33,7 +33,7 @@ library(scuttle)
 Load CRAN packages:
 
 ```{r}
-libray(pheatmap)
+library(pheatmap)
 ```
 
 Read experiment data:
