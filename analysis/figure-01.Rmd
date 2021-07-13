@@ -80,7 +80,7 @@ pal <- list(
 
 Plot heatmap of gene expression values:
 
-```{r fig.width = 12, fig.height = 9}
+```{r fig.width = 8, fig.height = 6}
 plotHeatmap(
   object = sce, 
   features = ids, 
