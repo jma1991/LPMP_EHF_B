@@ -37,6 +37,18 @@ navbar:
           href: cell-signalling.html
         - text: "Scenic analysis"
           href: scenic-analysis.html
+        - text: "Secondary analysis"
+          href: secondary-analysis.html
+        - text: "Secondary exploration"
+          href: secondary-exploration.html
+        - text: "Secondary signalling"
+          href: secondary-signalling.html
+        - text: "Human integration"
+          href: human-integration.html
+    - text: "Figures"
+      menu:
+        - text: "Figure 1"
+          href: figure-01.html
     - text: "Interactive"
       href: interactive.html
   right:

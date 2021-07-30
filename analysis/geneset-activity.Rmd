@@ -1,0 +1,164 @@
+---
+title: "Geneset activity"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+Set chunk options:
+
+```{r}
+
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(org.Mm.eg.db)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(pheatmap)
+```
+
+Define helper functions:
+
+```{r}
+pheatmap.mat <- function(x) {
+
+    # Scale rows by 'variance-aware' Z-transformation
+
+    M <- rowMeans(x, na.rm = TRUE)
+
+    DF <- ncol(x) - 1
+
+    isNA <- is.na(x)
+
+    if ( any(isNA) ) {
+
+        mode(isNA) <- "integer"
+
+        DF <-  DF - rowSums(isNA)
+
+        DF[DF == 0] <- 1
+
+    }
+
+    x <- x - M
+
+    V <- rowSums(x^2, na.rm = TRUE) / DF
+
+    x <- x / sqrt(V + 0.01)
+
+}
+
+pheatmap.color <- function(x) {
+
+    # Return color vector
+
+    colorRampPalette(rev(RColorBrewer::brewer.pal(n = 5, name = x)))(100)
+
+}
+
+pheatmap.breaks <- function(x) {
+
+    # Return breaks vector
+
+    abs <- max(abs(x))
+
+    abs <- min(abs, 5)
+
+    seq(-abs, +abs, length.out = 101)
+
+}
+
+pheatmap.cluster_rows <- function(x) {
+
+    # Return hclust object for rows
+
+    hclust(dist(x, method = "euclidean"), method = "complete")
+
+}
+
+pheatmap.cluster_cols <- function(x) {
+
+    # Return hclust object for columns
+
+    hclust(dist(t(x), method = "euclidean"), method = "complete")
+
+}
+```
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+```{r}
+rownames(sce) <- rowData(sce)$gene_id
+```
+
+```{r}
+ids <- select(org.Mm.eg.db, keys = rownames(sce), keytype = "ENSEMBL", columns = "GOALL")
+
+ids <- split(ids[, 1], ids[, 2])
+```
+
+```{r}
+mat <- sumCountsAcrossFeatures(sce, ids, exprs_values = "logcounts", average = TRUE)
+```
+
+```{r}
+res <- findMarkers(
+  x = mat,
+  groups = sce$cluster,
+  test.type = "wilcox",
+  pval.type = "all",
+  direction = "up"
+)
+```
+
+```{r}
+sig <- lapply(res, subset, FDR < 0.05)
+
+top <- lapply(sig, head, n = 50)
+
+ind <- Reduce(union, lapply(top, rownames))
+```
+
+
+```{r}
+std <- mat[ind, ]
+
+std <- pheatmap.mat(std)
+```
+
+
+
+```{r}
+pheatmap(
+  mat = std,
+  color = pheatmap.color("RdBu"),
+  breaks = pheatmap.breaks(std),
+  cluster_rows = pheatmap.cluster_rows(std),
+  cluster_cols = pheatmap.cluster_cols(mat),
+  annotation_col = data.frame(Cluster = sce$cluster, row.names = colnames(sce)),
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  labels_row = pheatmap.labels_row(rownames(mat)),
+  width = 15,
+  height = 10
+)
+```
+
+
+
+
+
+

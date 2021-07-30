@@ -1,0 +1,355 @@
+---
+title: "Atlas trajectory"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/12-atlas-trajectory.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scater)
+library(scran)
+library(scuttle)
+library(slingshot)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+```
+
+Define colour palettes:
+
+```{r}
+EmbryoStageColours <- c(
+  "E6.5"  = "#D53E4F",
+  "E6.75" = "#F46D43",
+  "E7.0"  = "#FDAE61",
+  "E7.25" = "#FEE08B",
+  "E7.5"  = "#FFFFBF",
+  "E7.75" = "#E6F598",
+  "E8.0"  = "#ABDDA4",
+  "E8.25" = "#66C2A5",
+  "E8.5"  = "#3288BD",
+  "mixed_gastrulation" = "#A9A9A9"
+)
+
+EmbryoCelltypeColours <- MouseGastrulationData::EmbryoCelltypeColours
+
+EmbryoSourceColours <- c("query" = "#E15759", "reference" = "#BAB0AC")
+```
+
+Define column data labels:
+
+```{r}
+EmbryoSourceLabels <- c("reference" = "Mouse Embryo Atlas", "query" = "Mouse LPMP EHF")
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/11-atlas-neighbors.rds")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+## Trajectory
+
+Extract query and kNN cells:
+
+```{r}
+id1 <- sce$cell[sce$source == "query"]
+
+id2 <- unique(sort(unlist(sce$cell.remapped[sce$source == "query"])))
+
+ind <- sce$cell %in% c(id1, id2)
+
+sce <- sce[, ind]
+```
+
+Source function to calculate distance with MNN coordinates:
+
+```{r}
+source("code/dist_clusters_diag.R")
+```
+
+Perform lineage inference with Slingshot:
+
+```{r}
+set.seed(378891116)
+
+sce <- slingshot(
+  data = sce,
+  clusterLabels = sce$celltype.remapped,
+  reducedDim = "corrected",
+  dist.fun = dist_clusters_diag,
+  approx_points = 100
+)
+```
+
+Plot principal curves on TSNE embedding:
+
+```{r}
+cur <- embedCurves(sce, "TSNE")
+
+cur <- slingCurves(cur)
+
+cur <- lapply(cur, function(x) {
+  
+  d <- x$s[x$ord, ]
+  
+  d <- as.data.frame(d)
+  
+  rownames(d) <- NULL
+  
+  colnames(d) <- c("TSNE.1", "TSNE.2")
+  
+  return(d)
+
+})
+
+cur <- dplyr::bind_rows(cur, .id = "curve")
+
+dat <- makePerCellDF(sce, use.coldata = c("source", "celltype.remapped"), use.dimred = "TSNE")
+
+dat <- split(dat, dat$source)
+
+ggplot() + 
+  geom_point(data = dat$reference, mapping = aes(TSNE.1, TSNE.2, fill = celltype.remapped), colour = "transparent", shape = 21, inherit.aes = FALSE) + 
+  geom_point(data = dat$query, mapping = aes(TSNE.1, TSNE.2), shape = 1, inherit.aes = FALSE) + 
+  geom_path(data = cur, mapping = aes(TSNE.1, TSNE.2, colour = curve)) + 
+  scale_fill_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  scale_colour_brewer(name = "Curve", palette = "Set1") + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+Plot principal curves on UMAP embedding:
+
+```{r}
+cur <- embedCurves(sce, "UMAP")
+
+cur <- slingCurves(cur)
+
+cur <- lapply(cur, function(x) {
+  
+  d <- x$s[x$ord, ]
+  
+  d <- as.data.frame(d)
+  
+  rownames(d) <- NULL
+  
+  colnames(d) <- c("UMAP.1", "UMAP.2")
+  
+  return(d)
+
+})
+
+cur <- dplyr::bind_rows(cur, .id = "curve")
+
+dat <- makePerCellDF(sce, use.coldata = c("source", "celltype.remapped"), use.dimred = "UMAP")
+
+dat <- split(dat, dat$source)
+
+ggplot() + 
+  geom_point(data = dat$reference, mapping = aes(UMAP.1, UMAP.2, fill = celltype.remapped), colour = "transparent", shape = 21, inherit.aes = FALSE) + 
+  geom_point(data = dat$query, mapping = aes(UMAP.1, UMAP.2), shape = 1, inherit.aes = FALSE) + 
+  geom_path(data = cur, mapping = aes(UMAP.1, UMAP.2, colour = curve)) + 
+  scale_fill_manual(name = "Celltype", values = EmbryoCelltypeColours) + 
+  scale_colour_brewer(name = "Curve", palette = "Set1") + 
+  theme_no_axes() + 
+  theme(aspect.ratio = 1)
+```
+
+## Differential
+
+
+```{r}
+vec <- split(sce$slingPseudotime_4, sce$batch)
+
+vec <- lapply(vec, unique)
+
+vec <- sapply(vec, function(x) length(x) > 6)
+
+ids <- names(vec)[vec]
+
+ind <- sce$batch %in% ids
+
+res <- TSCAN::testPseudotime(
+  x = sce[, ind],
+  pseudotime = sce$slingPseudotime_4[ind],
+  block = sce$batch[ind],
+  assay.type = "logcounts"
+)
+
+sig <- subset(res, FDR < 0.05)
+
+sig <- sig[order(abs(sig$logFC), decreasing = TRUE),  ]
+```
+
+```{r}
+plotHeatmap(
+  object = sce[, !is.na(sce$slingPseudotime_4)],
+  order_columns_by = "slingPseudotime_4", 
+  colour_columns_by = c("source", "celltype.remapped"),
+  features = rownames(head(sig, n = 50)),
+  center = TRUE
+)
+```
+
+
+
+## Differential
+
+Fit the NB-GAM model with batch effect design matrix on highly variable genes:
+
+```{r}
+set.seed(430396281)
+
+mod <- model.matrix(~ 0 + source, colData(sce))
+
+colnames(mod) <- c("reference", "test")
+
+idx <- which(rowData(sce)$gene_id %in% metadata(sce)$getTopHVGs)
+
+fit <- fitGAM(counts = counts(sce), sds = SlingshotDataSet(sce), U = mod, genes = idx)
+```
+
+Test whether average gene expression is associated with pseudotime:
+
+```{r}
+res <- associationTest(fit)
+
+res$FDR <- p.adjust(res$pvalue, method = "fdr")
+
+res$symbol <- rowData(sce)$gene_name[match(rownames(res), rowData(sce)$gene_id)]
+
+res <- subset(res, FDR < 0.05)
+
+res <- res[order(res$pvalue), ]
+```
+
+Create table of associationTest results:
+
+```{r}
+knitr::knit_print(DT::datatable(res))
+```
+
+Function to plot expression of genes associated with pseudotime:
+
+```{r}
+plotPseudotime <- function(object, features) {
+  
+  colnames(object) <- paste("cell", seq_len(ncol(object)), sep = "-")
+  
+  object <- object[features, order(object$slingPseudotime_1)]
+  
+  x <- assay(object, "reconstructed")
+  
+  rownames(x) <- rowData(object)$gene_name
+
+  M <- rowMeans(x, na.rm = TRUE)
+  
+  DF <- ncol(x) - 1L
+  
+  IsNA <- is.na(x)
+  
+  if (any(IsNA)) {
+    
+    mode(IsNA) <- "integer"
+    
+    DF <-  DF - rowSums(IsNA)
+    
+    DF[DF == 0L] <- 1L
+  
+  }
+
+  x <- x - M
+  
+  V <- rowSums(x^2L, na.rm = TRUE) / DF
+	
+  x <- x / sqrt(V + 0.01)
+  
+  pheatmap.cluster_rows <- hclust(dist(x, method = "euclidean"), method = "complete")
+
+  pheatmap.color <- colorRampPalette(rev(brewer.pal(n = 5, name = "RdBu")))(100)
+  
+  l <- max(abs(x))
+  
+  pheatmap.breaks <- seq(-l, l, length.out = 101)
+  
+  pheatmap.annotation_col <- data.frame(
+    Celltype = object$celltype, 
+    Stage = object$stage,
+    Source = object$source,
+    row.names = colnames(object))
+  
+  pheatmap.annotation_colors = list(
+    Celltype = EmbryoCelltypeColours[names(EmbryoCelltypeColours) %in% object$celltype],
+    Stage = setNames(tableau_color_pal("Tableau 10")(5), sort(unique(sce$stage))),
+    Source = setNames(tableau_color_pal("Classic Green-Orange 6")(2), sort(unique(sce$source)))
+  )
+
+  pheatmap(
+    mat = x,
+    color = pheatmap.color,
+    breaks = pheatmap.breaks,
+    cluster_rows = pheatmap.cluster_rows,
+    cluster_cols = FALSE,
+    annotation_col = pheatmap.annotation_col,
+    annotation_colors = pheatmap.annotation_colors,
+    show_colnames = FALSE
+  )
+
+}
+```
+
+Plot expression of genes associated with pseudotime:
+
+```{r fig.width = 12, fig.height = 8}
+plotPseudotime(sce, head(rownames(res), n = 50))
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(sce, file = "output/12-atlas-trajectory.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

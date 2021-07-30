@@ -1,4 +1,4 @@
-weightedkNN <- function(x, class = NULL) {
+weightedKNN <- function(x, class = NULL) {
 
   x$weight <- 1 / x$distance
 
