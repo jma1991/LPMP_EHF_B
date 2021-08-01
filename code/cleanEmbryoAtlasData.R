@@ -8,10 +8,6 @@ cleanEmbryoAtlasData <- function(x) {
   use <- !x$doublet
   x <- x[, use]
 
-  # Remove cells with no celltype annotation
-  use <- !is.na(x$celltype)
-  x <- x[, use]
-
   # Clear metadata slot
   metadata(x) <- list()
 

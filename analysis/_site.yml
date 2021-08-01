@@ -1,7 +1,7 @@
-name: "LPMP EHF Analysis"
+name: "LPMP_EHF_B"
 output_dir: "../docs"
 navbar:
-  title: "LPMP EHF Analysis"
+  title: "LPMP_EHF_B"
   left:
     - text: "Home"
       href: index.html
@@ -29,26 +29,22 @@ navbar:
           href: 09-cell-annotation.html
     - text: "Analysis"
       menu:
-        - text: "Atlas integration"
-          href: 10-atlas-integration.html
-        - text: "Lineage markers"
-          href: lineage-markers.html
-        - text: "Cell signalling"
-          href: cell-signalling.html
-        - text: "Scenic analysis"
-          href: scenic-analysis.html
-        - text: "Secondary analysis"
-          href: secondary-analysis.html
-        - text: "Secondary exploration"
-          href: secondary-exploration.html
-        - text: "Secondary signalling"
-          href: secondary-signalling.html
+        - text: "Supervised analysis"
+          href: supervised-analysis.html
+        - text: "Supervised signaling"
+          href: supervised-signaling.html
+    - text: "Mouse Atlas"
+      menu:
+        - text: "Mouse integration"
+          href: mouse-integration.html
+    - text: "Human Atlas"
+      menu:
         - text: "Human integration"
           href: human-integration.html
-    - text: "Figures"
+    - text: "Chicken Atlas"
       menu:
-        - text: "Figure 1"
-          href: figure-01.html
+        - text: "Chicken integration"
+          href: chicken-integration.html
     - text: "Interactive"
       href: interactive.html
   right:

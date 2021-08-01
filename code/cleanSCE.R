@@ -25,14 +25,14 @@ cleanSCE <- function(x, sample) {
     sequencing.batch = NA,
     theiler = NA,
     doub.density = NA,
-    doublet = x$doublet_cluster,
-    cluster = paste(sample, x$cluster, sep = "_"),
+    doublet = NA,
+    cluster = NA,
     cluster.sub = NA,
     cluster.stage = NA,
     cluster.theiler = NA,
     stripped = NA,
-    celltype = x$celltype,
-    colour = MouseGastrulationData::EmbryoCelltypeColours[x$celltype],
+    celltype = NA,
+    colour = NA,
     sizeFactor = sizeFactors(x)
   )
 
