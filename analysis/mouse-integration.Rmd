@@ -1,0 +1,326 @@
+---
+title: "Atlas integration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.lazy = FALSE,
+  cache.path = "cache/10-atlas-integration.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(batchelor)
+library(EnsDb.Mmusculus.v79)
+library(MouseGastrulationData)
+library(org.Mm.eg.db)
+library(pheatmap)
+library(scater)
+library(scran)
+```
+
+Load CRAN packages:
+
+```{r}
+library(msigdbr)
+```
+
+Source custom functions:
+
+```{r}
+source("code/cleanSCE.R")
+source("code/cleanEmbryoAtlasData.R")
+source("code/splitByCol.R")
+```
+
+## Data
+
+### Test data
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/09-cell-annotation.rds")
+```
+
+Clean experiment object:
+
+```{r}
+sce <- cleanSCE(sce, sample = "LPMP_EHF")
+```
+
+### Reference data
+
+Load the mouse gastrulation data package:
+
+```{r}
+library(MouseGastrulationData)
+```
+
+Subset atlas sample metadata by embryonic stage:
+
+```{r}
+AtlasSampleMetadata <- subset(AtlasSampleMetadata, stage %in% c("E7.25", "E7.5", "E7.75", "E8.0"))
+```
+
+Retrieve processed samples from embryo atlas data:
+
+```{r}
+ref <- EmbryoAtlasData(type = "processed", samples = AtlasSampleMetadata$sample)
+```
+
+Clean processed samples from embryo atlas data:
+
+```{r}
+ref <- cleanEmbryoAtlasData(ref)
+```
+
+Split experiment data by the sample column:
+
+```{r}
+ref <- splitByCol(ref, ref$sample)
+```
+
+## Integration
+
+### Data processing
+
+Create list of experiment data:
+
+```{r}
+all <- c(ref, "LPMP_EHF" = sce)
+```
+
+Delete large objects and trigger garbage collection:
+
+```{r}
+rm(sce, ref); gc()
+```
+
+Subset data to common features:
+
+```{r}
+ids <- Reduce(intersect, lapply(all, rownames))
+
+all <- lapply(all, "[", i = ids)
+```
+
+### Variance modelling
+
+Model the per-gene variance:
+
+```{r}
+dec <- lapply(all, modelGeneVar)
+```
+
+Combine variance decompositions:
+
+```{r}
+dec <- do.call(combineVar, dec)
+```
+
+### Feature selection
+
+Read blacklist genes and subset by category:
+
+```{r}
+nan <- read.csv("data/blacklist.csv")
+
+nan <- subset(nan, CATEGORY %in% c("XIST", "Y", "MT", "CC", "RP"))
+```
+
+genes to ignore for feature selection:
+
+```{r}
+dec$blacklist <- FALSE
+
+idx <- which(rownames(dec) %in% nan$ENSEMBL)
+
+dec$blacklist[idx] <- TRUE
+```
+
+Identify highly variable genes:
+
+```{r}
+hvg <- subset(dec, blacklist == FALSE)
+
+hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = 0.05)
+```
+
+### Batch normalization
+
+Perform scaling normalization:
+
+```{r}
+all <- multiBatchNorm(all)
+```
+
+### Batch integration
+
+Create sequential merge order:
+
+```{r}
+idx <- AtlasSampleMetadata
+
+lvl <- c("E6.5", "E6.75", "E7.0", "mixed_gastrulation", "E7.25", "E7.5", "E7.75", "E8.0", "E8.25", "E8.5")
+
+idx$stage <- factor(idx$stage, levels = lvl)
+
+idx <- idx[order(idx$stage, idx$ncells, decreasing = TRUE), ]
+
+idx <- c(idx$sample, "LPMP_EHF")
+```
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(692066530)
+
+mnn <- correctExperiments(
+  all,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(merge.order = idx)
+)
+```
+
+Delete large objects and trigger garbage collection:
+
+```{r}
+rm(all); gc()
+```
+
+Replace rowData slot:
+
+```{r}
+rowData(mnn) <- DataFrame(
+  gene_id = rownames(mnn),
+  gene_name = mapIds(EnsDb.Mmusculus.v79, keys = rownames(mnn), column = "GENENAME", keytype = "GENEID"),
+  rotation = I(rowData(mnn)$rotation)
+)
+```
+
+Store combined variance model:
+
+```{r}
+metadata(mnn)$combineVar <- dec
+```
+
+Store highly variable genes:
+
+```{r}
+metadata(mnn)$getTopHVGs <- hvg
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var), length.out = 101)
+
+pheatmap(var[, idx], color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r}
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab[, idx], color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Perform TSNE on the corrected PCA matrix:
+
+```{r}
+set.seed(42)
+
+mnn <- runTSNE(mnn, dimred = "corrected", perplexity = 120) # same settings as reference analysis
+```
+
+Visualize the corrected PCA using a TSNE plot:
+
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
+  labs(x = "TSNE 1", y = "TSNE 2") + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+Perform UMAP on the corrected PCA matrix:
+
+```{r}
+set.seed(42)
+
+mnn <- runUMAP(mnn, dimred = "corrected", n_neighbors = 20, min_dist = 0.7) # same settings as reference analysis
+```
+
+Visualize the corrected PCA using a UMAP plot:
+
+```{r fig.width = 9, fig.height = 9}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) + 
+  geom_point(size = 0.1, show.legend = FALSE) + 
+  scale_colour_manual(values = EmbryoCelltypeColours, na.value = "#000000") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  facet_wrap(~ sample) + 
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/10-atlas-integration.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```

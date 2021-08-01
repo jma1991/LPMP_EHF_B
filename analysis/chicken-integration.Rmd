@@ -1,0 +1,470 @@
+---
+title: "Chicken integration"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Motivation
+
+## Setup
+
+Setup chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.lazy = FALSE,
+  cache.path = "cache/chicken-integration.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(batchelor)
+library(scater)
+library(scran)
+library(scuttle)
+library(org.Gg.eg.db)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(ggrepel)
+library(pheatmap)
+```
+
+Source user functions:
+
+```{r}
+source("code/splitByCol.R")
+```
+
+## Data
+
+### Mouse data
+
+Read mouse experiment objects:
+
+```{r}
+sce <- list(
+  LPMP_EHF = readRDS("data/LPMP_EHF.rds"),
+  LPMP_LHF = readRDS("data/LPMP_LHF.rds")
+)
+```
+
+Define function to clean mouse experiment objects:
+
+```{r}
+cleanSCE <- function(x, sample = NA) {
+  
+  # Clear metadata
+  metadata(x) <- list()
+  
+  # Keep counts only
+  assays(x) <- assays(x)["counts"]
+  
+  # Remove NA
+  x <- x[!is.na(rowData(x)$gene_id), ]
+
+  # Replace rownames
+  rownames(x) <- rowData(x)$gene_id
+
+  # Clear rowData
+  rowData(x) <- NULL
+
+  # Replace rowRanges
+  rowRanges(x) <- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) <- NULL
+
+  # Replace colData
+  colData(x) <- DataFrame(
+    Sample = sample,
+    Cell = paste(sample, seq_len(ncol(x)), sep = "_"),
+    Cluster = paste(sample, x$cluster, sep = "_"),
+    Phase = x$phase,
+    Celltype = x$celltype
+  )
+
+  # Clear reducedDims
+  reducedDims(x) <- NULL
+
+  # Clear altExp
+  altExp(x) <- NULL
+
+  # Return object
+  return(x)
+  
+}
+```
+
+Clean mouse experiment objects:
+
+```{r}
+sce <- mapply(cleanSCE, x = sce, sample = names(sce))
+```
+
+### Chicken data
+
+Read chicken embryo experiment object:
+
+```{r}
+ref <- readRDS("data/ChickenStage5Data.rds")
+```
+
+Split chicken object by library: 
+
+```{r}
+ref <- splitByCol(ref, ref$library_id)
+```
+
+Define function to clean chicken experiment objects:
+
+```{r}
+cleanSCE <- function(x, sample) {
+  
+  # Clear metadata
+  metadata(x) <- list()
+  
+  # Keep counts only
+  assays(x) <- assays(x)["counts"]
+
+  # Map SYMBOL to ENSEMBL
+  rowData(x)$ID <- mapIds(
+    x = org.Gg.eg.db, 
+    keys = rownames(x), 
+    column = "ENSEMBL", 
+    keytype = "SYMBOL"
+  )
+  
+  # Remove NA
+  x <- x[!is.na(rowData(x)$ID), ]
+
+  # Replace rownames
+  rownames(x) <- rowData(x)$ID
+
+  # Clear rowData
+  rowData(x) <- NULL
+
+  # Replace rowRanges
+  rowRanges(x) <- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
+
+  # Clear colnames
+  colnames(x) <- NULL
+
+  # Replace colData
+  colData(x) <- DataFrame(
+    Sample = sample,
+    Cell = paste(sample, seq_len(ncol(x)), sep = "_"),
+    Cluster = paste("st5", x$leiden, sep = "_"),
+    Phase = x$phase,
+    Celltype = NA
+  )
+
+  # Clear reducedDims
+  reducedDims(x) <- NULL
+
+  # Clear altExp
+  altExp(x) <- NULL
+
+  # Return object
+  return(x)
+  
+}
+```
+
+Clean chicken experiment objects:
+
+```{r}
+ref <- mapply(cleanSCE, x = ref, sample = names(ref))
+```
+
+## Integration
+
+### Data processing
+
+Read orthologous gene mapping table:
+
+```{r}
+tbl <- read.csv("data/ggallus_mmusculus.csv")
+
+tbl <- subset(tbl, mmusculus_homology_type == "ortholog_one2one")
+```
+
+Subset mapping table to measured genes:
+
+```{r}
+tbl <- subset(tbl, mmusculus_gene_id %in% Reduce(intersect, lapply(sce, rownames)))
+
+tbl <- subset(tbl, ggallus_gene_id %in% Reduce(intersect, lapply(ref, rownames)))
+```
+
+Subset experiment objects to common genes:
+
+```{r}
+sce <- lapply(sce, "[", i = tbl$mmusculus_gene_id)
+
+ref <- lapply(ref, "[", i = tbl$ggallus_gene_id)
+```
+
+Replace mouse rowData slot with gene mapping table:
+
+```{r}
+sce <- lapply(sce, function(x) {
+  
+  df <- DataFrame(
+    Chicken_ID = tbl$ggallus_gene_id,
+    Chicken_Symbol = tbl$ggallus_gene_name,
+    Mouse_ID = tbl$mmusculus_gene_id,
+    Mouse_Symbol = tbl$mmusculus_gene_name,
+    row.names = tbl$mmusculus_gene_id
+  )
+  
+  df <- df[rownames(x), ]
+  
+  rowData(x) <- df
+
+  rownames(x) <- rowData(x)$Chicken_ID
+  
+  return(x)
+  
+})
+```  
+
+Replace chicken rowData slot with gene mapping table:
+
+```{r}
+ref <- lapply(ref, function(x) {
+  
+  df <- DataFrame(
+    Chicken_ID = tbl$ggallus_gene_id,
+    Chicken_Symbol = tbl$ggallus_gene_name,
+    Mouse_ID = tbl$mmusculus_gene_id,
+    Mouse_Symbol = tbl$mmusculus_gene_name,
+    row.names = tbl$ggallus_gene_id
+  )
+  
+  df <- df[rownames(x), ]
+  
+  rowData(x) <- df
+  
+  rownames(x) <- rowData(x)$Chicken_ID
+  
+  return(x)
+  
+})
+```
+
+Create list of all experiment data:
+
+```{r}
+all <- list(
+  "chicken_st5_1" = ref$st51,
+  "chicken_st5_2" = ref$st52,
+  "mouse_lpmp_ehf" = sce$LPMP_EHF,
+  "mouse_lpmp_lhf" = sce$LPMP_LHF
+)
+```
+
+Delete large objects and trigger garbage collection:
+
+```{r}
+rm(sce, ref, cleanSCE, tbl); gc()
+```
+
+### Batch normalization
+
+Perform scaling normalization:
+
+```{r}
+all <- multiBatchNorm(all)
+```
+
+### Variance modelling
+
+Model the per-gene variance:
+
+```{r}
+dec <- lapply(all, modelGeneVar)
+```
+
+Combine variance decompositions:
+
+```{r}
+dec <- do.call(combineVar, dec)
+```
+
+### Feature selection
+
+Identify highly variable genes:
+
+```{r}
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0)
+```
+
+### Batch integration
+
+Correct experiments using nearest neighbours:
+
+```{r}
+set.seed(0101001101)
+
+mnn <- correctExperiments(
+  all,
+  subset.row = hvg,
+  correct.all = TRUE,
+  PARAM = FastMnnParam(
+    merge.order = list(
+      list("chicken_st5_2", "chicken_st5_1"),
+      list("mouse_lpmp_lhf", "mouse_lpmp_ehf")
+    )
+  )
+)
+```
+
+Delete large objects and trigger garbage collection:
+
+```{r}
+rm(all); gc()
+```
+
+Store combined variance model:
+
+```{r}
+metadata(mnn)$combineVar <- dec
+```
+
+Store highly variable genes:
+
+```{r}
+metadata(mnn)$getTopHVGs <- hvg
+```
+
+## Diagnostics
+
+Check proportion of lost variance:
+
+```{r}
+var <- metadata(mnn)$merge.info$lost.var
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
+
+brk <- seq(0, max(var), length.out = 101)
+
+pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Cluster on the corrected PCA to obtain a partitioning of the cells:
+
+```{r}
+snn <- buildSNNGraph(mnn, type = "jaccard", use.dimred = "corrected")
+
+com <- igraph::cluster_louvain(snn)
+```
+
+Tabulate number of cells from multiple batches within each cluster:
+
+```{r}
+tab <- table(Cluster = com$membership, Batch = mnn$batch)
+
+col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Blues"))(100)
+
+brk <- seq(0, max(tab), length.out = 101)
+
+pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
+```
+
+Perform UMAP on the corrected PCA matrix:
+
+```{r}
+set.seed(0101000111)
+
+mnn <- runUMAP(mnn, dimred = "corrected") # default settings
+```
+
+Visualize the corrected PCA using a UMAP plot:
+
+```{r fig.width = 12, fig.height = 12}
+dat <- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = "UMAP")
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Sample)) + 
+  geom_point() + 
+  scale_colour_brewer(palette = "Set1") + 
+  labs(x = "UMAP 1", y = "UMAP 2") + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)
+```
+
+Visualize the corrected PCA using a UMAP plot:
+
+```{r fig.width = 12, fig.height = 12}
+ggplot() + 
+  geom_point(
+    data = subset(dat, Sample %in% c("st51", "st52")),
+    mapping = aes(UMAP.1, UMAP.2, colour = Cluster),
+  ) + 
+  geom_point(
+    data = subset(dat, Sample == "LPMP_EHF"),
+    mapping = aes(UMAP.1, UMAP.2),
+    colour = "black"
+  ) + 
+  geom_point(
+    data = subset(dat, Sample == "LPMP_LHF"),
+    mapping = aes(UMAP.1, UMAP.2),
+    colour = "maroon1"
+  ) + 
+  scale_colour_manual(
+    values = c(
+      "st5_0" = "#c0c0c0", # Epi
+      "st5_1" = "#20b2aa", # Meso
+      "st5_2" = "#ff6347", # Neural
+      "st5_3" = "#ffd700", # NMP
+      "st5_4" = "#a9a9a9", # Endo
+      "st5_5" = "#add8e6", # NC
+      "st5_6" = "#ffffff"  # Missing
+    ),
+    labels = c(
+      "st5_0" = "Epi", # Epi
+      "st5_1" = "Meso", # Meso
+      "st5_2" = "Neural", # Neural
+      "st5_3" = "NMP", # NMP
+      "st5_4" = "Endo", # Endo
+      "st5_5" = "NC", # NC
+      "st5_6" = "Missing"  # Missing      
+    )
+  ) + 
+  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
+  theme(aspect.ratio = 1)
+```
+
+## Summary
+
+### Output
+
+Save integrated experiment object to disk:
+
+```{r}
+saveRDS(mnn, file = "output/chicken-integration.rds")
+```
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
