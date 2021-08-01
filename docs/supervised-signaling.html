@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="James Ashmore" />
+
+
+<title>Supervised signaling</title>
+
+<script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.18/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">LPMP_EHF_B</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Processing
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-quality-control.html">Quality control</a>
+    </li>
+    <li>
+      <a href="02-normalization.html">Normalization</a>
+    </li>
+    <li>
+      <a href="03-feature-selection.html">Feature selection</a>
+    </li>
+    <li>
+      <a href="04-reduced-dimensions.html">Dimensionality reduction</a>
+    </li>
+    <li>
+      <a href="05-clustering.html">Clustering</a>
+    </li>
+    <li>
+      <a href="06-doublet-detection.html">Doublet detection</a>
+    </li>
+    <li>
+      <a href="07-cell-cycle.html">Cell cycle assignment</a>
+    </li>
+    <li>
+      <a href="08-marker-detection.html">Marker gene detection</a>
+    </li>
+    <li>
+      <a href="09-cell-annotation.html">Cell type annotation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="supervised-analysis.html">Supervised analysis</a>
+    </li>
+    <li>
+      <a href="supervised-signaling.html">Supervised signaling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mouse Atlas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="mouse-integration.html">Mouse integration</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Human Atlas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="human-integration.html">Human integration</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Chicken Atlas
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="chicken-integration.html">Chicken integration</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="interactive.html">Interactive</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="license.html">License</a>
+</li>
+<li>
+  <a href="https://github.com/jma1991/LPMP_EHF_B">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Supervised signaling</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">01 August, 2021</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-08-01
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>LPMP_EHF_B/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200630code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200630)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200630code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200630)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec40ff77cb38eb034b9fa74b31679e950dca42a27targetblankc40ff77a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c40ff77cb38eb034b9fa74b31679e950dca42a27" target="_blank">c40ff77</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPEHFBtreec40ff77cb38eb034b9fa74b31679e950dca42a27targetblankc40ff77a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP_EHF_B/tree/c40ff77cb38eb034b9fa74b31679e950dca42a27" target="_blank">c40ff77</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/cache/
+    Ignored:    data/
+    Ignored:    output/
+    Ignored:    renv/.gitignore
+    Ignored:    renv/library/
+    Ignored:    renv/settings.dcf
+    Ignored:    renv/staging/
+    Ignored:    resources/
+    Ignored:    shiny/
+    Ignored:    slides/
+
+Untracked files:
+    Untracked:  analysis/backup/11-atlas-neighbors.Rmd
+    Untracked:  analysis/backup/12-atlas-trajectory.Rmd
+    Untracked:  analysis/backup/figure-01.Rmd
+    Untracked:  analysis/backup/geneset-activity.Rmd
+    Untracked:  analysis/backup/lineage-markers.Rmd
+    Untracked:  analysis/backup/scenic-analysis.Rmd
+    Untracked:  analysis/backup/secondary-exploration.Rmd
+    Untracked:  code/subsetPointsByGrid.R
+
+Unstaged changes:
+    Modified:   _workflowr.R
+    Deleted:    analysis/10-atlas-integration.Rmd
+    Deleted:    analysis/11-atlas-neighbors.Rmd
+    Deleted:    analysis/12-atlas-trajectory.Rmd
+    Modified:   analysis/_site.yml
+    Deleted:    analysis/cell-signalling.Rmd
+    Deleted:    analysis/figure-01.Rmd
+    Deleted:    analysis/geneset-activity.Rmd
+    Deleted:    analysis/italk-analysis.Rmd
+    Deleted:    analysis/lineage-markers.Rmd
+    Deleted:    analysis/scenic-analysis.Rmd
+    Deleted:    analysis/secondary-analysis.Rmd
+    Deleted:    analysis/secondary-exploration.Rmd
+    Deleted:    analysis/secondary-signalling.Rmd
+    Modified:   code/cleanEmbryoAtlasData.R
+    Modified:   code/cleanSCE.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/supervised-signaling.Rmd</code>) and HTML (<code>docs/supervised-signaling.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP_EHF_B/blob/c40ff77cb38eb034b9fa74b31679e950dca42a27/analysis/supervised-signaling.Rmd" target="_blank">c40ff77</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-08-01
+</td>
+<td>
+Build
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Set chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/supervised-signaling.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scuttle)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(hues)
+library(circlize)</code></pre>
+<p>Load Github packages:</p>
+<pre class="r"><code>library(CellChat)</code></pre>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/supervised-analysis.rds&quot;)</code></pre>
+<p>Make feature names unique:</p>
+<pre class="r"><code>rownames(sce) &lt;- uniquifyFeatureNames(
+  ID = rowData(sce)$gene_id,
+  names = rowData(sce)$gene_name
+)</code></pre>
+</div>
+<div id="processing" class="section level2">
+<h2>Processing</h2>
+<p>Create a CellChat object from a SingleCellExperiment object:</p>
+<pre class="r"><code>cellchat &lt;- createCellChat(object = sce, group.by = &quot;cluster&quot;)</code></pre>
+<pre><code>The `logcounts` assay is used 
+The `colData` assay in the SingleCellExperiment object is used as cell meta information 
+The cell groups used for CellChat analysis are  1 2 3 </code></pre>
+<p>Set the ligand-receptor interaction database:</p>
+<pre class="r"><code>cellchat@DB &lt;- CellChatDB.mouse</code></pre>
+<p>Subset the expression data of signaling genes for saving computation cost:</p>
+<pre class="r"><code>cellchat &lt;- subsetData(cellchat)</code></pre>
+<pre><code>Issue identified!! Please check the official Gene Symbol of the following genes:  
+ H2-Q8 H2-T9 H2-T18 H2-Q9 H2-L H2-BI H2-D H60a H2-Ea-ps </code></pre>
+<p>Identify over-expressed signaling genes associated with each cell group:</p>
+<pre class="r"><code>cellchat &lt;- identifyOverExpressedGenes(cellchat)</code></pre>
+<p>Identify over-expressed ligand-receptor interactions (pairs) within the used CellChatDB:</p>
+<pre class="r"><code>cellchat &lt;- identifyOverExpressedInteractions(cellchat)</code></pre>
+<p>Project gene expression data onto a protein-protein interaction network:</p>
+<pre class="r"><code>cellchat &lt;- projectData(cellchat, PPI.mouse)</code></pre>
+<p>Compute the communication probability/strength between any interacting cell groups:</p>
+<pre class="r"><code>cellchat &lt;- computeCommunProb(cellchat)</code></pre>
+<p>Compute the communication probability on signaling pathway level by summarizing all related ligands/receptors:</p>
+<pre class="r"><code>cellchat &lt;- computeCommunProbPathway(cellchat)</code></pre>
+<p>Calculate the aggregated network by counting the number of links or summarizing the communication probability:</p>
+<pre class="r"><code>cellchat &lt;- aggregateNet(cellchat)</code></pre>
+<p>Returns a data frame consisting of all the inferred cell-cell communications:</p>
+<pre class="r"><code>net &lt;- subsetCommunication(cellchat)</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Print interactive table of all the inferred cell-cell communications:</p>
+<pre class="r"><code>DT::datatable(net)</code></pre>
+<div id="htmlwidget-dde813f04d642f9a8996" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dde813f04d642f9a8996">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76"],[1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,2,1,2,3,1,3,1,3,3,3,1,1,1,1,1,1,2,3,1,3,3,1,2,3,1,2,3,1,2,1,2,3,1,3,1,2,1,2,1,1,1,2,2,1,2,1,2,1,3,2,1,2,3,1,3,1,2,1,2],[1,2,3,1,2,3,1,2,3,3,3,3,3,3,1,1,1,1,2,2,1,2,2,3,3,1,2,1,2,1,2,1,3,3,3,3,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,1,2,1,1,1,1,1,1,1,2,2,1,3,3,1,1,1,1],["Bmp7","Bmp7","Bmp7","Bmp7","Bmp7","Bmp7","Bmp7","Bmp7","Bmp7","Wnt3","Wnt3","Wnt3","Wnt3","Wnt3","Wnt5a","Wnt5a","Wnt5a","Wnt5a","Wnt5a","Wnt5a","Pdgfa","Pdgfa","Pdgfa","Pdgfa","Pdgfa","Apln","Apln","Angptl2","Angptl2","Angptl4","Angptl4","Angptl4","Angptl4","Mdk","Mdk","Kitl","Apela","Apela","Fn1","Fn1","Fn1","Fn1","Fn1","Fn1","Lama1","Lama1","Lamb1","Lamb1","Lamb1","Lamc1","Lamc1","Col4a5","Col9a3","Fn1","Fn1","Col4a5","Col4a5","Col4a5","Col9a3","Col9a3","Lama1","Lama1","Lamb1","Lamb1","Lamc1","Lamc1","Cdh2","Cdh2","Cdh2","Cdh1","Cdh1","Cdh1","Dll1","Dll1","Dll3","Dll3"],["BMPR1A_ACVR2A","BMPR1A_ACVR2A","BMPR1A_ACVR2A","BMPR1A_ACVR2B","BMPR1A_ACVR2B","BMPR1A_ACVR2B","BMPR1A_BMPR2","BMPR1A_BMPR2","BMPR1A_BMPR2","FZD10_LRP5","FZD3_LRP5","FZD10_LRP6","FZD10_LRP6","FZD3_LRP6","Fzd10","Fzd10","Fzd3","Fzd3","Fzd7","Fzd7","Pdgfra","Pdgfra","Pdgfra","Pdgfrb","Pdgfrb","Aplnr","Aplnr","ITGA5_ITGB1","ITGA5_ITGB1","ITGA5_ITGB1","ITGA5_ITGB1","Sdc2","Sdc2","Sdc2","Sdc2","Kit","Aplnr","Aplnr","ITGA5_ITGB1","ITGA5_ITGB1","ITGA5_ITGB1","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","ITGAV_ITGB8","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cd44","Cdh2","Cdh2","Cdh2","Cdh1","Cdh1","Cdh1","Notch3","Notch3","Notch3","Notch3"],[0.040299454266425,0.032093243542366,0.0424922215787254,0.0846259465052718,0.0797181606456244,0.0939992426747742,0.0773035338089246,0.067694080663664,0.0803550228582366,0.000411009371648951,0.000472110670084819,0.00088651736117847,0.000548578352194656,0.00101501789373497,0.45429205347991,0.493261292005736,0.536153991745549,0.57474952540906,0.242155319685187,0.271997436254074,0.0932723062919645,0.0975130835766361,0.147587201738351,0.0188582675092765,0.0316147622425747,0.342290650227269,0.35262159535273,0.00604877217840144,0.0117604629447245,0.0500919619102371,0.0934810156896133,0.0550408398492454,0.0984563121033199,0.296326435740406,0.288856160313164,0.0765453712334626,0.274273248435719,0.283435986139254,0.286220972101208,0.300074997301138,0.26794936045018,0.115469313639911,0.12247657499669,0.106472080153317,0.0141839502398013,0.0155333804957607,0.090214981161171,0.0961067390408119,0.063088089214337,0.0597470939293873,0.0671884349951672,0.0110725353728163,0.039896926664366,0.272995813537045,0.286466610820395,0.0312019188581295,0.0109314347429405,0.00876365986603865,0.106770227464565,0.0394031437253758,0.0397424327426875,0.0434163523582512,0.221933154670438,0.234212620397701,0.154536887549988,0.171629069737012,0.351981179993932,0.351981179993932,0.376969228530621,0.384942408997871,0.384942408997871,0.434886884365822,0.0916614759859536,0.128527876066763,0.0981584394217616,0.131294201040599],[0.01,0.03,0,0,0,0,0,0,0,0.01,0.01,0,0.03,0,0,0,0,0,0,0,0.01,0.01,0,0.03,0,0.01,0,0.03,0,0,0,0.03,0,0.02,0.02,0.04,0.03,0.01,0.01,0,0.02,0.01,0.01,0.02,0,0.01,0.02,0.01,0.03,0,0.01,0,0,0.01,0.01,0.01,0,0.01,0,0.02,0.01,0.01,0.02,0,0.01,0,0,0,0,0.03,0.03,0,0,0,0,0],["BMP7_BMPR1A_ACVR2A","BMP7_BMPR1A_ACVR2A","BMP7_BMPR1A_ACVR2A","BMP7_BMPR1A_ACVR2B","BMP7_BMPR1A_ACVR2B","BMP7_BMPR1A_ACVR2B","BMP7_BMPR1A_BMPR2","BMP7_BMPR1A_BMPR2","BMP7_BMPR1A_BMPR2","WNT3_FZD10_LRP5","WNT3_FZD3_LRP5","WNT3_FZD10_LRP6","WNT3_FZD10_LRP6","WNT3_FZD3_LRP6","WNT5A_FZD10","WNT5A_FZD10","WNT5A_FZD3","WNT5A_FZD3","WNT5A_FZD7","WNT5A_FZD7","PDGFA_PDGFRA","PDGFA_PDGFRA","PDGFA_PDGFRA","PDGFA_PDGFRB","PDGFA_PDGFRB","APLN_APLNR","APLN_APLNR","ANGPTL2_ITGA5_ITGB1","ANGPTL2_ITGA5_ITGB1","ANGPTL4_ITGA5_ITGB1","ANGPTL4_ITGA5_ITGB1","ANGPTL4_SDC2","ANGPTL4_SDC2","MDK_SDC2","MDK_SDC2","KITL_KIT","APELA_APLNR","APELA_APLNR","FN1_ITGA5_ITGB1","FN1_ITGA5_ITGB1","FN1_ITGA5_ITGB1","FN1_ITGAV_ITGB8","FN1_ITGAV_ITGB8","FN1_ITGAV_ITGB8","LAMA1_ITGAV_ITGB8","LAMA1_ITGAV_ITGB8","LAMB1_ITGAV_ITGB8","LAMB1_ITGAV_ITGB8","LAMB1_ITGAV_ITGB8","LAMC1_ITGAV_ITGB8","LAMC1_ITGAV_ITGB8","COL4A5_ITGAV_ITGB8","COL9A3_ITGAV_ITGB8","FN1_CD44","FN1_CD44","COL4A5_CD44","COL4A5_CD44","COL4A5_CD44","COL9A3_CD44","COL9A3_CD44","LAMA1_CD44","LAMA1_CD44","LAMB1_CD44","LAMB1_CD44","LAMC1_CD44","LAMC1_CD44","CDH2_CDH2","CDH2_CDH2","CDH2_CDH2","CDH1_CDH1","CDH1_CDH1","CDH1_CDH1","DLL1_NOTCH3","DLL1_NOTCH3","DLL3_NOTCH3","DLL3_NOTCH3"],["Bmp7  - (Bmpr1a+Acvr2a)","Bmp7  - (Bmpr1a+Acvr2a)","Bmp7  - (Bmpr1a+Acvr2a)","Bmp7  - (Bmpr1a+Acvr2b)","Bmp7  - (Bmpr1a+Acvr2b)","Bmp7  - (Bmpr1a+Acvr2b)","Bmp7  - (Bmpr1a+Bmpr2)","Bmp7  - (Bmpr1a+Bmpr2)","Bmp7  - (Bmpr1a+Bmpr2)","Wnt3  - (Fzd10+Lrp5)","Wnt3  - (Fzd3+Lrp5)","Wnt3  - (Fzd10+Lrp6)","Wnt3  - (Fzd10+Lrp6)","Wnt3  - (Fzd3+Lrp6)","Wnt5a  - Fzd10","Wnt5a  - Fzd10","Wnt5a  - Fzd3","Wnt5a  - Fzd3","Wnt5a  - Fzd7","Wnt5a  - Fzd7","Pdgfa  - Pdgfra","Pdgfa  - Pdgfra","Pdgfa  - Pdgfra","Pdgfa  - Pdgfrb","Pdgfa  - Pdgfrb","Apln  - Aplnr","Apln  - Aplnr","Angptl2  - (Itga5+Itgb1)","Angptl2  - (Itga5+Itgb1)","Angptl4  - (Itga5+Itgb1)","Angptl4  - (Itga5+Itgb1)","Angptl4  - Sdc2","Angptl4  - Sdc2","Mdk  - Sdc2","Mdk  - Sdc2","Kitl  - Kit","Apela  - Aplnr","Apela  - Aplnr","Fn1  - (Itga5+Itgb1)","Fn1  - (Itga5+Itgb1)","Fn1  - (Itga5+Itgb1)","Fn1  - (Itgav+Itgb8)","Fn1  - (Itgav+Itgb8)","Fn1  - (Itgav+Itgb8)","Lama1  - (Itgav+Itgb8)","Lama1  - (Itgav+Itgb8)","Lamb1  - (Itgav+Itgb8)","Lamb1  - (Itgav+Itgb8)","Lamb1  - (Itgav+Itgb8)","Lamc1  - (Itgav+Itgb8)","Lamc1  - (Itgav+Itgb8)","Col4a5  - (Itgav+Itgb8)","Col9a3  - (Itgav+Itgb8)","Fn1  - Cd44","Fn1  - Cd44","Col4a5  - Cd44","Col4a5  - Cd44","Col4a5  - Cd44","Col9a3  - Cd44","Col9a3  - Cd44","Lama1  - Cd44","Lama1  - Cd44","Lamb1  - Cd44","Lamb1  - Cd44","Lamc1  - Cd44","Lamc1  - Cd44","Cdh2  - Cdh2","Cdh2  - Cdh2","Cdh2  - Cdh2","Cdh1  - Cdh1","Cdh1  - Cdh1","Cdh1  - Cdh1","Dll1  - Notch3","Dll1  - Notch3","Dll3  - Notch3","Dll3  - Notch3"],["BMP","BMP","BMP","BMP","BMP","BMP","BMP","BMP","BMP","WNT","WNT","WNT","WNT","WNT","ncWNT","ncWNT","ncWNT","ncWNT","ncWNT","ncWNT","PDGF","PDGF","PDGF","PDGF","PDGF","APELIN","APELIN","ANGPTL","ANGPTL","ANGPTL","ANGPTL","ANGPTL","ANGPTL","MK","MK","KIT","APJ","APJ","FN1","FN1","FN1","FN1","FN1","FN1","LAMININ","LAMININ","LAMININ","LAMININ","LAMININ","LAMININ","LAMININ","COLLAGEN","COLLAGEN","FN1","FN1","COLLAGEN","COLLAGEN","COLLAGEN","COLLAGEN","COLLAGEN","LAMININ","LAMININ","LAMININ","LAMININ","LAMININ","LAMININ","CDH","CDH","CDH","CDH","CDH","CDH","NOTCH","NOTCH","NOTCH","NOTCH"],["Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","Secreted Signaling","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","ECM-Receptor","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact","Cell-Cell Contact"],["KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04350; PMID:26893264","KEGG: mmu04310; PMID: 23209147","KEGG: mmu04310; PMID: 23209147","KEGG: mmu04310; PMID: 23209147","KEGG: mmu04310; PMID: 23209147","KEGG: mmu04310; PMID: 23209147","KEGG: mmu04310","KEGG: mmu04310","KEGG: mmu04310","KEGG: mmu04310","KEGG: mmu04310","KEGG: mmu04310","PMID: 15207812","PMID: 15207812","PMID: 15207812","PMID: 15207812","PMID: 15207812","KEGG: mmu04371","KEGG: mmu04371","PMID: 24478758","PMID: 24478758","PMID: 30049845","PMID: 30049845","PMID: 29017031","PMID: 29017031","PMID: 28356350","PMID: 28356350","KEGG: mmu04080","PMID: 25995451","PMID: 25995451","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04512","KEGG: mmu04514","KEGG: mmu04514","KEGG: mmu04514","KEGG: mmu04514","KEGG: mmu04514","KEGG: mmu04514","PMID: 22353464","PMID: 22353464","PMID: 22353464","PMID: 22353464"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>source<\/th>\n      <th>target<\/th>\n      <th>ligand<\/th>\n      <th>receptor<\/th>\n      <th>prob<\/th>\n      <th>pval<\/th>\n      <th>interaction_name<\/th>\n      <th>interaction_name_2<\/th>\n      <th>pathway_name<\/th>\n      <th>annotation<\/th>\n      <th>evidence<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>Define chord diagram function for downstream visualization:</p>
+<pre class="r"><code>chordDiagram &lt;- function(x, title = NULL) {
+
+  ## Convert factors to strings
+
+  x$source &lt;- as.character(x$source)
+  
+  x$target &lt;- as.character(x$target)
+
+  ## Create data frame with connections
+
+  dat &lt;- data.frame(
+    from = paste(x$source, x$ligand, sep = &quot;.&quot;),
+    to = paste(x$target, x$receptor, sep = &quot;.&quot;)
+  )
+
+  ## Create connections annotation
+
+  ann &lt;- setNames(
+    object = c(x$ligand, x$receptor),
+    nm = c(x$source, x$target)
+  )
+
+  ## Filter duplicated connections
+
+  ids &lt;- paste(names(ann), ann, sep = &quot;.&quot;)
+
+  ann &lt;- ann[!duplicated(ids)]
+
+  ## Order connections by name and value
+
+  ids &lt;- paste(names(ann), ann, sep = &quot;.&quot;)
+
+  ann &lt;- ann[order(ids)]
+
+  ## Create LR colour palette
+
+  ids &lt;- unique(ann)
+
+  col &lt;- iwanthue(n = length(ids))
+
+  names(col) &lt;- ids
+
+  col &lt;- col[ann]
+
+  names(col) &lt;- paste(names(ann), ann, sep = &quot;.&quot;)
+
+  ## Create prob colour palette
+
+  prob.colours &lt;- rev(RColorBrewer::brewer.pal(10, &quot;Spectral&quot;))
+  prob.breaks &lt;- seq(0, 1, along.with = prob.colours)
+  prob.palette &lt;- colorRamp(prob.colours)
+  prob.palette &lt;- rgb(prob.palette(x$prob)/255)
+
+  ## Plot chord diagram
+
+  circlize::chordDiagram(
+    x = dat,
+    grid.col = col,
+    transparency = 0.5,
+    col = &quot;#00000000&quot;,
+    order = names(col),
+    directional = 1,
+    direction.type = &quot;arrows&quot;,
+    annotationTrack = &quot;grid&quot;,
+    preAllocateTracks = list(
+      list(track.height = uh(2,&#39;mm&#39;)),
+      list(track.height = uh(12,&#39;mm&#39;))
+    ),
+    annotationTrackHeight = c(0.01, 0.01),
+    link.arr.col = prob.palette
+  )
+
+  ## Plot title
+
+  graphics::title(title, cex = 0.6)
+
+  ## Plot track region
+
+  circlize::circos.trackPlotRegion(
+    track.index = 2,
+    bg.border = 0,
+    panel.fun = function(x, y) {
+      xlim &lt;- get.cell.meta.data(&quot;xlim&quot;)
+      ylim &lt;- get.cell.meta.data(&quot;ylim&quot;)
+      sector.index &lt;- ann[get.cell.meta.data(&quot;sector.numeric.index&quot;)]
+      circos.text(
+        x = mean(xlim),
+        y = mean(ylim),
+        sector.index,
+        facing = &quot;clockwise&quot;,
+        niceFacing = TRUE,
+        cex = 0.7,
+        col = &quot;black&quot;
+      )
+    }
+  )
+
+  ## Create group colour palette
+
+  ids &lt;- unique(names(ann))
+
+  col &lt;- iwanthue(n = length(ids))
+
+  names(col) &lt;- ids
+
+  ## Plot highlight sector
+
+  for (i in ids) {
+
+    df &lt;- ann[names(ann) == i]
+
+    circlize::highlight.sector(
+      sector.index = paste(names(df), df, sep = &quot;.&quot;),
+      track.index = 1,
+      col = col[i],
+      lwd = 1,
+      text = i,
+      text.vjust = &#39;0.4cm&#39;,
+      niceFacing = TRUE
+    )
+
+  }
+
+  # Plot links legend
+  
+  col &lt;- colorRamp2(breaks = prob.breaks, colors = prob.colours)
+
+  lgd &lt;- ComplexHeatmap::Legend(at = c(0, 0.5, 1), col_fun = col, title = &quot;Prob&quot;)
+
+  ComplexHeatmap::draw(lgd, x = unit(10, &quot;mm&quot;), y = unit(10, &quot;mm&quot;), just = c(&quot;left&quot;, &quot;bottom&quot;))
+
+  #
+
+  circos.clear()
+
+}</code></pre>
+<div id="source" class="section level3 tabset">
+<h3 class="tabset">Source</h3>
+<p>Plot chord diagram by source:</p>
+<pre class="r"><code>ids &lt;- sort(unique(net$source))
+
+for (i in ids) {
+  
+  cat(&quot;####&quot;, i, &quot;\n&quot;)
+  
+  chordDiagram(
+    x = subset(net, source == i), 
+    title = i
+  )
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="section" class="section level4">
+<h4>1</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-1" class="section level4">
+<h4>2</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-20-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-2" class="section level4">
+<h4>3</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-20-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="target" class="section level3 tabset">
+<h3 class="tabset">Target</h3>
+<p>Plot chord diagram by target:</p>
+<pre class="r"><code>ids &lt;- sort(unique(net$target))
+
+for (i in ids) {
+  
+  cat(&quot;####&quot;, i, &quot;\n&quot;)
+  
+  chordDiagram(
+    x = subset(net, target == i), 
+    title = i
+  )
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="section-3" class="section level4">
+<h4>1</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-4" class="section level4">
+<h4>2</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-5" class="section level4">
+<h4>3</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="annotation" class="section level3 tabset">
+<h3 class="tabset">Annotation</h3>
+<p>Plot chord diagram by annotation:</p>
+<pre class="r"><code>ids &lt;- sort(unique(net$annotation))
+
+for (i in ids) {
+  
+  cat(&quot;####&quot;, i, &quot;\n&quot;)
+  
+  chordDiagram(
+    x = subset(net, annotation == i), 
+    title = i
+  )
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="cell-cell-contact" class="section level4">
+<h4>Cell-Cell Contact</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ecm-receptor" class="section level4">
+<h4>ECM-Receptor</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="secreted-signaling" class="section level4">
+<h4>Secreted Signaling</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-22-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="pathway" class="section level3 tabset">
+<h3 class="tabset">Pathway</h3>
+<p>Plot chord diagram by pathway:</p>
+<pre class="r"><code>ids &lt;- sort(unique(net$pathway_name))
+
+for (i in ids) {
+  
+  cat(&quot;####&quot;, i, &quot;\n&quot;)
+  
+  chordDiagram(
+    x = subset(net, pathway_name == i), 
+    title = i
+  )
+  
+  cat(&quot;\n\n&quot;)
+  
+}</code></pre>
+<div id="angptl" class="section level4">
+<h4>ANGPTL</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="apelin" class="section level4">
+<h4>APELIN</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="apj" class="section level4">
+<h4>APJ</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="bmp" class="section level4">
+<h4>BMP</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-4.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cdh" class="section level4">
+<h4>CDH</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-5.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="collagen" class="section level4">
+<h4>COLLAGEN</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-6.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="fn1" class="section level4">
+<h4>FN1</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-7.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="kit" class="section level4">
+<h4>KIT</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-8.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="laminin" class="section level4">
+<h4>LAMININ</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-9.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="mk" class="section level4">
+<h4>MK</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-10.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ncwnt" class="section level4">
+<h4>ncWNT</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-11.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="notch" class="section level4">
+<h4>NOTCH</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-12.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="pdgf" class="section level4">
+<h4>PDGF</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-13.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wnt" class="section level4">
+<h4>WNT</h4>
+<p><img src="figure/supervised-signaling.Rmd/unnamed-chunk-23-14.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.7
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
+[8] methods   base     
+
+other attached packages:
+ [1] CellChat_1.1.2              bigmemory_4.5.36           
+ [3] ggplot2_3.3.4               igraph_1.2.6               
+ [5] dplyr_1.0.7                 circlize_0.4.13            
+ [7] hues_0.2.0                  scuttle_1.0.4              
+ [9] SingleCellExperiment_1.12.0 SummarizedExperiment_1.20.0
+[11] Biobase_2.50.0              GenomicRanges_1.42.0       
+[13] GenomeInfoDb_1.26.7         IRanges_2.24.1             
+[15] S4Vectors_0.28.1            BiocGenerics_0.36.1        
+[17] MatrixGenerics_1.2.1        matrixStats_0.59.0         
+[19] workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+  [1] systemfonts_1.0.2         NMF_0.23.0               
+  [3] plyr_1.8.6                BiocParallel_1.24.1      
+  [5] crosstalk_1.1.1           listenv_0.8.0            
+  [7] gridBase_0.4-7            digest_0.6.27            
+  [9] foreach_1.5.1             htmltools_0.5.1.1        
+ [11] ggalluvial_0.12.3         fansi_0.5.0              
+ [13] magrittr_2.0.1            cluster_2.1.2            
+ [15] doParallel_1.0.16         limma_3.46.0             
+ [17] sna_2.6                   ComplexHeatmap_2.6.2     
+ [19] globals_0.14.0            svglite_2.0.0            
+ [21] colorspace_2.0-1          ggrepel_0.9.1            
+ [23] xfun_0.24                 crayon_1.4.1             
+ [25] RCurl_1.98-1.3            jsonlite_1.7.2           
+ [27] bigmemory.sri_0.1.3       iterators_1.0.13         
+ [29] glue_1.4.2                registry_0.5-1           
+ [31] gtable_0.3.0              zlibbioc_1.36.0          
+ [33] XVector_0.30.0            GetoptLong_1.0.5         
+ [35] DelayedArray_0.16.3       BiocSingular_1.6.0       
+ [37] future.apply_1.7.0        shape_1.4.6              
+ [39] scales_1.1.1              edgeR_3.32.1             
+ [41] DBI_1.1.1                 rngtools_1.5             
+ [43] Rcpp_1.0.6                xtable_1.8-4             
+ [45] clue_0.3-59               reticulate_1.20          
+ [47] dqrng_0.3.0               rsvd_1.0.5               
+ [49] DT_0.18                   htmlwidgets_1.5.3        
+ [51] FNN_1.1.3                 RColorBrewer_1.1-2       
+ [53] ellipsis_0.3.2            pkgconfig_2.0.3          
+ [55] sass_0.4.0                locfit_1.5-9.4           
+ [57] utf8_1.2.1                tidyselect_1.1.1         
+ [59] rlang_0.4.11              reshape2_1.4.4           
+ [61] later_1.2.0               munsell_0.5.0            
+ [63] tools_4.0.2               generics_0.1.0           
+ [65] statnet.common_4.5.0      evaluate_0.14            
+ [67] stringr_1.4.0             yaml_2.2.1               
+ [69] knitr_1.33                fs_1.5.0                 
+ [71] purrr_0.3.4               pbapply_1.4-3            
+ [73] future_1.21.0             sparseMatrixStats_1.2.1  
+ [75] whisker_0.4               scran_1.18.7             
+ [77] compiler_4.0.2            png_0.1-7                
+ [79] statmod_1.4.36            tibble_3.1.2             
+ [81] bslib_0.2.5.1             stringi_1.6.2            
+ [83] highr_0.9                 RSpectra_0.16-0          
+ [85] lattice_0.20-44           bluster_1.0.0            
+ [87] Matrix_1.3-4              vctrs_0.3.8              
+ [89] pillar_1.6.1              lifecycle_1.0.0          
+ [91] jquerylib_0.1.4           GlobalOptions_0.1.2      
+ [93] BiocNeighbors_1.8.2       cowplot_1.1.1            
+ [95] bitops_1.0-7              irlba_2.3.3              
+ [97] httpuv_1.6.1              patchwork_1.1.1          
+ [99] R6_2.5.0                  promises_1.2.0.1         
+[101] renv_0.13.2               network_1.17.1           
+[103] parallelly_1.26.0         codetools_0.2-18         
+[105] assertthat_0.2.1          pkgmaker_0.32.2          
+[107] rprojroot_2.0.2           rjson_0.2.20             
+[109] withr_2.4.2               GenomeInfoDbData_1.2.4   
+[111] grid_4.0.2                beachmat_2.6.4           
+[113] coda_0.19-4               rmarkdown_2.9            
+[115] DelayedMatrixStats_1.12.3 Cairo_1.5-12.2           
+[117] git2r_0.28.0             </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
