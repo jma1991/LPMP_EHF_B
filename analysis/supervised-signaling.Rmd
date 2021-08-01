@@ -68,7 +68,7 @@ rownames(sce) <- uniquifyFeatureNames(
 Create a CellChat object from a SingleCellExperiment object:
 
 ```{r}
-cellchat <- createCellChat(object = sce, group.by = "cluster")
+cellchat <- createCellChat(object = sce, group.by = "label")
 ```
 
 Set the ligand-receptor interaction database:

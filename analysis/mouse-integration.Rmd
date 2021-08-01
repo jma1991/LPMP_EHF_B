@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
   cache.lazy = FALSE,
-  cache.path = "cache/10-atlas-integration.Rmd/",
+  cache.path = "cache/mouse-integration.Rmd/",
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -314,7 +314,7 @@ ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) +
 Save integrated experiment object to disk:
 
 ```{r}
-saveRDS(mnn, file = "output/10-atlas-integration.rds")
+saveRDS(mnn, file = "output/mouse-integration.rds")
 ```
 
 ### Session

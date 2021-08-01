@@ -53,15 +53,7 @@ library(pheatmap)
 Read mouse experiment object:
 
 ```{r}
-sce <- readRDS("output/secondary-analysis.rds")
-```
-
-Revalue label annotation:
-
-```{r}
-ann <- c("1" = "1_Epi", "2" = "2_Epi/PXM", "3" = "3_LPM/P", "4" = "4_PXM/Meso")
-
-sce$label <- unname(ann[as.character(sce$label)])
+sce <- readRDS("output/09-cell-annotation.rds")
 ```
 
 Define function to clean mouse experiment object:

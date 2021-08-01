@@ -60,8 +60,7 @@ Read mouse experiment objects:
 
 ```{r}
 sce <- list(
-  LPMP_EHF = readRDS("data/LPMP_EHF.rds"),
-  LPMP_LHF = readRDS("data/LPMP_LHF.rds")
+  LPMP_EHF = readRDS("output/09-cell-annotation.rds")
 )
 ```
 
@@ -275,8 +274,7 @@ Create list of all experiment data:
 all <- list(
   "chicken_st5_1" = ref$st51,
   "chicken_st5_2" = ref$st52,
-  "mouse_lpmp_ehf" = sce$LPMP_EHF,
-  "mouse_lpmp_lhf" = sce$LPMP_LHF
+  "mouse_lpmp_ehf" = sce$LPMP_EHF
 )
 ```
 
@@ -330,7 +328,7 @@ mnn <- correctExperiments(
   PARAM = FastMnnParam(
     merge.order = list(
       list("chicken_st5_2", "chicken_st5_1"),
-      list("mouse_lpmp_lhf", "mouse_lpmp_ehf")
+      list("mouse_lpmp_ehf")
     )
   )
 )
@@ -421,11 +419,6 @@ ggplot() +
     data = subset(dat, Sample == "LPMP_EHF"),
     mapping = aes(UMAP.1, UMAP.2),
     colour = "black"
-  ) + 
-  geom_point(
-    data = subset(dat, Sample == "LPMP_LHF"),
-    mapping = aes(UMAP.1, UMAP.2),
-    colour = "maroon1"
   ) + 
   scale_colour_manual(
     values = c(
