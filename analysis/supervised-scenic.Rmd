@@ -1,0 +1,170 @@
+---
+title: "Supervised SCENIC"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this document we are going to analyse the output from the pySCENIC command-line software. SCENIC is a tool for single-cell regulatory network inference and clustering.
+
+## Setup
+
+Define chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = "cache/supervised-scenic.Rmd/",
+  dev        = "png",
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(hues)
+library(pheatmap)
+library(viridis)
+```
+
+Define function to import AUCell matrix from text format:
+
+```{r}
+importAUCfromText <- function(fileName, rows="regulons", columns="cells", transpose=TRUE, newNames=NULL) {
+  aucMatrix <- data.table::fread(fileName, drop=1)
+  cellNames <- unname(unlist(data.table::fread(fileName, select=1, skip=1)))
+  if(transpose) aucMatrix <- t(as.matrix(aucMatrix))
+  colnames(aucMatrix) <- cellNames
+  if(!is.null(newNames)) rownames(aucMatrix) <- unname(newNames[rownames(aucMatrix)])
+  names(dimnames(aucMatrix)) <- c(rows, columns)
+  return(aucMatrix)
+}
+```
+
+## Results
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/supervised-analysis.rds")
+```
+
+Make cell names unique:
+
+```{r}
+N <- ncol(sce)
+
+colnames(sce) <- seq_len(N)
+```
+
+Import activity matrix:
+
+```{r}
+auc <- importAUCfromText("output/pyscenic/aucell.csv")
+```
+
+Rename experiment cells:
+
+```{r}
+colnames(auc) <- colnames(sce)
+```
+
+Order activity matrix by cluster:
+
+```{r}
+auc <- auc[, order(sce$label)]
+```
+
+Create heatmap colour palette:
+
+```{r}
+stage.palette <- c("EHF" = "#BAB0AC", "LHF" = "#E15759")
+
+cluster.palette <- iwanthue(n = nlevels(sce$label))
+
+cluster.palette <- setNames(cluster.palette, levels(sce$label))
+
+celltype.palette <- MouseGastrulationData::EmbryoCelltypeColours
+
+celltype.palette <- subset(celltype.palette, names(celltype.palette) %in% sce$celltype)
+```
+
+Create heatmap annotation:
+
+```{r}
+ann <- list(
+  annotation_col = data.frame(
+    Cluster = sce$label, 
+    Celltype = sce$celltype, 
+    Stage = sce$stage, 
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Cluster = cluster.palette, 
+    Celltype = celltype.palette, 
+    Stage = stage.palette
+  )
+)
+```
+
+Plot matrix of AUC values for all regulons:
+
+```{r fig.width = 8, fig.height = 6}
+pheatmap(
+  mat = auc,
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = FALSE,
+  show_colnames = FALSE,
+)
+```
+
+Identify most variable regulons:
+
+```{r}
+idx <- order(rowVars(auc), decreasing = TRUE)[1:30]
+```
+
+Plot matrix of AUC values for outlier regulons:
+
+```{r fig.width = 8, fig.height = 6}
+pheatmap(
+  mat = auc[idx, ],
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
