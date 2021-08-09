@@ -33,6 +33,8 @@ navbar:
           href: supervised-analysis.html
         - text: "Supervised signaling"
           href: supervised-signaling.html
+        - text: "Supervised SCENIC"
+          href: supervised-scenic.html
     - text: "Mouse Atlas"
       menu:
         - text: "Mouse integration"
